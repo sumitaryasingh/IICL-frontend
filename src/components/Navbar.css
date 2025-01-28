@@ -1,0 +1,160 @@
+/* Navbar styling */
+.navbar {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    color: white;
+    background-color: #2d3748; /* Dark background */
+    z-index: 10;
+  }
+  
+  .navbar .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+  }
+  
+  /* Mobile Menu Toggle Icon */
+  .menu-toggle {
+    display: none; /* Initially hidden on large screens */
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+  
+  .toggle-icon {
+    width: 25px; /* Set to 25px */
+    height: 3px; /* Adjusted for better proportion */
+    background-color: rgb(83, 12, 12); /* Dark color for the icon */
+    margin: 5px auto; /* Even margin for the icon */
+    transition: all 0.3s ease;
+  }
+  
+  .toggle-icon.open {
+    transform: rotate(45deg);
+    position: relative;
+  }
+  
+  .toggle-icon.open::before,
+  .toggle-icon.open::after {
+    content: '';
+    position: absolute;
+    width: 25px; /* Set to 25px */
+    height: 3px; /* Same as the main icon */
+    background-color: white;
+  }
+  
+  .toggle-icon.open::before {
+    transform: rotate(90deg);
+    top: -8px;
+  }
+  
+  .toggle-icon.open::after {
+    transform: rotate(90deg);
+    top: 8px;
+  }
+  
+  /* Desktop View */
+  .navbar .nav-links {
+    display: flex;
+    gap: 1.5rem;
+  }
+  
+  .navbar .nav-item {
+    cursor: pointer;
+    color: white;
+    transition: color 0.3s ease;
+  }
+  
+  .navbar .nav-item:hover {
+    color: #38a169; /* Green hover effect */
+  }
+  
+  .navbar .auth-buttons {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .navbar .login-button {
+    background: none;
+    border: 1px solid white;
+    color: white;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .navbar .login-button:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Light hover effect */
+  }
+  
+  .navbar .register-button {
+    padding: 0.5rem 1rem;
+    background-color: #38a169; /* Green color */
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .navbar .register-button:hover {
+    background-color: #2f855a; /* Darker green hover */
+  }
+  
+  /* Mobile View */
+  @media (max-width: 768px) {
+    /* Hide the menu and authentication buttons on mobile by default */
+    .navbar .nav-links {
+      display: none; /* Hidden by default */
+      width: 100%;
+      position: absolute;
+      top: 60px; /* Below the navbar */
+      left: 0;
+      background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black */
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem 0;
+      box-sizing: border-box;
+      z-index: -1; /* Ensure it's behind the navbar */
+    }
+  
+    /* Show menu when active class is added */
+    .navbar .nav-links.active {
+      display: flex;
+      z-index: 1; /* Ensure it appears on top */
+    }
+  
+    /* Auth buttons style for mobile */
+    .navbar .auth-buttons {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      width: 100%;
+      padding: 1rem 0;
+    }
+  
+    .navbar .auth-buttons.active {
+      display: flex;
+    }
+  
+    /* Make the toggle button visible on small screens */
+    .menu-toggle {
+      display: block;
+    }
+  
+    /* Navbar items will be hidden on small screens until the menu is opened */
+    .navbar .nav-links,
+    .navbar .auth-buttons {
+      display: none;
+    }
+  }
+  li {
+    list-style-type: none;
+  }

@@ -1,170 +1,178 @@
+/* src/Navbar.css */
+
 /* Navbar styling */
 .navbar {
-    position: relative;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-    color: white;
-    background-color: #2d3748; /* Dark background */
-    z-index: 10;
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #2d3748; /* Dark background */
+  color: white;
+  z-index: 10;
 }
 
 /* Logo Styling */
-.navbar .logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: white;
-}
-
-/* Auth Buttons (Always visible on the top right) */
-.auth-buttons-top {
-    display: flex;
-    gap: 1rem;
-}
-
-.auth-buttons-top .login-button,
-.auth-buttons-top .register-button {
-    font-size: 1rem;
-    padding: 0.5rem 1rem;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.auth-buttons-top .login-button {
-    background: none;
-    border: 1px solid white;
-    color: white;
-}
-
-.auth-buttons-top .login-button:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.auth-buttons-top .register-button {
-    background-color: #38a169; /* Green */
-    color: white;
-    border-radius: 0.5rem;
-}
-
-.auth-buttons-top .register-button:hover {
-    background-color: #2f855a;
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 
 /* Mobile Menu Toggle Icon */
 .menu-toggle {
-    display: none; /* Hidden on large screens */
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
 .toggle-icon {
-    width: 25px;
-    height: 3px;
-    background-color: rgb(83, 12, 12);
-    margin: 5px auto;
-    transition: all 0.3s ease;
-}
-
-.toggle-icon.open {
-    transform: rotate(45deg);
-    position: relative;
-}
-
-/* Collapsible Menu */
-.menu-container {
-    display: none;
-    position: absolute;
-    top: 60px;
-    left: 0;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.9);
-    flex-direction: column;
-    align-items: center;
-    padding: 1rem 0;
-    box-sizing: border-box;
-}
-
-.menu-container.active {
-    display: flex;
+  width: 25px;
+  height: 3px;
+  background-color: white;
+  margin: 5px 0;
+  transition: all 0.3s ease;
 }
 
 /* Navigation Links */
+.menu-container {
+  display: flex;
+  align-items: center;
+}
+
 .nav-links {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    text-align: center;
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .nav-item {
-    color: white;
-    cursor: pointer;
+  position: relative;
+  margin: 0 1rem;
 }
 
-.nav-item:hover {
-    color: #38a169;
+.nav-item a {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s ease;
 }
 
-/* Auth Buttons (Visible at bottom inside collapsed menu) */
+.nav-item a:hover {
+  color: #38a169;
+}
+
+/* Dropdown Menu */
+.dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #2d3748;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 5;
+  min-width: 150px;
+}
+
+.dropdown-item {
+  padding: 0.5rem 1rem;
+}
+
+.dropdown-item a {
+  color: white;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-item a:hover {
+  background-color: #39a169;
+  color: aliceblue;
+}
+
+/* Show dropdown on hover for large screens */
+.nav-item:hover .dropdown {
+  display: block;
+}
+
+/* Auth Buttons */
 .auth-buttons {
-    display: flex;
+  display: flex;
+  gap: 1rem;
+}
+
+.login-button,
+.register-button {
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-button {
+  background: none;
+  border: 1px solid white;
+  color: white;
+}
+
+.login-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.register-button {
+  background-color: #38a169; /* Green */
+  color: white;
+  border-radius: 0.5rem;
+}
+
+.register-button:hover {
+  background-color: #2f855a;
+}
+
+/* Responsive Styles */
+@media (max-width: 1017px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  .menu-container {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #2d3748;
     flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
-    width: 100%;
     padding: 1rem 0;
-}
+  }
 
-.auth-buttons .login-button,
-.auth-buttons .register-button {
-    font-size: 1rem;
-    padding: 0.5rem 1rem;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  .menu-container.active {
+    display: flex;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    align-items: center;
+  }
+ul{
+  list-style-type: none;
+}
+  .nav-item {
+    margin: 0.4rem 0;
+  }
+
+  .auth-buttons {
+    flex-direction: column;
+    min-width: 30%;
+    padding: 1rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .auth-buttons .login-button,
+  .auth-buttons .register-button {
     width: 80%;
     text-align: center;
-}
-
-.auth-buttons .login-button {
-    background: none;
-    border: 1px solid white;
-    color: white;
-}
-
-.auth-buttons .login-button:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.auth-buttons .register-button {
-    background-color: #38a169;
-    color: white;
-    border-radius: 0.5rem;
-}
-
-.auth-buttons .register-button:hover {
-    background-color: #2f855a;
-}
-
-/* Mobile View */
-@media (max-width: 768px) {
-    /* Show the toggle button */
-    .menu-toggle {
-        display: block;
-    }
-
-    /* Hide desktop auth buttons in mobile view */
-    .auth-buttons-top {
-        display: none;
-    }
-
-    /* Ensure menu buttons are displayed in mobile collapsed menu */
-    .auth-buttons {
-        display: flex;
-    }
+  }
 }

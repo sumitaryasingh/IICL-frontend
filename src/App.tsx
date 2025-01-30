@@ -8,9 +8,8 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <Navbar />
-      <Hero />
-    </div>
-  );
+      <Hero /> 
+    </div>)
 }
 
 export default App;

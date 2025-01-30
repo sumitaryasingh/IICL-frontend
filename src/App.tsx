@@ -21,11 +21,10 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <Navbar />
-      <Hero />
+      <Hero /> 
       <p>Backend Message: {message || 'Loading...'}</p>
       <Footer />
-    </div>
-  );
+    </div>)
 }
 
 export default App;

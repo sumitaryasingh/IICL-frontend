@@ -5,7 +5,9 @@ import Hero from './components/Hero';
 import Navbar from './components/Navbar';
 
 const App: React.FC = () => {
+  console.log("hello")
   return (
+    
     <div className="App">
       <Navbar />
       <Hero /> 

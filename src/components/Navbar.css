@@ -5,7 +5,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem;
+    padding: 0.6rem 1.2rem ;
     color: white;
     background-color: #2d3748; /* Dark background */
     z-index: 10;
@@ -15,6 +15,24 @@
     font-size: 1.5rem;
     font-weight: bold;
     color: white;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center; /* Ensures vertical alignment */
+    gap: 0rem; /*Adds spacing between icon and text*/
+  }
+  
+  .iicl-icon { 
+    height: 9rem;
+    object-fit: contain;
+  }
+  
+  .logo-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center; /* Ensures the text is vertically centered */
   }
   
   /* Mobile Menu Toggle Icon */

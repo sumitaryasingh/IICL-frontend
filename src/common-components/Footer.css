@@ -1,0 +1,86 @@
+.footer {
+    background-color: #242436;
+    color: #fff;
+    padding: 1.2rem 2.4rem;
+    font-size: 14px;
+  }
+  
+  .footer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    max-width: 1200px;
+    margin: auto;
+    text-align: center;
+  }
+  
+  /* Footer Sections */
+  .footer-section {
+    flex: 1;
+    max-width: 300px;
+  }
+  
+  /* Keep Sections Aligned */
+  @media (min-width: 768px) {
+    .footer-container {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+      text-align: left;
+    }
+  }
+  
+  /* Logo Styling */
+  .footer-logo {
+    height: 6rem;
+    /* margin-bottom: 10px; */
+  }
+  
+  /* About Text */
+  .about-text {
+    max-width: 280px;
+    line-height: 1.6;
+  }
+
+  
+  /* Quick Links */
+  .footer-links {
+    list-style: none;
+    padding: 0;
+    line-height: 2rem;
+  }
+  
+  .footer-links li {
+    margin: 8px 0;
+  }
+  
+  .footer-links a {
+    color: #ddd;
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .footer-links a:hover {
+    color:#38a169;
+  }
+  
+  /* Footer Bottom */
+  .footer-bottom {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 13px;
+    border-top: 1px solid #444;
+    padding-top: 10px;
+  }
+
+  .contact{
+    padding-top: 1rem;
+    line-height: 2rem;
+  }
+  
+  hr{
+    padding:1px;
+    border: 0;
+    background-color: #38a169;
+  }

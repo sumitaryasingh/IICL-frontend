@@ -1,0 +1,186 @@
+[
+    {
+        "id":"1",
+        "title":"ADCA (Advance Diploma in Computer Application)",
+        "duration":"1 Year",
+        "subjects":[
+            "Computer Fundamental",
+            "Microsoft Windows XP/ Vista/ 7/ 10/ 11/ Mac Operating System",
+            "MS Office (Word, Excel, PowerPoint)",
+            "Desktop Publishing (Adobe Pagemaker, Adobe Photoshop, Corel Draw)",
+            "Hindi/ English Typing",
+            "Scanning & Printing",
+            "Manual Accounting",
+            "Financial Accounting (Professional Tally 7.2, Tally 9.0)",
+            "Typing Master",
+            "Internet & E-mail",
+            "Basic Computer Hardware Maintainance",
+            "Personality Development Courses",
+            "Project",
+            "Examination"
+        ]
+    },
+    {
+        "id":"2",
+        "title":"DCA (Diploma in Computer Application)",
+        "duration":"6 Months",
+        "subjects":[
+            "Computer Fundamental",
+            "Microsoft Windows XP/ Vista/ 7/ 10/ 11/ Mac Operating System",
+            "MS Office (Word, Excel, PowerPoint)",
+            "Internet & Email Technology",
+            "Basic Computer Hardware Maintainance",
+            "HTML",
+            "Hindi/ English Typing",
+            "Personality Development Courses",
+            "Project",
+            "Examination"
+        ]
+    },
+    {
+        "id":"3",
+        "title":"AutoCAD (Diploma in Computer-Aided Designing)",
+        "duration":"6 Months",
+        "subjects":[
+            "Computer Fundamental",
+            "Microsoft Windows XP/ Vista/ 7/ 10/ 11/ Mac Operating System",
+            "Introduction of AutoCAD",
+            "Setting up your Drawing Environment",
+            "Mastering in Co-Ordinate System",
+            "Object Creation",
+            "Controlling of Drawing Display",
+            "Object Selection",
+            "Drawing Precision",
+            "Editing Object with Properties",
+            "Managing Layers",
+            "Text in AutoCAD",
+            "Blocks, Styles & Xrels",
+            "Annotation of Drawing using Dimension",
+            "AutoCAD Design Center",
+            "Creating a Layout to plot",
+            "Plotting your Drawing",
+            "Personality Development Courses",
+            "3D MAX",
+            "V-ray",
+            "Post Production",
+            "Project",
+            "Examination"
+        ]
+    },
+    {
+        "id":"4",
+        "title":"Diploma in Web Designing",
+        "duration":"6 Months",
+        "subjects":[
+            "Computer Fundamental",
+            "Microsoft Windows XP/ Vista/ 7/ 10/ 11/ Mac Operating System",
+            "Concept of Web Designing",
+            "Internet Concept(Web)",
+            "IDE Platform",
+            "Notepad",
+            "Browsers",
+            "Dream Weaver",
+            "Visual Studio Code",
+            "HTML",
+            "DHTML",
+            "CSS",
+            "Project",
+            "Examination"
+        ]
+    },
+    {
+        "id":"5",
+        "title":"DTP (Desktop Publishing)",
+        "duration":"6 Months",
+        "subjects":[
+            "Computer Fundamental",
+            "Microsoft Windows XP/ Vista/ 7/ 10/ 11/ Mac Operating System",
+            "Desktop Publishing (Adobe Pagemaker, Adobe Photoshop, Corel Draw)",
+            "Internet & Email Technology",
+            "Personality Development Courses",
+            "Project",
+            "Examination"
+        ]
+    },
+    {
+        "id":"6",
+        "title":"DCA-T (Diploma in Computer Application with Tally)",
+        "duration":"9 Months",
+        "subjects":[
+            "Computer Fundamental",
+            "Microsoft Windows XP/ Vista/ 7/ 10/ 11/ Mac Operating System",
+            "MS Office (Word, Excel, PowerPoint)",
+            "Internet & E-mail",
+            "Computer Network & Multimedia Concept",
+            "Project in Microsoft Word",
+            "Project in Microsoft Excel",
+            "Financial Accounting",
+            "Tally 5.4, 7.2 & 9.0",
+            "Personality Development Courses",
+            "Project",
+            "Examination"
+        ]
+    },
+    {
+        "id":"7",
+        "title":"PGDCA (Post Graduate Diploma in Computer)",
+        "duration":"1 Year",
+        "subjects":[
+            "Computer Fundamental",
+            "Microsoft Windows XP/ Vista/ 7/ 10/ 11/ Mac Operating System",
+            "MS Office (Word, Excel, PowerPoint, Access(DBMS))",
+            "Desktop Publishing (Adobe Pagemaker, Adobe Photoshop, Corel Draw)",
+            "Application Programming in FoxPro",
+            "C & C++ Programming",
+            "Basic Computer Hardware Maintainance",
+            "Accounting Package",
+            "Internet & Email Technology",
+            "Personality Development Courses",
+            "Project",
+            "Examination"
+        ]
+    },
+    {
+        "id":"8",
+        "title":"DCHM (Diploma in Computer Hardware Maintainance)",
+        "duration":"6 Months",
+        "subjects":[
+            "Computer Fundamental",
+            "Microsoft Windows XP/ Vista/ 7/ 10/ 11/ Mac Operating System",
+            "Basic Electronic",
+            "History of Personal Computer",
+            "PC Assembling & Troubleshooting & Diagnosing PC Components",
+            "Overview of PC Operations",
+            "BIOS (Basic Input Output System)",
+            "Operating System Installation (Installation of Windows XP/ Vista/ 7/ 10/ 11/ Mac OS",
+            "Diagnosing & Troubleshooting & PC Configuration",
+            "Personality Development Courses",
+            "Project",
+            "Examination"
+        ]
+
+    },
+    {
+        "id":"9",
+        "title":"DFA (Diploma & Financial Accounting)",
+        "duration":"6 Months",
+        "subjects":[
+            "Computer Fundamental",
+            "Microsoft Windows XP/ Vista/ 7/ 10/ 11/ Mac Operating System",
+            "MS Office (Word, Excel, PowerPoint)",
+            "Financial Accounting",
+            "Inventory Management",
+            "Manual Management",
+            "Tally",
+            "GST",
+            "Income Tax",
+            "Payroll",
+            "Returns, Filling of Documents Under various Law",
+            "Personality Development Courses",
+            "Project",
+            "Examination"
+        ]
+    }
+
+]
+

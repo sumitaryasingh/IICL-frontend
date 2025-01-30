@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Navbar.css';
+import { Link } from 'react-router-dom';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,12 +12,10 @@ const Navbar: React.FC = () => {
 
   return (
     <nav className="navbar">
-      <h2 className="logo">
-        <pre>
-          IICL
-          Education
-        </pre>
-      </h2>
+       <h2 className="logo">
+    {/* <img src="/images/iicl-iconT.png" alt="IICL Logo" className="iicl-icon" /> */}
+    <span className='logo-text'>IICL Education</span>
+  </h2>
 
     {/* Mobile Toggle Icon */}
 <button className="menu-toggle" onClick={toggleMenu}>
@@ -28,8 +27,8 @@ const Navbar: React.FC = () => {
 
       {/* Navigation Links */}
       <ul className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
-        <li className="nav-item">Home</li>
-        <li className="nav-item">Programme</li>
+        <li className="nav-item"><Link to={'/'}>Home</Link></li>
+        <li className="nav-item"> <Link to={'/programme'}> Programme</Link></li>
         <li className="nav-item">Franchise</li>
         <li className="nav-item">Student Zone</li>
         <li className="nav-item">Gallery</li>

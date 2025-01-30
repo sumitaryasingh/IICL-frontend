@@ -17,12 +17,18 @@ const Navbar: React.FC = () => {
     <span className='logo-text'>IICL Education</span>
   </h2>
 
-    {/* Mobile Toggle Icon */}
-<button className="menu-toggle" onClick={toggleMenu}>
-  <div className={`toggle-icon ${isMenuOpen ? 'open' : ''}`}></div>
-  <div className={`toggle-icon ${isMenuOpen ? 'open' : ''}`}></div>
-  <div className={`toggle-icon ${isMenuOpen ? 'open' : ''}`}></div>
-</button>
+      {/* Always visible Auth Buttons on the upper side */}
+      <div className="auth-buttons-top">
+        <button className="login-button">Log In</button>
+        <button className="register-button">Register</button>
+      </div>
+
+      {/* Mobile Toggle Icon */}
+      <button className="menu-toggle" onClick={toggleMenu}>
+        <div className={`toggle-icon ${isMenuOpen ? 'open' : ''}`}></div>
+        <div className={`toggle-icon ${isMenuOpen ? 'open' : ''}`}></div>
+        <div className={`toggle-icon ${isMenuOpen ? 'open' : ''}`}></div>
+      </button>
 
 
       {/* Navigation Links */}
@@ -34,10 +40,11 @@ const Navbar: React.FC = () => {
         <li className="nav-item">Gallery</li>
       </ul>
 
-      {/* Authentication Buttons */}
-      <div className={`auth-buttons ${isMenuOpen ? 'active' : ''}`}>
-        <button className="login-button">Log In</button>
-        <button className="register-button">Register</button>
+        {/* Auth Buttons inside the collapsible menu for mobile */}
+        <div className="auth-buttons">
+          <button className="login-button">Log In</button>
+          <button className="register-button">Register</button>
+        </div>
       </div>
     </nav>
   );

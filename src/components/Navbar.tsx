@@ -12,6 +12,7 @@ const Navbar: React.FC = () => {
 
   return (
     <nav className="navbar">
+      <div>
        <h2 className="logo">
     {/* <img src="/images/iicl-iconT.png" alt="IICL Logo" className="iicl-icon" /> */}
     <span className='logo-text'>IICL Education</span>

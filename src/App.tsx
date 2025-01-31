@@ -15,7 +15,7 @@ import FranchiseBenefits from "./components/Franchise/FranchiseBenefits";
 import FranchiseRequirement from "./components/Franchise/FranchiseRequirement";
 import FranchiseProcedure from "./components/Franchise/FranchiseProcedure";
 import FranchiseTestimonials from "./components/Franchise/FranchiseTestimonials";
-
+console.log("hi dataa")
 const App: React.FC = () => {
   return (
     <div className="App">

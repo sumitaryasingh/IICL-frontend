@@ -3,6 +3,7 @@ import programmeData from '../api/programmeData.json';
 import './Programme.css';
 import Footer from '../common-components/Footer';
 import Navbar from '../common-components/Navbar';
+import { IoMdArrowDropdownCircle } from "react-icons/io";
 
 // Define TypeScript interface for programme data
 interface Programme {
@@ -26,7 +27,7 @@ export default function Programme() {
     <div>
       <Navbar />
       <div className='program-container'>
-        <h1>Computer Courses List</h1>
+        <h1>Our Courses List</h1>
         {programmeData.map((curElem: Programme) => (
           <ProgramItems
             key={curElem.id}
@@ -49,9 +50,12 @@ const ProgramItems: React.FC<ProgramItemsProps> = ({ curElem, showProgram, setSh
 
   return (
     <div className="programItems">
-      <h3 onClick={handleToggle} style={{ cursor: 'pointer' }}>
+      <div className='programHeader'onClick={handleToggle} style={{ cursor: 'pointer' }}>
+      <h3 >
         {curElem.title}
       </h3>
+      <IoMdArrowDropdownCircle className='down-arrow' />
+      </div>
       {showProgram === curElem.id && ( // Show only if clicked
         <div className="programDetails">
           <p>

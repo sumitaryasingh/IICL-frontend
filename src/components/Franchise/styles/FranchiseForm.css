@@ -1,0 +1,266 @@
+/* Franchise Login Form Styles */
+.franchise-login-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  padding-top: 0px;
+}
+
+.franchise-login-form {
+  width: 70%;
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.input-group-for-two {
+  width: 48%; /* Set width to 100% for full-width fields */
+  margin-bottom: 20px;
+}
+
+.input-group-for-three {
+  width: 28%; /* Set width to 100% for full-width fields */
+  margin-bottom: 20px;
+}
+
+.input-independent-group {
+  width: 100%; /* Set width to 100% for full-width fields */
+  margin-bottom: 20px;
+}
+
+.input-independent-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.input-independent-group input {
+  width: 100%; /* Full width for input */
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s ease;
+}
+
+.input-independent-group input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+
+.input-group-for-two label , .input-group-for-three label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.input-group-for-two input,
+.input-group-for-two select,
+.input-group-for-three input,
+.input-group-for-three select {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s ease;
+}
+
+.input-group-for-two input:focus,
+.input-group-for-three input:focus,
+.input-group-for-two select:focus,
+.input-group-for-three select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.phone-input-group-for-two {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.country-code {
+  font-size: 16px;
+  color: #555;
+  padding-right: 8px;
+}
+
+.phone-input-group-for-two input {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s ease;
+}
+
+.phone-input-group-for-two input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+button {
+  padding: 12px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Submit button */
+.submit-btn {
+  background-color: #007bff; /* Blue color */
+  color: white;
+}
+
+.submit-btn:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Cancel button */
+.cancel-btn {
+  background-color: #dc3545; /* Red color */
+  color: white;
+}
+
+.cancel-btn:hover {
+  background-color: #c82333; /* Darker red on hover */
+}
+
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+select {
+  box-sizing: border-box;
+}
+
+/* Styling for specific sections */
+h3 {
+  text-align: center;
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+input:focus, select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+input, select, textarea {
+  font-family: 'Arial', sans-serif;
+}
+
+/* Media Queries for responsive design */
+@media (max-width: 768px) {
+  .franchise-login-form {
+    width: 90%;
+  }
+
+  .input-group-for-two {
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  button {
+    width: 100%;
+  }
+}
+
+/* Facilities Available */
+.checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: flex-start;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+}
+
+.divider {
+    width: 1px;
+    height: 20px;
+    background-color: #ccc;
+    margin-left: 10px;
+}
+
+
+.checkbox-group label {
+    display: inline-flex;
+    align-items: center;
+    font-size: 14px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+/* Radio Buttons for Existing Franchise */
+.radio-group {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Space between the radio buttons */
+}
+
+.radio-item {
+    display: inline-flex;
+    align-items: center;
+}
+
+
+
+.radio-group label {
+    font-size: 14px;
+}
+
+/* Textarea for Additional Information */
+textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: vertical;
+    margin-top: 5px;
+}
+
+textarea:focus {
+    border-color: #007bff;
+    outline: none;
+}

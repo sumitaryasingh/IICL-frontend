@@ -10,16 +10,16 @@
   max-height: 500px;
 }
 
-h1 {
+.body-container h1 {
   font-weight: bold;
   margin: 0;
 }
 
-h2 {
+.body-container h2 {
   text-align: center;
 }
 
-p {
+.body-container p {
   font-size: 14px;
   font-weight: 100;
   line-height: 20px;
@@ -27,18 +27,18 @@ p {
   margin: 20px 0 30px;
 }
 
-span {
+.body-container span {
   font-size: 12px;
 }
 
-a {
+.body-container a {
   color: #333;
   font-size: 14px;
   text-decoration: none;
   margin: 15px 0;
 }
 
-button {
+.body-container button {
   border-radius: 20px;
   border: 1px solid #ffcc00;
   background-color: #ffcc00;
@@ -51,7 +51,7 @@ button {
   transition: transform 80ms ease-in;
 }
 
-button:active {
+.body-container button:active {
   transform: scale(0.95);
 }
 
@@ -61,11 +61,11 @@ button:active {
     }
 }
 
-button:focus {
+.body-container button:focus {
   outline: none;
 }
 
-button.ghost {
+.body-container button.ghost {
   background-color: transparent;
   border-color: #FFFFFF;
   &:hover{
@@ -75,7 +75,7 @@ button.ghost {
   }
 }
 
-form {
+.body-container form {
   background-color: #FFFFFF;
   display: flex;
   align-items: center;
@@ -86,7 +86,7 @@ form {
   text-align: center;
 }
 
-input {
+.body-container input {
   background-color: #eee;
   border: none;
   padding: 12px 15px;
@@ -94,7 +94,7 @@ input {
   width: 100%;
 }
 
-.container {
+.body-container .container {
   
   margin-top: 100px;
   margin-bottom: 100px;
@@ -108,14 +108,14 @@ input {
   min-height: 400px;
 }
 
-.form-container {
+.body-container .form-container {
   position: absolute;
   top: 0;
   height: 100%;
   transition: all 0.6s ease-in-out;
 }
 
-.sign-in-container {
+.body-container .sign-in-container {
   left: 0;
   width: 50%;
   z-index: 2;
@@ -166,7 +166,7 @@ input {
   transform: translateX(-100%);
 }
 
-.overlay {
+.body-container .overlay {
   background: #ffcc00;
   background: #ffcc00;
   background: #ffcc00;
@@ -186,7 +186,7 @@ input {
   transform: translateX(50%);
 }
 
-.overlay-panel {
+.body-container .overlay-panel {
   position: absolute;
   display: flex;
   align-items: center;

@@ -6,7 +6,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 import Home from "./components/Home";
 import AboutUs from "./components/AboutUs";
-import Programme from "./components/Programme";
+import Programme from "./components/programs/Programs";
+import ProgrammeList from "./components/programs/ProgrammeList";
 import Franchise from "./components/Franchise/Franchise";
 import FranchiseForm from "./components/Franchise/FranchiseForm";
 import FranchiseNetwork from "./components/Franchise/FranchiseNetwork";
@@ -24,7 +25,8 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about-us" element={<AboutUs />} />
-        <Route path="/programme" element={<Programme />} />
+        <Route path="/programs" element={<ProgrammeList/>} />
+        <Route path="/programs/:type" element={<Programme />} />
 
         {/* Franchise Parent Route */}
         <Route path="/franchise" element={<Franchise />}>

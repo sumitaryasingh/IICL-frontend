@@ -68,42 +68,62 @@
   background: rgba(255, 255, 255, 0.2);
 }
 
+/* Dropdown menu */
+/* Dropdown menu */
 .dropdown {
-  display: none;
+  border-top: 4px solid #ffcc00;
   position: absolute;
-  background: white;
+  background: rgb(246, 246, 246);
   color: black;
   list-style: none;
   padding: 10px 0;
   top: 90%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateY(-10px);
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
+  border-bottom-right-radius: 15px;
+  border-bottom-left-radius: 15px;
   min-width: 250px;
   width: 100%;
   z-index: 1000;
   text-align: center;
   opacity: 0;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  /* visibility: hidden; */
+  clip-path: inset(0 0 100% 0);
+  transition: opacity 0.3s ease, transform 0.3s ease, clip-path 0.3s ease-in-out, visibility 0.3s ease;
 }
 
+/* Show dropdown */
 .nav-item:hover .dropdown {
-  display: block;
   opacity: 1;
+  /* visibility: visible; */
   transform: translateX(-50%) translateY(5px);
+  clip-path: inset(0 0 0 0);
 }
+
+/* Hide dropdown smoothly when mouse leaves */
+.nav-item .dropdown {
+  transition-delay: 0.2s; /* Gives time before hiding */
+}
+
+
+/* Dropdown items */
 
 .dropdown li {
-  padding: 12px 20px;
-  transition: all 0.3s ease;
-  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  /* box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2); */
+  transition: all 0.3s ;
+  margin: 0.2rem;
+  border-bottom-right-radius: 15px;
+  border-bottom-left-radius: 15px;
 }
 
 .dropdown li:hover {
   background: #ffcc00;
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.626);
   color: black;
   cursor: pointer;
+  /* transform : translateY(-1px) scale(1.02);  */
 }
 
 /* Auth Buttons */

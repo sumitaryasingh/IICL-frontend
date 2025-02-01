@@ -1,6 +1,6 @@
-// src/Navbar.tsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import programmeData from "../../src/api/programmeData.json"; // Assuming the course data is here
 import "./Navbar.css";
 
 interface NavItem {
@@ -13,29 +13,25 @@ const navItems: NavItem[] = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about-us", subItems: [{ label: "Our Mission", href: "/our-mission" }, { label: "Our Team", href: "/our-team" }] },
   {
-    label: "Online Course", href: "/online-course",
-    subItems: [
-      { label: "Software Courses", href: "/software-courses" },
-      { label: "Hardware Courses", href: "/hardware-courses" },
-      { label: "Programming Courses", href: "/programming-courses" },
-      { label: "Mobile Repairing Courses", href: "/mobile-repairing-courses" },
-      { label: "English Spoken Courses", href: "/english-spoken-courses" }
-    ]
+    label: "Programme", href: "#",  subItems: programmeData.map((category) => ({
+      label: category.type,
+      href: `/programs/${encodeURIComponent(category.type)}`, // Dynamically link to each course type
+    }))
   },
-  { label: "Programme", href: "/programme", subItems: [{ label: "Programme 1", href: "/programme1" }, { label: "Programme 2", href: "/programme2" }] },
-  {
-    label: "Franchise", href: "/franchise",
-    subItems: [
-      { label: "Franchise Form", href: "/franchise/form" },
-      { label: "Franchise Network", href: "/franchise/network" },
-      { label: "Franchise Login", href: "/franchise/login" },
-      { label: "Franchise Benefits", href: "/franchise/benefits" },
-      { label: "Franchise Requirement", href: "/franchise/requirement" },
-      { label: "Franchise Procedure", href: "/franchise/procedure" },
-      { label: "Franchise Testimonials", href: "/franchise/testimonials" }
-    ]
-  },
-  { label: "Student Zone", href: "/student-zone", subItems: [{ label: "Resources", href: "/resources" }, { label: "Support", href: "/support" }] },
+
+  { label: "Franchise", href: "/franchise", subItems: [
+    { label: "Franchise Form", href: "/franchise/form" },
+    { label: "Franchise Network", href: "/franchise/network" },
+    { label: "Franchise Login", href: "/franchise/login" },
+    { label: "Franchise Benefits", href: "/franchise/benefits" },
+    { label: "Franchise Requirement", href: "/franchise/requirement" },
+    { label: "Franchise Procedure", href: "/franchise/procedure" },
+    { label: "Franchise Testimonials", href: "/franchise/testimonials" }
+  ] },
+  { label: "Student Zone", href: "/student-zone", subItems: [
+    { label: "Resources", href: "/resources" }, 
+    { label: "Support", href: "/support" }
+  ]},
   { label: "Contact Us", href: "/contact-us" },
 ];
 

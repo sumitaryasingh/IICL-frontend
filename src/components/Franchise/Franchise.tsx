@@ -21,20 +21,6 @@ const Franchise: React.FC = () => {
         case 'login':
             headingText = 'Franchise Login';
             break;
-        case 'benefits':
-            headingText = 'Franchise Benefits';
-            break;
-        case 'requirement':
-            headingText = 'Franchise Requirements';
-            break;
-        case 'procedure':
-            headingText = 'Franchise Procedure';
-            break;
-        case 'testimonials':
-            headingText = 'Franchise Testimonials';
-            break;
-        default:
-            headingText = 'Franchise Section'; // Default heading if no match
     }
 
     return (

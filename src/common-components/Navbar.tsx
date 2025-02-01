@@ -12,22 +12,12 @@ interface NavItem {
 const navItems: NavItem[] = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about-us", subItems: [{ label: "Our Mission", href: "/our-mission" }, { label: "Our Team", href: "/our-team" }] },
-  {
-    label: "Online Course", href: "/online-course",
-    subItems: [
-      { label: "Software Courses", href: "/software-courses" },
-      { label: "Hardware Courses", href: "/hardware-courses" },
-      { label: "Programming Courses", href: "/programming-courses" },
-      { label: "Mobile Repairing Courses", href: "/mobile-repairing-courses" },
-      { label: "English Spoken Courses", href: "/english-spoken-courses" }
-    ]
-  },
-  { label: "Programme", href: "/programme", subItems: [{ label: "Programme 1", href: "/programme1" }, { label: "Programme 2", href: "/programme2" }] },
+
+  { label: "Programs", href: "/programme", subItems: [{ label: "Programme 1", href: "/programme1" }, { label: "Programme 2", href: "/programme2" }] },
   {
     label: "Franchise", href: "/franchise",
     subItems: [
       { label: "Franchise Form", href: "/franchise/form" },
-      { label: "Franchise Network", href: "/franchise/network" },
       { label: "Franchise Login", href: "/franchise/login" },
       { label: "Franchise Benefits", href: "/franchise/benefits" },
       { label: "Franchise Requirement", href: "/franchise/requirement" },

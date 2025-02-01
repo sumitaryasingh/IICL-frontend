@@ -8,7 +8,7 @@ const Hero: React.FC = () => {
       <div className="overlay"></div>
 
       <div className="hero-content">
-        <h1 className="hero-heading"><span style={{ color: "white" }}>"Unlock Your Potential with</span> <span className="highlight">IICL Education</span>"</h1>
+        <h1 className="hero-heading"><span style={{ color: "white" }}>"Unlock Your Potential with</span> <span className="highlight">IICL Education"</span></h1>
         <p className="hero-description">
           "At <span className="highlight">IICL Education</span>, we provide cutting-edge computer education to help you build a successful career in technology. Our expert-led courses in programming, web development, and IT solutions are designed to equip you with the skills needed to thrive in today’s digital world. Join us and unlock your full potential."
         </p>

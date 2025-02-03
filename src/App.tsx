@@ -4,7 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import Home from "./components/Home";
+import Home from "./components/Home/Home";
 import AboutUs from "./components/AboutUs";
 import Programme from "./components/Programme";
 import Franchise from "./components/Franchise/Franchise";

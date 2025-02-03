@@ -51,11 +51,11 @@ const FranchiseRequirement: React.FC = () => {
                 </div>
 
                 <p className="staff-note">
-                    <strong>Staff:</strong> The centre head must submit the faculty profiles to FACT (H.O.) for approval before engaging them for course instruction at the authorized center.
+                    <strong>Staff:</strong> The centre head must submit the faculty profiles to IICL (H.O.) for approval before engaging them for course instruction at the authorized center.
                 </p>
 
                 {/* Who can take franchise? */}
-                <h3 className="franchise-heading">Who Can Take a Franchise of <span className="fact">FACT?</span></h3>
+                <h3 className="franchise-heading">Who Can Take a Franchise of <span className="fact">IICL?</span></h3>
                 <ul className="franchise-list">
                     <li>✔ Anyone who is a resident of India.</li>
                     <li>✔ Anyone who has at least 4 computers.</li>
@@ -68,10 +68,10 @@ const FranchiseRequirement: React.FC = () => {
                 {/* FACT Description */}
                 <div className="fact-description">
                     <p>
-                        <strong>FACT</strong> is a leading institution dedicated to empowering job seekers, aspiring entrepreneurs, and those interested in the IT education sector.
+                        <strong>IICL</strong> is a leading institution dedicated to empowering job seekers, aspiring entrepreneurs, and those interested in the IT education sector.
                     </p>
                     <p>
-                        With a streamlined admission process and easy franchise setup, <strong>FACT</strong> enables individuals to establish computer training centers in any village, city, or district across India and start earning from day one.
+                        With a streamlined admission process and easy franchise setup, <strong>IICL</strong> enables individuals to establish computer training centers in any village, city, or district across India and start earning from day one.
                     </p>
                 </div>
             </div>

@@ -1,0 +1,122 @@
+/* Sidebar default styles */
+.sidebar {
+    width: 15rem;
+    height: 100vh;
+    background-color: #00a1a7;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem 0;
+    position: fixed;
+    left: 0;
+    top: 5rem;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  /* Open Sidebar */
+  .sidebar.open {
+    transform: translateX(0);
+  }
+  
+  /* Menu Items */
+  .menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .menuItem {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    padding: 0.8rem 1.5rem;
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 1rem;
+    transition: background 0.3s ease-in-out;
+    border-radius: 0.3rem;
+    cursor: pointer;
+  }
+  
+  .menuItem:hover {
+    background: #005463;
+    color: white !important;
+  }
+  
+  /* Aligning Icons and Text Properly */
+  .menuItem .icon {
+    font-size: 1.3rem;
+    margin-right: 0.8rem;
+    flex-shrink: 0;
+  }
+  
+  .menuItem span {
+    flex-grow: 1;
+    text-align: left;
+  }
+  
+  /* Dropdown Icon */
+  .dropIcon {
+    font-size: 1.5rem;
+    transition: transform 0.3s ease;
+    margin-left: auto;
+  }
+  
+  /* Rotate dropdown icon when active */
+  .dropIcon.rotate {
+    transform: rotate(180deg);
+  }
+  
+  /* Dropdown Menu */
+  .dropdownMenu {
+    list-style: none;
+    /* padding-left: 2.5rem; */
+    background: #004443;
+    margin: 0.2rem 0;
+    border-radius: 0.3rem;
+  }
+  .dropdownMenu li {
+    padding: 0.6rem 1.2rem;
+  }
+  
+  .dropdownMenu li a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+  
+  .dropdownMenu li:hover {
+    background: #004e4f;
+  }
+  
+  /* Logout Styling */
+  .logout {
+    margin-top: auto;
+  }
+  
+  /* Mobile Sidebar Toggle */
+  .hamburger {
+    position: fixed;
+    top: 1.4rem;
+    left: 0.5rem;
+    font-size: 1.5rem;
+    color: white;
+    cursor: pointer;
+    z-index: 1000;
+    background: #00a1a7;
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.3rem;
+  }
+  
+  /* Show sidebar on larger screens */
+  @media (min-width:769px) {
+    .sidebar {
+      transform: translateX(0);
+    }
+  
+    .hamburger {
+      display: none;
+    }
+  }
+  

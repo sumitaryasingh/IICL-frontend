@@ -169,67 +169,228 @@ body {
 
 
 
-  /* About Section Styling */
+  /* About Section */
 .about-section {
-    padding: 40px 20px;
-    background-color: #f7fafc; /* Light background */
-    text-align: center;
-  }
-  
-  .container {
-    max-width: 100%;
-    margin: 0 auto;
-  }
-  
-  .section-title {
-    font-size: 2rem;
-    margin-bottom: 30px;
-    font-weight: bold;
-    color: #2d3748;
-  }
-  
+  padding: 50px 20px;
+  background: #5345454e;
+  text-align: center;
+}
+
+.section-title {
+  font-size: 2rem;
+  margin-bottom: 30px;
+  color: #222;
+}
+
+/* Cards Grid */
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Individual Card */
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+  text-align: center;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card-icon {
+  font-size: 50px;
+  color: #ffcc00;
+  margin-bottom: 15px;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  color: #222;
+  margin-bottom: 10px;
+}
+
+.card-description {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+/* Hide extra cards on mobile */
+@media (max-width: 768px) {
   .cards-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(2, 1fr); /* 2 columns in mobile */
   }
-  
-  .card {
-    background-color: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
+
+  /* Hide additional cards by default */
+  .card:nth-child(n+5) {
+    display: block;
   }
-  
-  .card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+
+  .show-more-btn {
+    background: #ffcc00;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
   }
-  
-  .card-icon {
-    width: 50px;
-    height: 50px;
-    margin-bottom: 15px;
+
+  .show-more-btn:hover {
+    background: #e6b800;
   }
-  
-  .card-title {
-    font-size: 1.25rem;
-    font-weight: bold;
-    color: #4a5568;
-    margin-bottom: 10px;
+
+  /* Show more/less button */
+  .show-more {
+    margin-top: 20px;
   }
-  
-  .card-description {
-    font-size: 1rem;
-    color: #718096;
-    line-height: 1.5;
+}
+
+/* For smaller screens (mobile) */
+@media (max-width: 480px) {
+  .cards-container {
+    grid-template-columns: 1fr; /* 1 column on very small screens */
   }
-  
-  @media (max-width: 768px) {
-    .section-title {
-      font-size: 1.5rem;
-    }
+
+  .show-more-btn {
+    width: 100%;
   }
-  
+}
+
+
+
+
+
+
+
+
+
+/*  */
+
+.partners-section {
+  padding: 20px;
+  text-align: center;
+}
+
+.partners-title {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.partners-container {
+  overflow: hidden; /* Hide any overflowing content */
+}
+
+.partners-marquee {
+  display: flex;
+  animation: marquee 20s linear infinite; /* Move the logos continuously */
+}
+
+.partner-logo {
+  margin: 0 30px; /* Add some spacing between logos */
+  display: inline-block;
+  width: 120px;
+  height: auto;
+}
+
+.partner-logo img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Marquee animation */
+@keyframes marquee {
+  0% {
+    transform: translateX(100%); /* Start from the right */
+  }
+  100% {
+    transform: translateX(-100%); /* Move to the left */
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+/* MarqueeSection.css */
+.marquee-section {
+  padding: 20px;
+  background-color: #f4f4f4;
+}
+
+.marquee-title {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.marquee-card {
+  display: inline-block;
+  width: 200px;
+  margin: 0 10px;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.marquee-card-1 {
+  background-color: #e0f7fa;
+}
+
+.marquee-card-2 {
+  background-color: #f1f8e9;
+}
+
+.marquee-card-3 {
+  background-color: #fff3e0;
+}
+
+.marquee-card-4 {
+  background-color: #fce4ec;
+}
+
+.marquee-card-5 {
+  background-color: #e8f5e9;
+}
+
+.marquee-card-6 {
+  background-color: #f3e5f5;
+}
+
+.card-link {
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.card-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.card-title {
+  font-size: 18px;
+  margin: 10px 0;
+}
+
+.card-description {
+  font-size: 14px;
+  color: #555;
+}

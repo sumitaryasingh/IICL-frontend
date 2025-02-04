@@ -1,0 +1,35 @@
+.student-details-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.student-info {
+    margin-bottom: 15px;
+    padding: 10px;
+    background: #ecf0f1;
+    border-radius: 5px;
+}
+
+.student-info h3 {
+    color: #2c3e50;
+}
+
+.print-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.print-btn:hover {
+    background: #2980b9;
+}

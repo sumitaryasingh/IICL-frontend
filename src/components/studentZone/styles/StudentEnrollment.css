@@ -1,0 +1,35 @@
+.enrollment-container {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 20px;
+    text-align: center;
+    background: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.enrollment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.enrollment-input {
+    padding: 10px;
+    border: 2px solid #27ae60;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.submit-btn {
+    padding: 10px;
+    background: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.submit-btn:hover {
+    background: #219150;
+}

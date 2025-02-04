@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import programmeData from "../../src/api/programmeData.json"; 
+import programmeData from "../../src/api/programmeData.json";
 import "./Navbar.css";
 
 interface NavItem {
   label: string;
   href: string;
-  subItems?: { label: string; href: string }[];
+  subItems?: { label: string; href: string; external?: boolean }[];
 }
 
 const navItems: NavItem[] = [
@@ -46,19 +46,22 @@ const Navbar: React.FC = () => {
     setActiveDropdown(activeDropdown === index ? null : index);
   };
 
+  const handleMouseEnter = (index: number) => setActiveDropdown(index);
+  const handleMouseLeave = () => setActiveDropdown(null);
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
         {/* Logo */}
         {/* <div className="logo" onClick={() => navigate("/")}>IICL Education</div> */}
         <div className="logo-box">
-        <div className="logo">
+          <div className="logo">
             <span>I</span>
             <span>I</span>
             <span>C</span>
             <span>L</span>
-        </div>
-        <div className="sub-text">Education</div>
+          </div>
+          <div className="sub-text">Education</div>
         </div>
 
         {/* Mobile Menu Toggle */}
@@ -72,8 +75,8 @@ const Navbar: React.FC = () => {
         <ul className={`nav-links ${isMenuOpen ? "active" : ""}`}>
           {navItems.map((item, index) => (
             <li key={index} className="nav-item">
-              <div 
-                className="nav-link" 
+              <div
+                className="nav-link"
                 onClick={() => item.subItems ? handleDropdownToggle(index) : navigate(item.href)}
               >
                 {item.label}
@@ -81,8 +84,14 @@ const Navbar: React.FC = () => {
               {item.subItems && (
                 <ul className={`dropdown ${activeDropdown === index ? "show" : ""}`}>
                   {item.subItems.map((subItem, subIndex) => (
-                    <li key={subIndex} onClick={() => navigate(subItem.href)}>
-                      {subItem.label}
+                    <li key={subIndex}>
+                      {subItem.external ? (
+                        <a style={{ color: "inherit" }} href={subItem.href} target="_blank" rel="noopener noreferrer">
+                          {subItem.label}
+                        </a>
+                      ) : (
+                        <div onClick={() => navigate(subItem.href)}>{subItem.label}</div>
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -92,7 +101,7 @@ const Navbar: React.FC = () => {
         </ul>
 
         {/* Authentication Buttons */}
-       
+
       </div>
     </nav>
   );

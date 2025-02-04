@@ -15,7 +15,7 @@ h1 {
     padding-bottom: 5px;
 }
 
-h1::after {
+.program-container h1::after {
     content: "";
     display: block;
     width: 80px;
@@ -24,6 +24,7 @@ h1::after {
     margin: 8px auto 8px;
     border-radius: 2px;
 }
+
 
 /* Program Box */
 .programItems {

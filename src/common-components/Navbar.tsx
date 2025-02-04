@@ -11,9 +11,9 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { label: "Home", href: "/" },
-  { label: "About Us", href: "/about-us", subItems: [{ label: "Our Mission", href: "/our-mission" }, { label: "Our Team", href: "/our-team" }] },
+  { label: "About Us", href: "/about-us" },
   {
-    label: "Programme", href: "#",  subItems: programmeData.map((category) => ({
+    label: "Programs", href: "#",  subItems: programmeData.map((category) => ({
       label: category.type,
       href: `/programs/${encodeURIComponent(category.type)}`, // Dynamically link to each course type
     }))
@@ -21,7 +21,7 @@ const navItems: NavItem[] = [
 
   { label: "Franchise", href: "/franchise", subItems: [
     { label: "Franchise Form", href: "/franchise/form" },
-    { label: "Franchise Network", href: "/franchise/network" },
+    // { label: "Franchise Network", href: "/franchise/network" },
     { label: "Franchise Login", href: "/franchise/login" },
     { label: "Franchise Benefits", href: "/franchise/benefits" },
     { label: "Franchise Requirement", href: "/franchise/requirement" },

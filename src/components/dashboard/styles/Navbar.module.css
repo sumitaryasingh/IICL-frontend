@@ -1,0 +1,60 @@
+/* Navbar styles */
+.navbar {
+    height: 5rem;
+    width: 100%;
+    background: #005463;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+  }
+  
+  /* Dashboard logo */
+  .logo {
+    font-size: 1.3rem;
+    font-weight: bold;
+  }
+  .logo:hover{
+    color: white !important;
+  }
+  
+  /* Right-side icons */
+  .navItems {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+  }
+  
+  .icon {
+    font-size: 1.3rem;
+    margin: 0 0.5rem;
+    cursor: pointer;
+  }
+  
+  .logout {
+    background: rgb(255, 0, 0);
+    color: white;
+    border: none;
+    padding: 0.5rem ;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .logout:hover {
+    background: rgb(222, 0, 0);
+  }
+  
+  @media (max-width:768px) {
+    .logo{
+        margin-left:2.5rem;
+    }
+  }

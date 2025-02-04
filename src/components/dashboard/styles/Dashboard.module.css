@@ -1,0 +1,23 @@
+.dashboardContainer {
+    display: flex;
+  }
+  
+  .mainContent {
+    width: 100%;
+    margin:2rem auto; /* Sidebar width */
+  }
+  
+  /* Adjust for mobile screens */
+  @media (max-width: 768px) {
+    .mainContent {
+      margin:2rem auto ;
+    }
+    
+  }
+  
+  /* Page content below navbar */
+  .pageContent {
+    padding: 5rem 2.5rem 2.5rem; /*Extra padding to avoid navbar overlap*/
+
+  }
+  

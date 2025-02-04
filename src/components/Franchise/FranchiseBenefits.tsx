@@ -27,7 +27,7 @@ const benefitsList = [
     "Centre Start-up Kit.",
     "Advertisement through Internet, National & Local Newspaper.",
     "Easy & Fast Delivery of ID Card, Diploma & Certificates.",
-    "National & International Certification of Courses under FACT Brand Name.",
+    "National & International Certification of Courses under IICL Brand Name.",
     "Study Material availability at any time.",
     "Own study materials developed by our expert tutor.",
 ];

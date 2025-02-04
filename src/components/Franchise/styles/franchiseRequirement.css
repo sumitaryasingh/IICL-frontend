@@ -1,0 +1,126 @@
+/* Container */
+.requirement-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    background: linear-gradient(135deg, #fffde7, #e8f5e9);
+    border-radius: 12px;
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.1);
+    border: 2px solid #fdd835;
+}
+
+/* Headings */
+.requirement-heading {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #33691e;
+    text-transform: uppercase;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #ffeb3b;
+}
+
+.table-heading {
+    font-size: 18px;
+    color: #ff8f00;
+    text-align: left;
+    margin-bottom: 10px;
+    font-weight: 600;
+    border-bottom: 2px solid #ffca28;
+    padding-bottom: 5px;
+}
+
+/* Tables */
+.requirement-table, .staff-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+}
+
+.requirement-table th, .staff-table th {
+    background: #ffeb3b;
+    color: #37474f;
+    padding: 10px;
+    font-size: 16px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.requirement-table td, .staff-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.requirement-table tr:nth-child(even), .staff-table tr:nth-child(even) {
+    background: #f1f8e9;
+}
+
+/* Staff Note */
+.staff-note {
+    font-size: 14px;
+    margin: 15px 0;
+    background: #fff9c4;
+    padding: 12px;
+    border-left: 4px solid #fbc02d;
+    border-radius: 6px;
+    color: #455a64;
+}
+
+/* Franchise Eligibility */
+.franchise-heading {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 30px;
+    padding: 10px;
+    background: linear-gradient(135deg, #ffb300, #ffea00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Franchise List */
+.franchise-list {
+    background: #f1f8e9;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 14px;
+    list-style: none;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
+}
+
+.franchise-list li {
+    padding: 8px;
+    font-weight: 500;
+    color: #2e7d32;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+}
+
+.franchise-list li::before {
+    content: "✔";
+    color: #2e7d32;
+    font-size: 16px;
+    margin-right: 8px;
+}
+
+/* FACT Description */
+.fact-description {
+    font-size: 14px;
+    color: #263238;
+    background: #fff3e0;
+    padding: 15px;
+    border-left: 4px solid #ffa000;
+    border-radius: 8px;
+    line-height: 1.6;
+    margin-top: 15px;
+    font-weight: 500;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}

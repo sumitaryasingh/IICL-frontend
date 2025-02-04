@@ -1,0 +1,57 @@
+.franchise-benefits-container {
+    min-width: 40%;
+    max-width: 80%;
+    margin: 40px auto;
+    padding: 30px;
+    background: linear-gradient(135deg, #e3ffe7 0%, #d9e7ff 100%);
+    border-radius: 12px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.benefits-heading {
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+/* Grid layout for two columns */
+.benefits-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.benefits-column {
+    list-style: none;
+    padding: 0;
+}
+
+.benefit-item {
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    padding: 12px 18px;
+    margin: 8px 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+.benefit-item:hover {
+    transform: scale(1.2);
+}
+
+.check-icon {
+    color: #27ae60;
+    margin-right: 12px;
+    font-size: 18px;
+}
+
+/* Responsive for smaller screens */
+@media (max-width: 768px) {
+    .benefits-grid {
+        grid-template-columns: 1fr;
+    }
+}

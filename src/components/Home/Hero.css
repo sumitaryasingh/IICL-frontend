@@ -1,0 +1,157 @@
+.hero-container {
+  position: relative;
+  height: 100vh;
+  background: url('./images/hero.jpg') no-repeat center center/cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  transition: background 0.8s ease-in-out;
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* Add Blur Effect */
+.hero-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url('./images/hero.jpg') no-repeat center center/cover;
+  filter: blur(8px);
+  z-index: -1;
+  transition: filter 0.8s ease-in-out;
+}
+
+.hero-container:hover::before {
+  filter: blur(4px);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.5));
+}
+
+.hero-content {
+  position: relative;
+  color: white;
+  max-width: 600px;
+  padding: 1.5rem;
+  text-align: center;
+  animation: slideIn 1s ease-in-out;
+}
+
+.hero-heading {
+  font-size: 3rem;
+  font-weight: bold;
+  line-height: 1.25;
+  color: antiquewhite;
+}
+
+.hero-description {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+}
+
+.highlight {
+  color: #00e676; /* Vibrant Green */
+}
+
+.hero-buttons {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+/* Buttons */
+.explore-button, .enroll-button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.explore-button {
+  background: linear-gradient(90deg, #00c853, #00e676);
+  color: white;
+  border: none;
+}
+
+.explore-button:hover {
+  background: linear-gradient(90deg, #00e676, #00c853);
+}
+
+.enroll-button {
+  background: transparent;
+  border: 2px solid white;
+  color: white;
+}
+
+.enroll-button:hover {
+  background: white;
+  color: #00c853;
+}
+
+/* Play Button */
+.play-button {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  background: rgba(0, 255, 120, 0.8);
+  padding: 1rem;
+  border-radius: 50%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.play-button:hover {
+  background: rgba(0, 255, 120, 1);
+  transform: scale(1.1);
+}
+
+.play-icon {
+  height: 2rem;
+  width: 2rem;
+  color: white;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero-heading {
+    font-size: 2.5rem;
+  }
+
+  .hero-description {
+    font-size: 1rem;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+  }
+
+
+}

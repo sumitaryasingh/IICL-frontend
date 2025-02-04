@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import programmeData from "../../src/api/programmeData.json"; // Assuming the course data is here
+import programmeData from "../../src/api/programmeData.json";
 import "./Navbar.css";
 
 interface NavItem {
@@ -19,16 +19,16 @@ const navItems: NavItem[] = [
     ]
   },
   {
-    label: "Programme", href: "#",
-    subItems: programmeData.map((category) => ({
+    label: "Programme", href: "#", subItems: programmeData.map((category) => ({
       label: category.type,
-      href: `/programs/${encodeURIComponent(category.type)}`, // Dynamically link to each course type
+      href: `/programs/${encodeURIComponent(category.type)}`,
     }))
   },
+
   {
-    label: "Franchise", href: "/franchise/login",
-    subItems: [
+    label: "Franchise", href: "/franchise", subItems: [
       { label: "Franchise Form", href: "/franchise/form" },
+      { label: "Franchise Network", href: "/franchise/network" },
       { label: "Franchise Login", href: "/franchise/login" },
       { label: "Franchise Benefits", href: "/franchise/benefits" },
       { label: "Franchise Requirement", href: "/franchise/requirement" },
@@ -37,11 +37,9 @@ const navItems: NavItem[] = [
     ]
   },
   {
-    label: "Student Zone", href: "/student-zone",
-    subItems: [
-      { label: "Enrollment", href: "/student/enrollment" },
-      { label: "I-Card", href: "/student/icard" },
-      { label: "Prospectus", href: "https://drive.google.com/file/d/1gkPSy3dM0I93YTn4dn2vvkZmzQ3b81yr/view?usp=sharing", external: true }
+    label: "Student Zone", href: "/student-zone", subItems: [
+      { label: "Resources", href: "/resources" },
+      { label: "Support", href: "/support" }
     ]
   },
   { label: "Contact Us", href: "/contact-us" },
@@ -53,6 +51,11 @@ const Navbar: React.FC = () => {
   const navigate = useNavigate();
 
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
+
+  const handleDropdownToggle = (index: number) => {
+    setActiveDropdown(activeDropdown === index ? null : index);
+  };
+
   const handleMouseEnter = (index: number) => setActiveDropdown(index);
   const handleMouseLeave = () => setActiveDropdown(null);
 
@@ -60,25 +63,34 @@ const Navbar: React.FC = () => {
     <nav className="navbar">
       <div className="navbar-container">
         {/* Logo */}
-        <div className="logo" onClick={() => navigate("/")}>IICL Education</div>
+        {/* <div className="logo" onClick={() => navigate("/")}>IICL Education</div> */}
+        <div className="logo-box">
+          <div className="logo">
+            <span>I</span>
+            <span>I</span>
+            <span>C</span>
+            <span>L</span>
+          </div>
+          <div className="sub-text">Education</div>
+        </div>
 
         {/* Mobile Menu Toggle */}
-        <button className="menu-toggle" onClick={toggleMenu} aria-label="Toggle menu">
-          <span className={`bar ${isMenuOpen ? "open" : ""}`} />
-          <span className={`bar ${isMenuOpen ? "open" : ""}`} />
-          <span className={`bar ${isMenuOpen ? "open" : ""}`} />
+        <button className={`menu-toggle ${isMenuOpen ? "open" : ""}`} onClick={toggleMenu} aria-label="Toggle menu">
+          <span className="bar"></span>
+          <span className="bar"></span>
+          <span className="bar"></span>
         </button>
 
         {/* Navigation Links */}
         <ul className={`nav-links ${isMenuOpen ? "active" : ""}`}>
           {navItems.map((item, index) => (
-            <li
-              key={index}
-              className="nav-item"
-              onMouseEnter={() => handleMouseEnter(index)}
-              onMouseLeave={handleMouseLeave}
-            >
-              <div onClick={() => navigate(item.href)}>{item.label}</div>
+            <li key={index} className="nav-item">
+              <div
+                className="nav-link"
+                onClick={() => item.subItems ? handleDropdownToggle(index) : navigate(item.href)}
+              >
+                {item.label}
+              </div>
               {item.subItems && (
                 <ul className={`dropdown ${activeDropdown === index ? "show" : ""}`}>
                   {item.subItems.map((subItem, subIndex) => (
@@ -99,10 +111,7 @@ const Navbar: React.FC = () => {
         </ul>
 
         {/* Authentication Buttons */}
-        <div className="auth-buttons">
-          <button className="login-button" onClick={() => navigate("/login")}>Log In</button>
-          <button className="register-button" onClick={() => navigate("/register")}>Register</button>
-        </div>
+
       </div>
     </nav>
   );

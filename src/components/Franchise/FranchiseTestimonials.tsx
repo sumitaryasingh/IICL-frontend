@@ -6,7 +6,7 @@ const testimonials = [
         id: 1,
         name: "John Doe",
         title: "Franchisee, New York",
-        content: "Partnering with FACT was the best decision! Their support helped me grow my business effortlessly.",
+        content: "Partnering with IICL was the best decision! Their support helped me grow my business effortlessly.",
     },
     {
         id: 2,
@@ -18,13 +18,13 @@ const testimonials = [
         id: 3,
         name: "Raj Patel",
         title: "Franchisee, India",
-        content: "FACT made the whole process easy, and their marketing support is top-notch!",
+        content: "IICL made the whole process easy, and their marketing support is top-notch!",
     },
     {
         id: 4,
         name: "Emma Wilson",
         title: "Franchisee, Canada",
-        content: "Highly recommend FACT for anyone looking to start their own education business!",
+        content: "Highly recommend IICL for anyone looking to start their own education business!",
     },
     {
         id: 5,
@@ -36,19 +36,19 @@ const testimonials = [
         id: 6,
         name: "John Doe",
         title: "Franchisee, New York",
-        content: "Partnering with FACT was the best decision! Their support helped me grow my business effortlessly.",
+        content: "Partnering with IICL was the best decision! Their support helped me grow my business effortlessly.",
     },
     {
         id: 7,
         name: "Emma Wilson",
         title: "Franchisee, Canada",
-        content: "Highly recommend FACT for anyone looking to start their own education business!",
+        content: "Highly recommend IICL for anyone looking to start their own education business!",
     },
     {
         id: 8,
         name: "Raj Patel",
         title: "Franchisee, India",
-        content: "FACT made the whole process easy, and their marketing support is top-notch!",
+        content: "IICL made the whole process easy, and their marketing support is top-notch!",
     },
 ];
 

@@ -35,7 +35,7 @@ const FranchiseProcedure: React.FC = () => {
                     {activeIndex === 1 && (
                         <div className="accordion-content active">
                             <p><strong style={{ color: "#ff7c01" }}>Any Person/Institute/Society/Trust/Organization</strong> can open a Study Center without any franchise charges.</p>
-                            <p>Apply Franchisee Application Form online or offline with complete details of Applicant, premises, available hardware, plans for business development or Email Your BIO-DATA and Infrastructure of the proposed Learning center to <strong>info@facteducation.in</strong>.</p>
+                            <p>Apply Franchisee Application Form online or offline with complete details of Applicant, premises, available hardware, plans for business development or Email Your BIO-DATA and Infrastructure of the proposed Learning center to <strong>info@IICLeducation.in</strong>.</p>
                         </div>
                     )}
                 </div>
@@ -58,7 +58,7 @@ const FranchiseProcedure: React.FC = () => {
                     </button>
                     {activeIndex === 2 && (
                         <div className="accordion-content active">
-                            <p><strong style={{ color: "#ff7c01" }}>After receiving confirmation from the FACT H.O.,</strong> send the franchisee form along with all required documents filled and DD payable at Ranchi, issued in favor of Forum for Advanced Computer Technology.</p>
+                            <p><strong style={{ color: "#ff7c01" }}>After receiving confirmation from the IICL H.O.,</strong> send the franchisee form along with all required documents filled and DD payable at Ranchi, issued in favor of Forum for Advanced Computer Technology.</p>
                             <p>Fax/email the confirmation form and copy of DD to H.O. to get the Centre Authorization Certificate Sample and Other Materials Sample for your proposed center.</p>
                         </div>
                     )}
@@ -96,9 +96,9 @@ const FranchiseProcedure: React.FC = () => {
                             </ul>
                             <p>Authorization will be given after receiving the complete documents.</p>
                             <p>Photograph of centre inner & outward area & mapping to reach the institute from Railway / Bus Stand (After starting the Center).</p>
-                            <p>After signing the agreement and completion of documentation process, the entire Technical and Marketing support required for establishing the training center will be provided by FACT Education which will include set of the following as per rules but cost of local advertisement and marketing is borne by franchisee.</p>
+                            <p>After signing the agreement and completion of documentation process, the entire Technical and Marketing support required for establishing the training center will be provided by IICL Education which will include set of the following as per rules but cost of local advertisement and marketing is borne by franchisee.</p>
                             <div className="marketing-section">
-                                <h4>FACT will provide the following advertising materials Design:</h4>
+                                <h4>IICL will provide the following advertising materials Design:</h4>
                                 <ul>
                                     <li>Flex</li>
                                     <li>Brochure</li>
@@ -112,7 +112,7 @@ const FranchiseProcedure: React.FC = () => {
                                     <li>Sales Promotional Material Formats for Newspapers, Matter for Cable advertisements.</li>
                                     <li>Set of student exercises for most of the courses.</li>
                                     <li>Job opportunities to Diploma holders in different parts of India with the help of Internet & corporate sector & Placement agency.</li>
-                                    <li>Global Advertising and Marketing on FACT website.</li>
+                                    <li>Global Advertising and Marketing on IICL website.</li>
                                 </ul>
                             </div>
                         </div>

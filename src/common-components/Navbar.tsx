@@ -84,7 +84,16 @@ const Navbar: React.FC = () => {
     <nav className="navbar">
       <div className="navbar-container">
         {/* Logo */}
-        <div className="logo" onClick={() => navigate("/")}>IICL Education</div>
+        {/* <div className="logo" onClick={() => navigate("/")}>IICL Education</div> */}
+        <div className="logo-box">
+        <div className="logo">
+            <span>I</span>
+            <span>I</span>
+            <span>C</span>
+            <span>L</span>
+        </div>
+        <div className="sub-text">Education</div>
+        </div>
 
         {/* Mobile Menu Toggle */}
         <button className={`menu-toggle ${isMenuOpen ? "open" : ""}`} onClick={toggleMenu} aria-label="Toggle menu">

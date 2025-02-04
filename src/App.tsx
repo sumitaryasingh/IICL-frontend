@@ -10,7 +10,7 @@ import Programme from "./components/programs/Programs";
 import ProgrammeList from "./components/programs/ProgrammeList";
 import Franchise from "./components/Franchise/Franchise";
 import FranchiseForm from "./components/Franchise/FranchiseForm";
-import FranchiseNetwork from "./components/Franchise/FranchiseNetwork";
+// import FranchiseNetwork from "./components/Franchise/FranchiseNetwork";
 import FranchiseLogin from "./components/Franchise/FranchiseLogin";
 import FranchiseBenefits from "./components/Franchise/FranchiseBenefits";
 import FranchiseRequirement from "./components/Franchise/FranchiseRequirement";
@@ -31,7 +31,7 @@ const App: React.FC = () => {
         {/* Franchise Parent Route */}
         <Route path="/franchise" element={<Franchise />}>
           <Route path="form" element={<FranchiseForm />} />
-          <Route path="network" element={<FranchiseNetwork />} />
+          {/* <Route path="network" element={<FranchiseNetwork />} /> */}
           <Route path="login" element={<FranchiseLogin />} />
           <Route path="benefits" element={<FranchiseBenefits />} />
           <Route path="requirement" element={<FranchiseRequirement />} />

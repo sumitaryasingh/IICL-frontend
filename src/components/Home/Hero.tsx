@@ -13,7 +13,7 @@ const Hero: React.FC = () => {
           <span className="highlight">IICL Education</span>"
         </h1>
         <p className="hero-description">
-          "At <span className="highlight">IICL Education</span>, we provide
+          "At <span className="highligh">IICL Education</span>, we provide
           cutting-edge computer education to help you build a successful career
           in technology. Our expert-led courses in programming, web development,
           and IT solutions are designed to equip you with the skills needed to

@@ -34,7 +34,7 @@ h1 {
     margin-bottom: 0.5rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border-left: 10px solid #ebb624;
+    border-left: 10px solid rgb(0,0,139);
     border-top-right-radius: 15px;
     border-bottom-right-radius: 15px;
 
@@ -73,13 +73,14 @@ h3 {
     color: #555;
     background: #ffffff;
     padding: 0.8rem;
-    border-left: 4px solid #ebb624;
+    border-left: 4px solid rgb(0,0,139);
 }
 
 /* Program List Container */
 .program-list-container {
     text-align: center;
     margin: 20px;
+    /* margin-top: 10rem; */
 }
 
 /* Program Link Styling */
@@ -90,7 +91,7 @@ h3 {
     font-weight: 500;
     color: #333;
     text-decoration: none;
-    border: 1px solid #ebb624;
+    border: 1px solid #b0a100;
     border-radius: 5px;
     margin: 6px auto;
     width: 250px;
@@ -98,33 +99,35 @@ h3 {
 }
 
 .program-link:hover {
-    background: #ebb624;
+    background: #b0a100;
     color: white;
 }
 
 /* Course Links - Flexbox Container */
 .course-links {
     display: flex;
-    gap: 1rem;
+    flex-wrap: wrap;
+    gap: 0.6rem;
     justify-content: center;
-    margin: 1rem 0;
+    margin: 2rem 0 ;
 }
 
 /* Individual Course Link */
 .course-link {
+    width: 30rem;
     text-decoration: none;
     padding: 0.5rem 1rem;
     background: #ffffff;
     color: rgb(0, 0, 0);
-    border: 1px solid #ebb624;
+    border: 1px solid #b0a100;
     border-radius: 5px;
     font-weight: bold;
     transition: 0.3s ease-in-out;
 }
 
 .course-link:hover {
-    background: #ebb624;
-    color: white;
+    background: #ccbb00cb;
+    color: rgb(0,0,139);
 }
 
 /* Responsive Design */

@@ -1537,6 +1537,25 @@
             "subjects": []
           }
     ]
+},
+{
+  "type":"NTT Yoga Teacher Training Courses",
+  "courses":[
+    {
+      "id":"1",
+      "title":"Advance Diploma in Nursery Teacher Training (ADNTT)",
+      "duration":"12 MONTHS",
+      "subjects":[]
+    },
+    {
+      "id":"2",
+      "title":"Diploma in Yoga Training",
+      "duration":"12 MONTHS",
+      "subjects":[
+        "YOGA"
+      ]
+    }
+  ]
 }
 ]
     

@@ -10,7 +10,7 @@ const FranchiseProcedure: React.FC = () => {
 
     return (
         <div className="procedure-container">
-            <div className="content">
+            <div className="contents">
                 <h1 className="procedure-heading">Franchise Procedure</h1>
                 <p className="step-description">
                     Learn about the step-by-step process of acquiring a franchise. Click each step to view more details.

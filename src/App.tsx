@@ -17,11 +17,10 @@ import FranchiseBenefits from "./components/Franchise/FranchiseBenefits";
 import FranchiseRequirement from "./components/Franchise/FranchiseRequirement";
 import FranchiseProcedure from "./components/Franchise/FranchiseProcedure";
 import FranchiseTestimonials from "./components/Franchise/FranchiseTestimonials";
-import Student from "./components/studentZone/student";
-// import StudentZone from "./components/StudentZone/StudentEnrollment";
+import Student from "./components/studentZone/StudentZone";
 import StudentEnrollment from "./components/studentZone/StudentEnrollment";
 import StudentDetails from "./components/studentZone/StudentDetails";
-// import ICard from "./components/StudentZone/ICard";
+import Gallery from "./components/Gallery";
 
 import ContactUs from "./components/ContactUs";
 import DashboardIndex from "./components/dashboard/DashboardIndex";
@@ -33,6 +32,7 @@ const App: React.FC = () => {
 
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/gallery" element={<Gallery/>}/>
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/programs" element={<ProgrammeList />} />
         <Route path="/programs/:type" element={<Programme />} />
@@ -65,6 +65,8 @@ const App: React.FC = () => {
           <Route path="/student/details/:encodedEnrollment" element={<StudentDetails />} />
           <Route path="icard" element={<FranchiseTestimonials />} />
         </Route>
+
+        <Route path="/contact-us" element={<ContactUs/>} />
       </Routes>
     </div>
   );

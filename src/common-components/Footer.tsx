@@ -1,5 +1,6 @@
 import React from "react";
 import "./Footer.css";
+import { Link } from "react-router-dom";
 
 const Footer: React.FC = () => {
   return (
@@ -7,9 +8,9 @@ const Footer: React.FC = () => {
       <div className="footer-container">
         {/* Left Section: Logo & About */}
         <div className="footer-section about">
-          <img src="/images/iicl-iconT.png" alt="Company Logo" className="footer-logo" />
+          <img src="/images/iicl-icon.png" alt="Company Logo" className="footer-logo" />
           <h2>
-            IICL Education
+            {/* IICL Education */}
           </h2>
           <p className="about-text">
             Our Company is a leading provider of quality services, dedicated to innovation and excellence in the industry.
@@ -24,7 +25,7 @@ const Footer: React.FC = () => {
             <li><a href="#">Privacy Policy</a></li>
             <li><a href="#">About Us</a></li>
             <li><a href="#">Contact Us</a></li>
-            <li><a href="#">Center Login</a></li>
+            <li> <Link to={"/franchise/login"}> Center Login </Link></li>
           </ul>
         </div>
 

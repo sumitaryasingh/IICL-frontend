@@ -28,7 +28,8 @@
 .overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.5));
+  backdrop-filter: blur(1px);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(18, 18, 18, 0.6));
 }
 
 .hero-content {
@@ -44,7 +45,7 @@
   font-size: 3rem;
   font-weight: bold;
   line-height: 1.25;
-  color: antiquewhite;
+  color: rgb(249, 249, 249);
 }
 
 .hero-description {
@@ -53,7 +54,7 @@
 }
 
 .highlight {
-  color: #00e676; /* Vibrant Green */
+  color: rgb(0, 0, 199) !important; /* Vibrant Green */
 }
 
 .hero-buttons {
@@ -74,13 +75,13 @@
 }
 
 .explore-button {
-  background: linear-gradient(90deg, #00c853, #00e676);
+  background: linear-gradient(45deg, rgb(0,0,139), rgb(0, 0, 182));
   color: white;
   border: none;
 }
 
 .explore-button:hover {
-  background: linear-gradient(90deg, #00e676, #00c853);
+  background: linear-gradient(45deg, rgb(0, 0, 182),rgb(0,0,139));
 }
 
 .enroll-button {
@@ -91,7 +92,7 @@
 
 .enroll-button:hover {
   background: white;
-  color: #00c853;
+  color: rgb(0,0,139);
 }
 
 /* Play Button */

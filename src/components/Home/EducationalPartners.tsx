@@ -11,45 +11,45 @@ interface Partner {
 
 const partners: Partner[] = [
   {
-    name: "Harvard University",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Harvard_University_coat_of_arms.svg/225px-Harvard_University_coat_of_arms.svg.png",
-    url: "https://www.harvard.edu/"
+    name: "ISO Certified 9001:2015",
+    logo: "../images/isoLogo.gif",
+    url: "#"
   },
   {
-    name: "MIT",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/MIT_logo.svg/225px-MIT_logo.svg.png",
-    url: "https://www.mit.edu/"
+    name: "IAF Certified",
+    logo: "../images/iafLogo.svg",
+    url: "#"
   },
   {
-    name: "Stanford University",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Seal_of_Leland_Stanford_Junior_University.svg/225px-Seal_of_Leland_Stanford_Junior_University.svg.png",
-    url: "https://www.stanford.edu/"
+    name: "MSME Certified",
+    logo: "../images/MSME_Logo.svg",
+    url: "#"
   },
   {
-    name: "Oxford University",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/University_of_Oxford.svg/375px-University_of_Oxford.svg.png",
-    url: "https://www.ox.ac.uk/"
+    name: "NITI Ayog Certified",
+    logo: "../images/nitiLogo.jpg",
+    url: "#"
   },
   {
-    name: "Cambridge University",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Coat_of_Arms_of_the_University_of_Cambridge.svg/225px-Coat_of_Arms_of_the_University_of_Cambridge.svg.png",
-    url: "https://www.cam.ac.uk/"
-  },
-  {
-    name: "Yale University",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Yale_University_Shield_1.svg/225px-Yale_University_Shield_1.svg.png",
-    url: "https://www.yale.edu/"
-  },
-  {
-    name: "Princeton University",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Princeton_seal.svg/210px-Princeton_seal.svg.png",
-    url: "https://www.princeton.edu/"
-  },
-  {
-    name: "Columbia University",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Columbia_coat_of_arms_no_crest.svg/270px-Columbia_coat_of_arms_no_crest.svg.png",
-    url: "https://www.columbia.edu/"
+    name: "QRO Certified",
+    logo: "../images/qroLogo.png",
+    url: "#"
   }
+  // {
+  //   name: "Yale University",
+  //   logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Yale_University_Shield_1.svg/225px-Yale_University_Shield_1.svg.png",
+  //   url: "https://www.yale.edu/"
+  // },
+  // {
+  //   name: "Princeton University",
+  //   logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Princeton_seal.svg/210px-Princeton_seal.svg.png",
+  //   url: "https://www.princeton.edu/"
+  // },
+  // {
+  //   name: "Columbia University",
+  //   logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Columbia_coat_of_arms_no_crest.svg/270px-Columbia_coat_of_arms_no_crest.svg.png",
+  //   url: "https://www.columbia.edu/"
+  // }
 ];
 
 
@@ -57,7 +57,7 @@ const partners: Partner[] = [
 const EducationalPartners: React.FC = () => {
   return (
     <section className="partners-section">
-      <h2 className="partners-title">Our Educational Partners</h2>
+      <h2 className="partners-title">Our Tieups and Achievements</h2>
       <div className="partners-container">
         <div className="partners-marquee">
           {partners.map((partner) => (

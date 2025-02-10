@@ -1,6 +1,7 @@
 .footer {
-    background-color: #242436;
-    color: #fff;
+    background-color: rgba(0, 0, 0, 0.829);
+    backdrop-filter: blur(5px);
+    color: #ffffff;
     padding: 1.2rem 2.4rem;
     font-size: 14px;
   }
@@ -33,7 +34,7 @@
   
   /* Logo Styling */
   .footer-logo {
-    height: 6rem;
+    height: 5rem;
     /* margin-bottom: 10px; */
   }
   
@@ -56,13 +57,13 @@
   }
   
   .footer-links a {
-    color: #ddd;
+    color: #ffffff;
     text-decoration: none;
     transition: color 0.3s ease-in-out;
   }
   
   .footer-links a:hover {
-    color:#38a169;
+    color:#b9afff;
   }
   
   /* Footer Bottom */
@@ -70,7 +71,7 @@
     margin-top: 20px;
     text-align: center;
     font-size: 13px;
-    border-top: 1px solid #444;
+    border-top: 1px solid rgb(0,0,139);
     padding-top: 10px;
   }
 
@@ -82,5 +83,5 @@
   hr{
     padding:1px;
     border: 0;
-    background-color: #38a169;
+    background-color: rgb(0,0,139);
   }

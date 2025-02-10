@@ -11,6 +11,7 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { label: "Home", href: "/" },
+  {label:"Gallery",href:"/gallery"},
   { label: "About Us", href: "/about-us" },
   {
     label: "Programs", href: "#",  subItems: programmeData.map((category) => ({
@@ -28,10 +29,14 @@ const navItems: NavItem[] = [
     { label: "Franchise Procedure", href: "/franchise/procedure" },
     { label: "Franchise Testimonials", href: "/franchise/testimonials" }
   ] },
-  { label: "Student Zone", href: "/student-zone", subItems: [
-    { label: "Resources", href: "/resources" }, 
-    { label: "Support", href: "/support" }
-  ]},
+  {
+    label: "Student Zone", href: "/student-zone",
+    subItems: [
+      { label: "Enrollment", href: "/student/enrollment" },
+      { label: "I-Card", href: "/student/icard" },
+      { label: "Prospectus", href: "https://drive.google.com/file/d/1gkPSy3dM0I93YTn4dn2vvkZmzQ3b81yr/view?usp=sharing", external: true }
+    ]
+  },
   { label: "Contact Us", href: "/contact-us" },
 ];
 
@@ -53,15 +58,9 @@ const Navbar: React.FC = () => {
     <nav className="navbar">
       <div className="navbar-container">
         {/* Logo */}
-        {/* <div className="logo" onClick={() => navigate("/")}>IICL Education</div> */}
+        
         <div className="logo-box">
-          <div className="logo">
-            <span>I</span>
-            <span>I</span>
-            <span>C</span>
-            <span>L</span>
-          </div>
-          <div className="sub-text">Education</div>
+          <img src="../images/iicl-iconT.png" alt="" className="logo" />
         </div>
 
         {/* Mobile Menu Toggle */}

@@ -4,7 +4,7 @@ import programmeData from "../../api/programmeData.json";
 import Navbar from "../../common-components/Navbar";
 import Footer from "../../common-components/Footer";
 import { IoMdArrowDropdownCircle } from "react-icons/io";
-import './styles/Programs.css'
+import styles from "./styles/Programs.module.css";
 
 // Define the types for the programme data
 interface Programme {
@@ -35,15 +35,15 @@ export default function Programme() {
       <Navbar />
 
       {/* Links to all course types */}
-      <div className="course-links">
+      <div className={styles["course-links"]}>
         {programmeData.map((category) => (
-          <Link key={category.type} to={`/programs/${encodeURIComponent(category.type)}`} className="course-link">
+          <Link key={category.type} to={`/programs/${encodeURIComponent(category.type)}`} className={styles["course-link"]}>
             {category.type}
           </Link>
         ))}
       </div>
 
-      <div className="program-container">
+      <div className={styles["program-container"]}>
         <h1>{selectedType ? `${selectedType} List` : "Select a Course Type"}</h1>
 
         {courseCategory ? (
@@ -74,13 +74,13 @@ const ProgramItems: React.FC<ProgramItemsProps> = ({ curElem, showProgram, setSh
   };
 
   return (
-    <div className="programItems">
-      <div className="programHeader" onClick={handleToggle} style={{ cursor: "pointer" }}>
+    <div className={styles.programItems}>
+      <div className={styles.programHeader} onClick={handleToggle} style={{ cursor: "pointer" }}>
         <h3>{curElem.title}</h3>
-        <IoMdArrowDropdownCircle className="down-arrow" />
+        <IoMdArrowDropdownCircle className={styles["down-arrow"]} />
       </div>
       {showProgram === curElem.id && (
-        <div className="programDetails">
+        <div className={styles.programDetails}>
           <p><strong>Duration:</strong> {curElem.duration}</p>
           <p><strong>Subjects:</strong> {curElem.subjects.join(", ")}</p>
         </div>

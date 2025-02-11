@@ -17,7 +17,7 @@ import FranchiseBenefits from "./components/Franchise/FranchiseBenefits";
 import FranchiseRequirement from "./components/Franchise/FranchiseRequirement";
 import FranchiseProcedure from "./components/Franchise/FranchiseProcedure";
 import FranchiseTestimonials from "./components/Franchise/FranchiseTestimonials";
-import Student from "./components/studentZone/student";
+import Student from "./components/studentZone/StudentZone";
 // import StudentZone from "./components/StudentZone/StudentEnrollment";
 import StudentEnrollment from "./components/studentZone/StudentEnrollment";
 import StudentDetails from "./components/studentZone/StudentDetails";
@@ -25,6 +25,8 @@ import StudentDetails from "./components/studentZone/StudentDetails";
 
 import ContactUs from "./components/ContactUs";
 import DashboardIndex from "./components/dashboard/DashboardIndex";
+import AddFranchiseForm from "./components/dashboard/AddFranchiseForm";
+import ViewFranchise from "./components/dashboard/ViewFranchise";
 const App: React.FC = () => {
   return (
     <div className="App">
@@ -48,15 +50,15 @@ const App: React.FC = () => {
         </Route>
         {/* Dashboard Route */}
         <Route path="/dashboard" element={<DashboardIndex />} >
-          {/* <Route path="profile" element={}/>
-            <Route path="franchise/add" element={}/>
-            <Route path="franchise/view" element={}/>
-            <Route path="batches/add" element={}/>
+          {/* <Route path="profile" element={}/> */}
+            <Route path="franchise/add" element={<AddFranchiseForm />}/>
+            <Route path="franchise/view" element={<ViewFranchise/>}/>
+            {/* <Route path="batches/add" element={}/>
             <Route path="batches/view" element={}/>
             <Route path="students/add" element={}/> 
             <Route path="students/view" element={}/> 
-            <Route path="enquiry/view" element={}/>
-            */}
+            <Route path="enquiry/view" element={}/> */}
+           
         </Route>
 
         {/* Student Zone Parent Route */}

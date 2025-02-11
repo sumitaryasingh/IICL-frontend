@@ -1,19 +1,24 @@
 import React, { useState } from "react";
-import DashboardSidebar from "./DashboardSidebar";
-import styles from "./styles/Dashboard.module.css";
+import { Route, Routes } from "react-router-dom";
+import DashboardHome from "./DashboardHome";
+import AddFranchiseForm from "./AddFranchiseForm";
+import { ToastContainer } from "react-toastify";
+import ViewFranchise from "./ViewFranchise";
 import Navbar from "./Navbar";
+import DashboardSidebar from "./DashboardSidebar";
 
 const DashboardIndex = () => {
   return (
-    <div className={styles.dashboardContainer}>
-      <DashboardSidebar />
-      <div className={styles.mainContent}>
-        <Navbar/>
-        <div className={styles.pageContent}>
-          <h1>Welcome to the Dashboard</h1>
-          {/* Add more dashboard content here */}
-        </div>
-      </div>
+    <div className="DashboardIndex">
+      <Navbar/>
+      <DashboardSidebar/>
+      <Routes>
+        <Route path="/" element={<DashboardHome/>}/>
+        <Route path="/franchise">
+          <Route path="add" element={<AddFranchiseForm />}/>
+          <Route path="view" element={<ViewFranchise />}/>
+        </Route>
+      </Routes>
     </div>
   );
 };

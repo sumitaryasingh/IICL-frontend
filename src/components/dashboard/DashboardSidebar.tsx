@@ -39,26 +39,30 @@ const DashboardSidebar = () => {
 
           {/* Franchise Management */}
           <li>
-            <div className={styles.menuItem} onClick={() => setFranchiseDropdown(!franchiseDropdown)}>
+            <div
+              className={styles.menuItem}
+              onClick={() => setFranchiseDropdown(!franchiseDropdown)}
+            >
               <FaUsers className={styles.icon} />
               Franchise Management
-              <RiArrowDropDownLine className={`${styles.dropIcon} ${franchiseDropdown ? styles.rotate : ""}`} />
+              <RiArrowDropDownLine
+                className={`${styles.dropIcon} ${franchiseDropdown ? styles.rotate : ""}`}
+              />
             </div>
             {franchiseDropdown && (
               <ul className={styles.dropdownMenu}>
                 <li>
                   <Link to="/dashboard/franchise/add">
-                    Add Franchise
+                  Add Franchise
                   </Link>
                 </li>
                 <li>
-                  <Link to="/dashboard/franchise/view">
-                    View Franchise
-                    </Link>
+                  <Link to="/dashboard/franchise/view">View Franchise</Link>
                 </li>
               </ul>
             )}
           </li>
+
 
           {/* Batch Management */}
           <li>

@@ -11,35 +11,30 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { label: "Home", href: "/" },
+  {label:"Gallery",href:"/gallery"},
+  { label: "About Us", href: "/about-us" },
   {
-    label: "About Us", href: "/about-us",
-    subItems: [
-      { label: "Our Mission", href: "/our-mission" },
-      { label: "Our Team", href: "/our-team" }
-    ]
-  },
-  {
-    label: "Programme", href: "#", subItems: programmeData.map((category) => ({
+    label: "Programs", href: "#",  subItems: programmeData.map((category) => ({
       label: category.type,
-      href: `/programs/${encodeURIComponent(category.type)}`,
+      href: `/programs/${encodeURIComponent(category.type)}`, // Dynamically link to each course type
     }))
   },
 
+  { label: "Franchise", href: "/franchise", subItems: [
+    { label: "Franchise Form", href: "/franchise/form" },
+    // { label: "Franchise Network", href: "/franchise/network" },
+    { label: "Franchise Login", href: "/franchise/login" },
+    { label: "Franchise Benefits", href: "/franchise/benefits" },
+    { label: "Franchise Requirement", href: "/franchise/requirement" },
+    { label: "Franchise Procedure", href: "/franchise/procedure" },
+    { label: "Franchise Testimonials", href: "/franchise/testimonials" }
+  ] },
   {
-    label: "Franchise", href: "/franchise", subItems: [
-      { label: "Franchise Form", href: "/franchise/form" },
-      { label: "Franchise Network", href: "/franchise/network" },
-      { label: "Franchise Login", href: "/franchise/login" },
-      { label: "Franchise Benefits", href: "/franchise/benefits" },
-      { label: "Franchise Requirement", href: "/franchise/requirement" },
-      { label: "Franchise Procedure", href: "/franchise/procedure" },
-      { label: "Franchise Testimonials", href: "/franchise/testimonials" }
-    ]
-  },
-  {
-    label: "Student Zone", href: "/student-zone", subItems: [
-      { label: "Resources", href: "/resources" },
-      { label: "Support", href: "/support" }
+    label: "Student Zone", href: "/student-zone",
+    subItems: [
+      { label: "Enrollment", href: "/student/enrollment" },
+      { label: "I-Card", href: "/student/icard" },
+      { label: "Prospectus", href: "https://drive.google.com/file/d/1gkPSy3dM0I93YTn4dn2vvkZmzQ3b81yr/view?usp=sharing", external: true }
     ]
   },
   { label: "Contact Us", href: "/contact-us" },
@@ -63,15 +58,9 @@ const Navbar: React.FC = () => {
     <nav className="navbar">
       <div className="navbar-container">
         {/* Logo */}
-        {/* <div className="logo" onClick={() => navigate("/")}>IICL Education</div> */}
+        
         <div className="logo-box">
-          <div className="logo">
-            <span>I</span>
-            <span>I</span>
-            <span>C</span>
-            <span>L</span>
-          </div>
-          <div className="sub-text">Education</div>
+          <img src="../images/iicl-iconT.png" alt="" className="logo" />
         </div>
 
         {/* Mobile Menu Toggle */}

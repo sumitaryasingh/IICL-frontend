@@ -1,0 +1,209 @@
+/* Overall Dashboard Layout */
+.dashboardContainer {
+    display: flex;
+    min-height: 100vh;
+    flex-wrap: nowrap;
+    margin: 5rem 0;
+  }
+  
+  /* Main content area beside the sidebar */
+  .mainContent {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-left: 15rem; /* Adjust this based on your sidebar width */
+  }
+  
+  /* Page-specific content */
+  .pageContent {
+    padding: 2rem;
+    background-color: #f4f6f8;
+    flex: 1;
+    overflow-x: hidden;
+  }
+  
+  /* Export Button Container */
+  .exportContainer {
+    text-align: right;
+    margin-bottom: 1rem;
+  }
+  
+  .exportBtn {
+    background-color: #28a745;
+    border: none;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .exportBtn:hover {
+    background-color: #218838;
+  }
+  
+  /* Show Entries Selector */
+  .entriesSelector {
+    margin-bottom: 1rem;
+    font-size: 16px;
+  }
+  
+  .entriesSelector select {
+    padding: 4px 8px;
+    margin: 0 5px;
+    font-size: 16px;
+  }
+  
+  /* Filter Input Styles */
+  .filterContainer {
+    margin-bottom: 1rem;
+  }
+  
+  .filterContainer input {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  /* Responsive Table Container */
+  .tableContainer {
+    width: 100%;
+    overflow-x: auto;
+  }
+  
+  /* Table Styles */
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+  }
+  
+  .table th,
+  .table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+    cursor: pointer;
+  }
+  
+  .table th {
+    background-color: rgb(0, 0, 139);
+    color: #fff;
+  }
+  
+  .table td {
+    background-color: #fff;
+    cursor: default;
+  }
+  
+  /* Status Badge Styles */
+  .active {
+    color: #2e7d32;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background-color: #c8e6c9;
+  }
+  
+  .completed {
+    color: #c62828;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background-color: #ffcdd2;
+  }
+  
+  /* Action Button Styles */
+  .viewBtn {
+    background-color: #007bff;
+    border: none;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0 2px;
+  }
+  
+  .editBtn {
+    background-color: #4caf50;
+    border: none;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 5px;
+  }
+  
+  .deleteBtn {
+    background-color: #f44336;
+    border: none;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  /* Pagination Styles */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .pagination button {
+    padding: 5px 10px;
+    border: none;
+    background-color: rgb(0, 0, 139);
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .pagination button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 1024px) {
+    .pageContent {
+      padding: 1.5rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .mainContent {
+      margin-left: 0;
+    }
+    .dashboardContainer {
+      flex-direction: column;
+    }
+    .pageContent {
+      padding: 1rem;
+    }
+    .table th,
+    .table td {
+      padding: 8px;
+      font-size: 14px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .pageContent {
+      padding: 0.5rem;
+    }
+    .table th,
+    .table td {
+      padding: 6px;
+      font-size: 12px;
+    }
+    .pagination button {
+      padding: 4px 8px;
+      font-size: 12px;
+    }
+  }
+  

@@ -6,6 +6,10 @@ import { ToastContainer } from "react-toastify";
 import ViewFranchise from "./ViewFranchise";
 import Navbar from "./Navbar";
 import DashboardSidebar from "./DashboardSidebar";
+import AddBatchForm from "./AddBatchForm";
+import ViewBatch from "./ViewBatch";
+import AddStudentForm from "./AddStudentForm";
+import ViewStudent from "./ViewStudent";
 
 const DashboardIndex = () => {
   return (
@@ -17,6 +21,14 @@ const DashboardIndex = () => {
         <Route path="/franchise">
           <Route path="add" element={<AddFranchiseForm />}/>
           <Route path="view" element={<ViewFranchise />}/>
+        </Route>
+        <Route path="/batches">
+        <Route path="add" element={<AddBatchForm/>}/>
+        <Route path="view" element={<ViewBatch/>}/>
+        </Route>
+        <Route path="/students">
+        <Route path="add" element={<AddStudentForm/>}/>
+        <Route path="view" element={<ViewStudent/>}/>
         </Route>
       </Routes>
     </div>

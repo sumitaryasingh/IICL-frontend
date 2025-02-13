@@ -4,6 +4,7 @@ import Navbar from "./Navbar";
 import DashboardSidebar from "./DashboardSidebar";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { submitFranchiseData, FranchiseData } from "../../services/franchiseService";
 
 interface FranchiseFormData {
   firstName: string;
@@ -40,7 +41,7 @@ const AddFranchiseForm: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit =async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     // Regular expressions for email, mobile, and Aadhar validation
@@ -101,20 +102,25 @@ const AddFranchiseForm: React.FC = () => {
 
     // If validation passes, simulate form submission.
     // console.log("Franchise Data Submitted:", formData);
-    toast.success("Franchise added successfully!");
-
-    // Optionally clear the form after submission.
-    setFormData({
-      firstName: "",
-      lastName: "",
-      dob: "",
-      directorName: "",
-      instituteName: "",
-      address: "",
-      mobile: "",
-      email: "",
-      aadharId: "",
-    });
+    try {
+      await submitFranchiseData(formData);
+      toast.success("Franchise added successfully!");
+      // Optionally, reset form data after successful submission
+      setFormData({
+        firstName: "",
+        lastName: "",
+        dob: "",
+        directorName: "",
+        instituteName: "",
+        address: "",
+        mobile: "",
+        email: "",
+        aadharId: "",
+      });
+    } catch (error) {
+      console.error("Error submitting franchise data:", error);
+      toast.error("Submission failed. Please try again.");
+    }
   };
 
   return (

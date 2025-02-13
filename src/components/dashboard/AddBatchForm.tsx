@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styles from "./styles/AddBatchForm.module.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { addBatch, BatchData } from "../../services/batchService";
 
 interface BatchFormData {
   course: string;
@@ -34,7 +35,7 @@ const AddBatchForm: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     // Basic validation
@@ -47,14 +48,25 @@ const AddBatchForm: React.FC = () => {
       return;
     }
 
-    // Simulate form submission
-    toast.success("Batch added successfully!");
+    try {
+      // Call the service to add the batch
+      await addBatch(formData);
+      toast.success("Batch added successfully!");
+      setFormData({ course: "", time: "" });
+    } catch (error) {
+      console.error("Error adding batch:", error);
+      toast.error("Failed to add batch");
+    }
 
-    // Optionally clear the form after submission
-    setFormData({
-      course: "",
-      time: "",
-    });
+     // Simulate form submission
+     toast.success("Batch added successfully!");
+
+     // Optionally clear the form after submission
+     setFormData({
+       course: "",
+       time: "",
+     });
+     
   };
 
   return (

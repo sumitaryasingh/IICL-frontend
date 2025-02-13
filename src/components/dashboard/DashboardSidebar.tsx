@@ -13,6 +13,7 @@ const DashboardSidebar = () => {
   const [batchDropdown, setBatchDropdown] = useState(false);
   const [studentsDropdown, setStudentsDropdown] = useState(false);
   const [enquiryDropdown, setEnquiryDropdown] = useState(false);
+  const [galleryDropdown, setgalleryDropdown] = useState(false);
 
   return (
     <>
@@ -113,6 +114,20 @@ const DashboardSidebar = () => {
               <ul className={styles.dropdownMenu}>
                 <li>
                   <Link to="/dashboard/enquiry/view">View Enquiries</Link>
+                </li>
+              </ul>
+            )}
+          </li>
+          {/* Gallery photo mangement */}
+          <li>
+            <div className={styles.menuItem} onClick={() => setgalleryDropdown(!galleryDropdown)}>
+              Manage Gallery Photo
+              <RiArrowDropDownLine className={`${styles.dropIcon} ${galleryDropdown ? styles.rotate : ""}`} />
+            </div>
+            {galleryDropdown && (
+              <ul className={styles.dropdownMenu}>
+                <li>
+                  <Link to="/dashboard/gallery-photo/add">Add Photo</Link>
                 </li>
               </ul>
             )}

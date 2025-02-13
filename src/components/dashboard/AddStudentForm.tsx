@@ -2,6 +2,7 @@ import React, { useState, ChangeEvent } from "react";
 import styles from "./styles/AddStudentForm.module.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { submitStudentData,StudentData  } from "../../services/studentService";
 
 // Define an interface for the form data
 interface StudentFormData {
@@ -86,7 +87,7 @@ const AddStudentForm: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit =async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     // Basic validation for required fields
@@ -153,29 +154,33 @@ const AddStudentForm: React.FC = () => {
     // Additional validations such as email format, phone format can be added as needed.
 
     // If validation passes, simulate a POST request (you would call your API here)
-    console.log("Student form submitted:", formData);
-    toast.success("Student added successfully!");
-
-    // Clear the form after submission (if desired)
-    setFormData({
-      name: "",
-      email: "",
-      fatherName: "",
-      motherName: "",
-      phone: "",
-      sessionFrom: "",
-      sessionTo: "",
-      registrationDate: "",
-      address: "",
-      dob: "",
-      gender: "",
-      course: "",
-      batch: "",
-      image: null,
-      qualification: "",
-      idProof: "",
-      idProofNumber: "",
-    });
+    try {
+      await submitStudentData(formData);
+      toast.success("Student added successfully!");
+      // Clear form after submission if desired
+      setFormData({
+        name: "",
+        email: "",
+        fatherName: "",
+        motherName: "",
+        phone: "",
+        registrationDate: "",
+        sessionFrom: "",
+        sessionTo: "",
+        dob: "",
+        gender: "",
+        address: "",
+        course: "",
+        batch: "",
+        qualification: "",
+        idProof: "",
+        idProofNumber: "",
+        image: null,
+      });
+    } catch (error) {
+      console.error("Error submitting student data:", error);
+      toast.error("Submission failed. Please try again.");
+    }
   };
 
   return (

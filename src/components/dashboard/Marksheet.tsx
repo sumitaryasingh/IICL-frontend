@@ -159,29 +159,46 @@ const Marksheet: React.FC<MarksheetProps> = ({ student }) => {
         </div>
 
         <div className={styles.performanceCriteria}>
-          <div className={styles.certifiedLogo}>
-            <img src="../images/isoLogo.gif" alt="" className={styles.isoLogo} />
-            <img src="../images/iafLogo.svg" alt="" className={styles.iafLogo} />
-            <img src="../images/MSME_Logo.svg" alt="" className={styles.msmeLogo} />
-            {/* <img src="../images/" alt="" /> */}
-          </div>
           <table className={styles.criteriaTable}>
             <thead>
               <tr>
                 <th>Grade</th>
-                <th>Percentage Range</th>
-                <th>Performance</th>
+                <th>A+</th>
+                <th>A</th>
+                <th>B+</th>
+                <th>B</th>
+                <th>C</th>
+                <th>F</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td>A+</td><td>90% - 100%</td><td>Excellent</td></tr>
-              <tr><td>A</td><td>80% - 89%</td><td>Very Good</td></tr>
-              <tr><td>B+</td><td>70% - 79%</td><td>Good</td></tr>
-              <tr><td>B</td><td>60% - 69%</td><td>Satisfactory</td></tr>
-              <tr><td>C</td><td>50% - 59%</td><td>Needs Improvement</td></tr>
-              <tr><td>F</td><td>Below 50%</td><td>Fail</td></tr>
+              <tr>
+                <td>Percentage Range</td>
+                <td>90% - 100%</td>
+                <td>80% - 89%</td>
+                <td>70% - 79%</td>
+                <td>60% - 69%</td>
+                <td>50% - 59%</td>
+                <td>Below 50%</td>
+              </tr>
+              <tr>
+                <td>Performance</td>
+                <td>Excellent</td>
+                <td>Very Good</td>
+                <td>Good</td>
+                <td>Satisfactory</td>
+                <td>Needs Improvement</td>
+                <td>Fail</td>
+              </tr>
             </tbody>
           </table>
+          <div className={styles.certifiedLogo}>
+            <img src="../images/dummy_qr.png" alt="" className={styles.isoLogo} />
+            <img src="../images/isoLogo.jpg" alt="" className={styles.isoLogo} />
+            <img src="../images/iafLogo.svg" alt="" className={styles.iafLogo} />
+            <img src="../images/msmeLogo.jpg" alt="" className={styles.msmeLogo} />
+            {/* <img src="../images/" alt="" /> */}
+          </div>
         </div>
       </div>
 

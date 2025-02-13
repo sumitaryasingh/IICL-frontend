@@ -112,7 +112,7 @@
     border-collapse: collapse;
     /* border: 1px solid red; */
     position: absolute;
-    right: 2.5rem;
+    right: 3.5rem;
     font-size: 0.8rem;
   }
 
@@ -129,25 +129,30 @@
     color: white;
   }
 
-  .isoLogo{
+  .certifiedLogo{
     position: absolute;
-    top: 7.3rem;
-    left:22rem ;
+    top: 6.3rem;
+    right: 3.5rem;
+  }
+  .isoLogo{
+    /* position: absolute; */
+    /* top: 7.3rem; */
+    /* left:22rem ; */
     height:4.5rem;
   }
 
   .iafLogo{
-    height:4rem;
-    position: absolute;
-    top: 7.8rem;
-    left:15.5rem ;
+    height:4.5rem;
+    /* position: absolute; */
+    /* top: 7.8rem; */
+    /* left:15.5rem ; */
   }
 
   .msmeLogo{
-    height:6rem;
-    position: absolute;
-    top: 0.8rem;
-    left:20.5rem ;
+    height:4.5rem;
+    /* position: absolute; */
+    /* top: 0.8rem; */
+    /* left:20.5rem ; */
   }
 
   .summary {

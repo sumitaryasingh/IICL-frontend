@@ -89,11 +89,16 @@ const Certificate: React.FC<CertificateProps> = ({ student }) => {
           <img src="../images/dummy_qr.png" alt="" />
          </span>
         <p className={styles.certificationsLogos}>
-          <img src="../images/isoLogo.gif" alt="" />
           <img src="../images/iafLogo.svg" alt="" />
-          <img src="../images/MSME_Logo.svg" alt="" />
+          <img src="../images/isoLogo1.jpg" alt="" />
+          <img src="../images/msmeLogo.jpg" alt="" />
         </p>
-
+        <span className={styles.authSignature}>
+          Auth. Sign
+        </span>
+        <span className={styles.centreSignature}>
+          Centre Director Sign
+        </span>
       </div>
       {/* Download Button */}
       <button onClick={handleDownload} className={styles.downloadBtn}>

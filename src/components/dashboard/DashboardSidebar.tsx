@@ -13,6 +13,7 @@ const DashboardSidebar = () => {
   const [batchDropdown, setBatchDropdown] = useState(false);
   const [studentsDropdown, setStudentsDropdown] = useState(false);
   const [enquiryDropdown, setEnquiryDropdown] = useState(false);
+  const [galleryDropdown, setgalleryDropdown] = useState(false);
 
   return (
     <>
@@ -39,26 +40,30 @@ const DashboardSidebar = () => {
 
           {/* Franchise Management */}
           <li>
-            <div className={styles.menuItem} onClick={() => setFranchiseDropdown(!franchiseDropdown)}>
+            <div
+              className={styles.menuItem}
+              onClick={() => setFranchiseDropdown(!franchiseDropdown)}
+            >
               <FaUsers className={styles.icon} />
               Franchise Management
-              <RiArrowDropDownLine className={`${styles.dropIcon} ${franchiseDropdown ? styles.rotate : ""}`} />
+              <RiArrowDropDownLine
+                className={`${styles.dropIcon} ${franchiseDropdown ? styles.rotate : ""}`}
+              />
             </div>
             {franchiseDropdown && (
               <ul className={styles.dropdownMenu}>
                 <li>
                   <Link to="/dashboard/franchise/add">
-                    Add Franchise
+                  Add Franchise
                   </Link>
                 </li>
                 <li>
-                  <Link to="/dashboard/franchise/view">
-                    View Franchise
-                    </Link>
+                  <Link to="/dashboard/franchise/view">View Franchise</Link>
                 </li>
               </ul>
             )}
           </li>
+
 
           {/* Batch Management */}
           <li>
@@ -109,6 +114,20 @@ const DashboardSidebar = () => {
               <ul className={styles.dropdownMenu}>
                 <li>
                   <Link to="/dashboard/enquiry/view">View Enquiries</Link>
+                </li>
+              </ul>
+            )}
+          </li>
+          {/* Gallery photo mangement */}
+          <li>
+            <div className={styles.menuItem} onClick={() => setgalleryDropdown(!galleryDropdown)}>
+              Manage Gallery Photo
+              <RiArrowDropDownLine className={`${styles.dropIcon} ${galleryDropdown ? styles.rotate : ""}`} />
+            </div>
+            {galleryDropdown && (
+              <ul className={styles.dropdownMenu}>
+                <li>
+                  <Link to="/dashboard/gallery-photo/add">Add Photo</Link>
                 </li>
               </ul>
             )}

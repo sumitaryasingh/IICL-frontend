@@ -27,7 +27,6 @@
     gap: 2.5rem;
     max-width: 75rem; /* 1200px */
     width: 100%;
-    background-color: #ffcc0033;
 }
 
 .contact-info, .message {
@@ -47,10 +46,10 @@
 
 .contact-info h2, .message h2 {
     font-size: 1.8rem; /* 28px */
-    color: #333;
+    color: #ffffff;
     margin-bottom: 1.5rem;
-    border-left: 0.3125rem solid #ffcc00; /* 5px */
-    background-color: #ffcc0033;
+    border-left: 0.3125rem solid rgb(0,0,139); /* 5px */
+    background-color: #a98700af;
     padding: 0.5rem 1rem;
     font-weight: 500;
 }

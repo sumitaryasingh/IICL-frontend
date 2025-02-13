@@ -40,8 +40,8 @@
 
 .body-container button {
   border-radius: 20px;
-  border: 1px solid #ffcc00;
-  background-color: #ffcc00;
+  border: 1px solid #cebd00;
+  background-color: #cebd00;
   color: #FFFFFF;
   font-size: 12px;
   font-weight: bold;
@@ -167,9 +167,9 @@
 }
 
 .body-container .overlay {
-  background: #ffcc00;
-  background: #ffcc00;
-  background: #ffcc00;
+  /* background: #ffcc00; */
+  /* background: #ffcc00; */
+  background: rgb(0,0,139);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: 0 0;
@@ -201,6 +201,9 @@
   transition: transform 0.6s ease-in-out;
 }
 
+.overlay-panel h1{
+  color: white;
+}
 .overlay-left {
   transform: translateX(-20%);
 }

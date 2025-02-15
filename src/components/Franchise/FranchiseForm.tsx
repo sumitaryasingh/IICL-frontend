@@ -1,9 +1,9 @@
-// src/components/franchise/FranchiseLogin.tsx
 import React, { useState } from 'react';
 import './styles/FranchiseForm.css';
 import 'react-toastify/dist/ReactToastify.css';
 import { submitFranchiseForm } from '../../services/franchiseForm';
 import { toast } from 'react-toastify';
+
 const FranchiseLogin: React.FC = () => {
     const [applyingFor, setApplyingFor] = useState<string>('franchise');
     const [centerStatus, setCenterStatus] = useState<string>('planning');
@@ -27,32 +27,33 @@ const FranchiseLogin: React.FC = () => {
         );
     };
 
-    // For handling radio button state
-
     const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setExistingFranchise(e.target.value);
     };
-    // Handle form submission
 
-    // Handle form submission
+    const validateEmail = (email: string) => {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    };
+
+    const validatePhoneNumber = (number: string) => {
+        return /^\d{10}$/.test(number);
+    };
+
     const handleSubmit = async () => {
-        const missingFields: any = [];
+        const missingFields: string[] = [];
 
-        if (!applyingFor) {
-            missingFields.push('"Applying For"');
-            return
-        };
-        if (!centerStatus) { missingFields.push('"Current Center Status"'); };
-        if (!branchName) { missingFields.push('"Branch/Institute Name"'); };
-        if (!directorName) { missingFields.push('"Full Name of Center Director"'); };
-        if (!email) { missingFields.push('"Center Email"'); };
-        if (!phoneNumber) { missingFields.push('"Phone Number"'); };
-        if (!address) { missingFields.push('"Center Address/Proposed Location"'); };
-        if (!city) { missingFields.push('"City"'); };
-        if (!state) { missingFields.push('"State"'); };
-        if (!pincode) { missingFields.push('"Pincode"'); };
-        if (facilities.length === 0) { missingFields.push('"Facilities Available at Center"'); };
-        if (!existingFranchise) { missingFields.push('"Already Having a Franchise"'); };
+        if (!applyingFor) missingFields.push('"Applying For"');
+        if (!centerStatus) missingFields.push('"Current Center Status"');
+        if (!branchName) missingFields.push('"Branch/Institute Name"');
+        if (!directorName) missingFields.push('"Full Name of Center Director"');
+        if (!email || !validateEmail(email)) missingFields.push('"Valid Center Email"');
+        if (!phoneNumber || !validatePhoneNumber(phoneNumber)) missingFields.push('"Valid 10-digit Phone Number"');
+        if (!address) missingFields.push('"Center Address/Proposed Location"');
+        if (!city) missingFields.push('"City"');
+        if (!state) missingFields.push('"State"');
+        if (!pincode) missingFields.push('"Pincode"');
+        if (facilities.length === 0) missingFields.push('"Facilities Available at Center"');
+        if (!existingFranchise) missingFields.push('"Already Having a Franchise"');
 
         if (missingFields.length > 0) {
             toast.error(`Please fill in the following fields: ${missingFields[0]}`);
@@ -90,10 +91,10 @@ const FranchiseLogin: React.FC = () => {
         }
     };
 
-
     const handleCancel = () => {
         alert('Form canceled!');
     };
+
 
     return (
         <div className="franchise-login-container">
@@ -149,6 +150,12 @@ const FranchiseLogin: React.FC = () => {
                             id="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
+                            onBlur={(e) => {
+                                if (!validateEmail(e.target.value)) {
+                                    setEmail('');
+                                    toast.error('Please enter a valid email address');
+                                }
+                            }}
                         />
                     </div>
                 </div>
@@ -159,11 +166,25 @@ const FranchiseLogin: React.FC = () => {
                         <div className="phone-input-group-for-two">
                             <span className="country-code">+91</span>
                             <input
-                                type="text"
+                                type="number"
                                 id="phoneNumber"
                                 placeholder="Enter phone number"
                                 value={phoneNumber}
-                                onChange={(e) => setPhoneNumber(e.target.value)}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    if (value.length > 10) {
+                                        toast.error('Phone number must be 10 digits');
+                                    } else {
+                                        setPhoneNumber(value);
+                                    }
+                                }}
+                                onBlur={(e) => {
+                                    const value = e.target.value;
+                                    if (value.length < 10) {
+                                        toast.error('Phone number must be 10 digits');
+                                        setPhoneNumber('');
+                                    }
+                                }}
                             />
                         </div>
                     </div>
@@ -171,11 +192,25 @@ const FranchiseLogin: React.FC = () => {
                     <div className="input-group-for-two">
                         <label htmlFor="whatsappNumber">Institute WhatsApp Number (optional)</label>
                         <input
-                            type="text"
+                            type="number"
                             id="whatsappNumber"
                             placeholder="Enter WhatsApp number"
                             value={whatsappNumber}
-                            onChange={(e) => setWhatsappNumber(e.target.value)}
+                            onChange={(e) => {
+                                const value = e.target.value;
+                                if (value.length > 10) {
+                                    toast.error('WhatsApp number must be 10 digits');
+                                } else {
+                                    setWhatsappNumber(value);
+                                }
+                            }}
+                            onBlur={(e) => {
+                                const value = e.target.value;
+                                if (value.length < 10) {
+                                    toast.error('WhatsApp number must be 10 digits');
+                                    setWhatsappNumber('');
+                                }
+                            }}
                         />
                     </div>
                 </div>
@@ -214,10 +249,24 @@ const FranchiseLogin: React.FC = () => {
                     <div className="input-group-for-three">
                         <label htmlFor="pincode">Pincode</label>
                         <input
-                            type="text"
+                            type="number"
                             id="pincode"
                             value={pincode}
-                            onChange={(e) => setPincode(e.target.value)}
+                            onChange={(e) => {
+                                const value = e.target.value;
+                                if (value.length > 6) {
+                                    toast.error('PinCode must be 10 digits');
+                                } else {
+                                    setPincode(value);
+                                }
+                            }}
+                            onBlur={(e) => {
+                                const value = e.target.value;
+                                if (value.length < 6) {
+                                    toast.error('PinCode must be 6 digits');
+                                    setPincode('');
+                                }
+                            }}
                         />
                     </div>
                 </div>

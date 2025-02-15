@@ -11,6 +11,7 @@ import ViewBatch from "./ViewBatch";
 import AddStudentForm from "./AddStudentForm";
 import ViewStudent from "./ViewStudent";
 import AddPhoto from "./AddPhoto";
+import AdminFranchiseProfile from "./Profile";
 
 const DashboardIndex = () => {
   return (
@@ -19,6 +20,8 @@ const DashboardIndex = () => {
       <DashboardSidebar/>
       <Routes>
         <Route path="/" element={<DashboardHome/>}/>
+        
+        <Route path="/profile" element={<AdminFranchiseProfile/>}/>
         
         <Route path="/franchise">
           <Route path="add" element={<AddFranchiseForm />}/>
@@ -29,6 +32,7 @@ const DashboardIndex = () => {
         <Route path="add" element={<AddBatchForm/>}/>
         <Route path="view" element={<ViewBatch/>}/>
         </Route>
+
 
         <Route path="/students">
         <Route path="add" element={<AddStudentForm/>}/>

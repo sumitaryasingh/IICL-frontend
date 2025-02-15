@@ -4,6 +4,17 @@ import Navbar from "./Navbar";
 import DashboardSidebar from "./DashboardSidebar";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import { Navigate, useNavigate } from "react-router-dom";
+
+export interface Subject {
+  subject: string;
+  theory: number;
+  lab: number;
+  totalMarks: number;
+  obtainedTheory: number;
+  obtainedLab: number;
+  obtainedTotal: number;
+}
 
 export interface StudentData {
   id: number;
@@ -13,11 +24,20 @@ export interface StudentData {
   course: string;
   enrollmentNumber: string;
   status: "Active" | "Completed";
-  marksheet: string;  // URL or identifier for the marksheet
-  certificate: string; // URL or identifier for the certificate
+  marksheet: string;       // URL or identifier for the marksheet
+  certificate: string;     // URL or identifier for the certificate
+  institute: string;       // Institute name
+  location: string;        // Location
+  marks: number;           // Overall marks obtained (e.g., out of 800)
+  grade: string;           // Grade achieved
+  date: string;            // Date (e.g., exam or certificate date)
+  rollNumber: string;      // Roll number
+  certificateNumber: string; // Certificate number
+  organization: string;    // Organization (e.g., IICL)
+  subjects: Subject[];     // Subjects and their marks details
 }
 
-// Sample student data for demonstration
+// Updated sample student data for demonstration
 const sampleStudents: StudentData[] = [
   {
     id: 1,
@@ -29,6 +49,34 @@ const sampleStudents: StudentData[] = [
     status: "Active",
     marksheet: "/marksheet/john",
     certificate: "/certificate/john",
+    institute: "ABC Institute",
+    location: "Cityville",
+    marks: 680,
+    grade: "A",
+    date: "2023-07-15",
+    rollNumber: "R001",
+    certificateNumber: "CERT001",
+    organization: "IICL",
+    subjects: [
+      {
+        subject: "Mathematics",
+        theory: 70,
+        lab: 30,
+        totalMarks: 100,
+        obtainedTheory: 65,
+        obtainedLab: 28,
+        obtainedTotal: 93,
+      },
+      {
+        subject: "Physics",
+        theory: 70,
+        lab: 30,
+        totalMarks: 100,
+        obtainedTheory: 60,
+        obtainedLab: 27,
+        obtainedTotal: 87,
+      },
+    ],
   },
   {
     id: 2,
@@ -40,9 +88,39 @@ const sampleStudents: StudentData[] = [
     status: "Completed",
     marksheet: "/marksheet/jane",
     certificate: "/certificate/jane",
+    institute: "XYZ Institute",
+    location: "Townsville",
+    marks: 720,
+    grade: "A+",
+    date: "2023-06-20",
+    rollNumber: "R002",
+    certificateNumber: "CERT002",
+    organization: "IICL",
+    subjects: [
+      {
+        subject: "Management",
+        theory: 60,
+        lab: 0,
+        totalMarks: 60,
+        obtainedTheory: 55,
+        obtainedLab: 0,
+        obtainedTotal: 55,
+      },
+      {
+        subject: "Economics",
+        theory: 70,
+        lab: 0,
+        totalMarks: 70,
+        obtainedTheory: 65,
+        obtainedLab: 0,
+        obtainedTotal: 65,
+      },
+    ],
   },
   // Add more sample student items as needed...
 ];
+
+
 
 const ViewStudent: React.FC = () => {
   // Main student data state
@@ -56,6 +134,7 @@ const ViewStudent: React.FC = () => {
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState<number>(5);
+  const navigate = useNavigate();
 
   // Initialize with sample data
   useEffect(() => {
@@ -124,11 +203,13 @@ const ViewStudent: React.FC = () => {
   };
 
   const handleViewMarksheet = (student: StudentData) => {
+    navigate(`/dashboard/students/view/marksheet/${student.id}`, {state:{student}});  
     console.log("Viewing marksheet for:", student);
     // Implement view marksheet functionality here
   };
 
   const handleViewCertificate = (student: StudentData) => {
+    navigate(`/dashboard/students/view/certificate/${student.id}`, {state:{student}});
     console.log("Viewing certificate for:", student);
     // Implement view certificate functionality here
   };

@@ -1,8 +1,9 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
 import styles from "./styles/AddStudentForm.module.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { submitStudentData,StudentData  } from "../../services/studentService";
+import { fetchBatchOptions } from "../../services/batchService";
 
 // Define an interface for the form data
 interface StudentFormData {
@@ -31,11 +32,9 @@ interface BatchOption {
   name: string;
 }
 
-const simulatedBatchOptions: BatchOption[] = [
-  { id: "batch1", name: "Batch 1" },
-  { id: "batch2", name: "Batch 2" },
-  { id: "batch3", name: "Batch 3" },
-];
+
+
+  // Rest of the component code...
 
 const IMAGE_SIZE_LIMIT = 1 * 1024 * 1024; // 1 MB
 
@@ -60,7 +59,22 @@ const AddStudentForm: React.FC = () => {
     idProofNumber: "",
   });
 
-  const [batchOptions, setBatchOptions] = useState<BatchOption[]>(simulatedBatchOptions);
+  const [batchOptions, setBatchOptions] = useState<BatchOption[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await fetchBatchOptions();
+        setBatchOptions(data);
+      } catch (error) {
+        console.error("Error fetching batch options:", error);
+        toast.error("Failed to load batch options");
+      }
+    };
+
+    fetchData();
+  }, []);
+
 
   // Handle change for text, email, date, select, and textarea inputs.
   const handleChange = (
@@ -87,101 +101,68 @@ const AddStudentForm: React.FC = () => {
     }
   };
 
-  const handleSubmit =async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Basic validation for required fields
-    if (!formData.name.trim()) {
-      toast.error("Name is required");
-      return;
-    }
-    if (!formData.email.trim()) {
-      toast.error("Email is required");
-      return;
-    }
-    if (!formData.fatherName.trim()) {
-      toast.error("Father's name is required");
-      return;
-    }
-    if (!formData.motherName.trim()) {
-      toast.error("Mother's name is required");
-      return;
-    }
-    if (!formData.phone.trim()) {
-      toast.error("Phone is required");
-      return;
-    }
-    if (!formData.sessionFrom.trim() || !formData.sessionTo.trim()) {
-      toast.error("Both session dates are required");
-      return;
-    }
-    if (!formData.registrationDate.trim()) {
-      toast.error("Registration date is required");
-      return;
-    }
-    if (!formData.address.trim()) {
-      toast.error("Address is required");
-      return;
-    }
-    if (!formData.dob.trim()) {
-      toast.error("Date of birth is required");
-      return;
-    }
-    if (!formData.gender) {
-      toast.error("Gender is required");
-      return;
-    }
-    if (!formData.course) {
-      toast.error("Course is required");
-      return;
-    }
-    if (!formData.batch) {
-      toast.error("Batch is required");
-      return;
-    }
-    if (!formData.qualification.trim()) {
-      toast.error("Qualification is required");
-      return;
-    }
-    if (!formData.idProof) {
-      toast.error("Select an ID proof");
-      return;
-    }
-    if (!formData.idProofNumber.trim()) {
-      toast.error("ID proof number is required");
-      return;
-    }
-    // Additional validations such as email format, phone format can be added as needed.
+    // Required fields validation
+    const requiredFields: { [key: string]: string } = {
+        name: "Name",
+        email: "Email",
+        fatherName: "Father's name",
+        motherName: "Mother's name",
+        phone: "Phone",
+        sessionFrom: "Session from date",
+        sessionTo: "Session to date",
+        registrationDate: "Registration date",
+        address: "Address",
+        dob: "Date of birth",
+        gender: "Gender",
+        course: "Course",
+        batch: "Batch",
+        qualification: "Qualification",
+        idProof: "ID proof",
+        idProofNumber: "ID proof number",
+    };
 
-    // If validation passes, simulate a POST request (you would call your API here)
-    try {
-      await submitStudentData(formData);
-      toast.success("Student added successfully!");
-      // Clear form after submission if desired
-      setFormData({
-        name: "",
-        email: "",
-        fatherName: "",
-        motherName: "",
-        phone: "",
-        registrationDate: "",
-        sessionFrom: "",
-        sessionTo: "",
-        dob: "",
-        gender: "",
-        address: "",
-        course: "",
-        batch: "",
-        qualification: "",
-        idProof: "",
-        idProofNumber: "",
-        image: null,
-      });
-    } catch (error) {
-      console.error("Error submitting student data:", error);
-      toast.error("Submission failed. Please try again.");
+    for (const field in requiredFields) {
+        if (!formData[field as keyof typeof formData]?.toString().trim()) {
+            toast.error(`${requiredFields[field]} is required`);
+            return;
+        }
     }
-  };
+
+    // Submit data if all validations pass
+    try {
+        await submitStudentData(formData);
+        toast.success("Student added successfully!");
+
+        // Reset form
+        setFormData({
+            name: "",
+            email: "",
+            fatherName: "",
+            motherName: "",
+            phone: "",
+            registrationDate: "",
+            sessionFrom: "",
+            sessionTo: "",
+            dob: "",
+            gender: "",
+            address: "",
+            course: "",
+            batch: "",
+            qualification: "",
+            idProof: "",
+            idProofNumber: "",
+            image: null,
+        });
+    } catch (error) {
+        console.error("Error submitting student data:", error);
+        toast.error("Submission failed. Please try again.");
+    }
+};
+
+
 
   return (
     <div className={styles.formContainer}>

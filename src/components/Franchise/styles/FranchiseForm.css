@@ -264,3 +264,28 @@ textarea:focus {
     border-color: #007bff;
     outline: none;
 }
+
+.required-star {
+  color: #ff0000;
+  margin-left: 3px;
+}
+
+.input-error {
+  border: 1px solid #ff0000 !important;
+}
+
+.input-error-group {
+  border: 1px solid #ff0000;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.checkbox-group.input-error-group,
+.radio-group.input-error-group {
+  border-color: #ff0000;
+}
+
+.phone-input-group-for-two input {
+  flex: 1;
+  margin-left: 8px;
+}

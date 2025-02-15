@@ -1,11 +1,11 @@
 import axios from "axios";
-
+const API_URL = import.meta.env.VITE_APP_API_BASE_URL;
 export const submitContactForm = async (formData: any) => {
     try {
         console.log("This is formData:", formData);
 
         // Make sure to replace with the actual backend endpoint.
-        const response = await axios.post('/your-backend-endpoint', formData);
+        const response = await axios.post(`/api/contact`, formData);
 
         return response.data; // Assuming the backend responds with a data object that includes `success`
     } catch (error: any) {

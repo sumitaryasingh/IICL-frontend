@@ -231,7 +231,7 @@ const ViewStudent: React.FC = () => {
                           className={styles.viewBtn}
                           onClick={() => handleViewMarksheet(student)}
                         >
-                          View
+                          View Marksheet
                         </button>
                       </td>
                       <td>
@@ -239,7 +239,7 @@ const ViewStudent: React.FC = () => {
                           className={styles.viewBtn}
                           onClick={() => handleViewCertificate(student)}
                         >
-                          View
+                          View Certificate
                         </button>
                       </td>
                       <td>

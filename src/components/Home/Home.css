@@ -297,7 +297,7 @@ body {
   margin: 0 30px; /* Add some spacing between logos */
   display: inline-block;
   width: 120px;
-  height: auto;
+  height: 7rem;
 }
 
 .partner-logo img {

@@ -22,7 +22,7 @@ export interface StudentData {
 }
 
 // Define your API base URL. (You can use an environment variable for production.)
-// const API_URL = process.env.REACT_APP_API_URL || "http://localhost:4000";
+// const API_URL = import.meta.env.VITE_APP_API_BASE_URL;
 
 // Function to submit student data to the backend
 export const submitStudentData = async (data: StudentData): Promise<any> => {
@@ -38,7 +38,7 @@ export const submitStudentData = async (data: StudentData): Promise<any> => {
     });
 
     // POST the form data using axios. The content-type will be set automatically.
-    const response = await axios.post(`api/students`, formData, {
+    const response = await axios.post(`/api/student/add-student`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

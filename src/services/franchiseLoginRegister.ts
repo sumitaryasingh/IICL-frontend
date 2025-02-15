@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 
-const API_URL = '/api/'; // Replace with your actual API base URL
+const API_URL = import.meta.env.VITE_APP_API_BASE_URL; // Replace with your actual API base URL
 
 // Define response structure
 interface ResponseData {
@@ -15,7 +15,7 @@ interface ErrorResponseData {
 export const loginUser = async (data: { email: string; password: string }) => {
     try {
         console.log("this is loginData ::", data);
-        const response = await axios.post<ResponseData>(`${API_URL}login`, data);
+        const response = await axios.post<ResponseData>(`/api/login/franchise-login`, data);
         toast.success(response.data.message); // Display success message
     } catch (error) {
         const axiosError = error as AxiosError<ErrorResponseData>; // Typecast the error to AxiosError

@@ -12,7 +12,7 @@ interface Partner {
 const partners: Partner[] = [
   {
     name: "ISO Certified 9001:2015",
-    logo: "../images/isoLogo.gif",
+    logo: "../images/isoLogo1.jpg",
     url: "#"
   },
   {
@@ -22,7 +22,7 @@ const partners: Partner[] = [
   },
   {
     name: "MSME Certified",
-    logo: "../images/MSME_Logo.svg",
+    logo: "../images/msmeLogo.jpg",
     url: "#"
   },
   {

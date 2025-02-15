@@ -16,10 +16,10 @@ const jsonData = {
         "session": "12-05-2022 TO 12-05-2023"
     }
 }
-
+const API_URL = import.meta.env.VITE_APP_API_BASE_URL;
 export const fetchStudentDetails = async (enrollmentNo: string) => {
     try {
-        // const response = await axios.post("/api/student-details", { enrollmentNo });
+        const response = await axios.post(`${API_URL}/api/student-details`, { enrollmentNo });
         return jsonData;
         // return response.data;
     } catch (error) {

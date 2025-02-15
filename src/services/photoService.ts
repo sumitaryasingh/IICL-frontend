@@ -8,11 +8,10 @@ export const uploadPhoto = async (file: File): Promise<any> => {
   formData.append("photo", file);
 
   // Set your API base URL via environment variable or hard-code it
-//   const API_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:4000";
-
+  const API_URL = import.meta.env.VITE_APP_API_BASE_URL;
   try {
     // POST the formData to the endpoint (adjust '/photos' to your endpoint)
-    const response = await axios.post(`api/photos`, formData, {
+    const response = await axios.post(`${API_URL}/api/photos`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

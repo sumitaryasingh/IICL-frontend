@@ -14,12 +14,12 @@ export interface FranchiseData {
 }
 
 // Define your API base URL (set an environment variable if needed)
-// const API_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:4000";
+const API_URL = import.meta.env.VITE_APP_API_BASE_URL;
 
 // Function to submit franchise data
 export const submitFranchiseData = async (data: FranchiseData): Promise<any> => {
   try {
-    const response = await axios.post(`api/franchises`, data);
+    const response = await axios.post(`${API_URL}/api/franchises`, data);
     return response.data;
   } catch (error) {
     // You can further process or log the error here before rethrowing

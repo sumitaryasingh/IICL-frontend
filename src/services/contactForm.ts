@@ -5,7 +5,7 @@ export const submitContactForm = async (formData: any) => {
         console.log("This is formData:", formData);
 
         // Make sure to replace with the actual backend endpoint.
-        const response = await axios.post(`${API_URL}/api/contact`, formData);
+        const response = await axios.post(`/api/contact`, formData);
 
         return response.data; // Assuming the backend responds with a data object that includes `success`
     } catch (error: any) {

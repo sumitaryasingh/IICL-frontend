@@ -15,7 +15,7 @@ interface ErrorResponseData {
 export const loginUser = async (data: { email: string; password: string }) => {
     try {
         console.log("this is loginData ::", data);
-        const response = await axios.post<ResponseData>(`${API_URL}/login`, data);
+        const response = await axios.post<ResponseData>(`/api/login/franchise-login`, data);
         toast.success(response.data.message); // Display success message
     } catch (error) {
         const axiosError = error as AxiosError<ErrorResponseData>; // Typecast the error to AxiosError

@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+// components/DashboardIndex.tsx
+import React from "react";
 import { Route, Routes } from "react-router-dom";
+import DashboardLayout from "./DashboardLayout";
 import DashboardHome from "./DashboardHome";
 import AddFranchiseForm from "./AddFranchiseForm";
-import { ToastContainer } from "react-toastify";
 import ViewFranchise from "./ViewFranchise";
-import Navbar from "./Navbar";
-import DashboardSidebar from "./DashboardSidebar";
 import AddBatchForm from "./AddBatchForm";
 import ViewBatch from "./ViewBatch";
 import AddStudentForm from "./AddStudentForm";
@@ -14,40 +13,33 @@ import AddPhoto from "./AddPhoto";
 import AdminFranchiseProfile from "./Profile";
 import Certificate from "./Certificate";
 import Marksheet from "./Marksheet";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const DashboardIndex = () => {
+const DashboardIndex: React.FC = () => {
   return (
-    <div className="DashboardIndex">
-      <Navbar/>
-      <DashboardSidebar/>
+    <DashboardLayout>
       <Routes>
-        <Route path="/" element={<DashboardHome/>}/>
-        
-        <Route path="/profile" element={<AdminFranchiseProfile/>}/>
-        
-        <Route path="/franchise">
-          <Route path="add" element={<AddFranchiseForm />}/>
-          <Route path="view" element={<ViewFranchise />}/>
-        </Route>
-
-        <Route path="/batches">
-        <Route path="add" element={<AddBatchForm/>}/>
-        <Route path="view" element={<ViewBatch/>}/>
-        </Route>
-
-
-        <Route path="/students">
-        <Route path="add" element={<AddStudentForm/>}/>
-        <Route path="view" element={<ViewStudent/>}/>
-        <Route path="view/certificate/:studentId" element={<Certificate/>}/>
-        <Route path="view/marksheet/:studentId" element={<Marksheet/>}/>
-        </Route>
-
-        <Route path="/gallery-photo">
-        <Route path="add" element={<AddPhoto/>}/>
-        </Route>
+        <Route path="/" element={<DashboardHome />} />
+        <Route path="/profile" element={<AdminFranchiseProfile />} />
+        <Route path="/franchise/add" element={<AddFranchiseForm />} />
+        <Route path="/franchise/view" element={<ViewFranchise />} />
+        <Route path="/batches/add" element={<AddBatchForm />} />
+        <Route path="/batches/view" element={<ViewBatch />} />
+        <Route path="/students/add" element={<AddStudentForm />} />
+        <Route path="/students/view" element={<ViewStudent />} />
+        <Route
+          path="/students/view/certificate/:studentId"
+          element={<Certificate />}
+        />
+        <Route
+          path="/students/view/marksheet/:studentId"
+          element={<Marksheet />}
+        />
+        <Route path="/gallery-photo/add" element={<AddPhoto />} />
       </Routes>
-    </div>
+      <ToastContainer position="top-right" autoClose={3000} />
+    </DashboardLayout>
   );
 };
 

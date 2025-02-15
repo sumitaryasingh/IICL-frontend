@@ -1,23 +1,9 @@
+// components/ViewBatch.tsx
 import React, { useState, useEffect } from "react";
 import styles from "./styles/ViewBatch.module.css";
 import Navbar from "./Navbar";
 import DashboardSidebar from "./DashboardSidebar";
-
-export interface BatchData {
-  course: string;
-  time: string;
-}
-
-// Sample data for demonstration
-const sampleData: BatchData[] = [
-  { course: "B.Sc Computer Science", time: "9:00 AM - 11:00 AM" },
-  { course: "BBA", time: "11:00 AM - 1:00 PM" },
-  { course: "MBA", time: "2:00 PM - 4:00 PM" },
-  { course: "MCA", time: "10:00 AM - 12:00 PM" },
-  { course: "B.Tech", time: "1:00 PM - 3:00 PM" },
-  { course: "Diploma in IT", time: "3:30 PM - 5:30 PM" },
-  // Add more sample items as needed...
-];
+import { fetchBatchOptions, BatchData } from "../../services/batchService";
 
 const ViewBatch: React.FC = () => {
   // State for batch data
@@ -31,10 +17,14 @@ const ViewBatch: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState<number>(5);
 
-  // Initialize with sample data
+  // Fetch data from backend (or fallback sample data) on mount
   useEffect(() => {
-    setBatches(sampleData);
-    setFilteredData(sampleData);
+    const getBatches = async () => {
+      const data = await fetchBatchOptions();
+      setBatches(data);
+      setFilteredData(data);
+    };
+    getBatches();
   }, []);
 
   // Update filtered data whenever dependencies change
@@ -98,7 +88,6 @@ const ViewBatch: React.FC = () => {
 
   return (
     <div className={styles.dashboardContainer}>
-      <DashboardSidebar />
       <div className={styles.mainContent}>
         <Navbar />
         <div className={styles.pageContent}>

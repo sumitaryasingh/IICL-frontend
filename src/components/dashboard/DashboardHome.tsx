@@ -1,14 +1,13 @@
-import React, { useState } from "react";
-import DashboardSidebar from "./DashboardSidebar";
+import React, { useState, useCallback } from "react";
 import styles from "./styles/Dashboard.module.css";
-import Navbar from "./Navbar";
 
-const DashboardHome = () => {
+
+const DashboardHome: React.FC = () => {
+
   return (
-    <div className={styles.dashboardContainer}>
-      <DashboardSidebar />
+    // Conditionally add the "sidebar-closed" class when the sidebar is not open.
+    <div className={`${styles.dashboardContainer }`}>
       <div className={styles.mainContent}>
-        <Navbar/>
         <div className={styles.pageContent}>
           <h1>Welcome to the Dashboard</h1>
         </div>

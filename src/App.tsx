@@ -31,6 +31,7 @@ import ViewBatch from "./components/dashboard/ViewBatch";
 import AddStudentForm from "./components/dashboard/AddStudentForm";
 import ViewStudent from "./components/dashboard/ViewStudent";
 import AddPhoto from "./components/dashboard/AddPhoto";
+import AdminFranchiseProfile from "./components/dashboard/Profile";
 import Certificate from "./components/dashboard/Certificate";
 import Marksheet from "./components/dashboard/Marksheet";
 const App: React.FC = () => {
@@ -57,7 +58,7 @@ const App: React.FC = () => {
         </Route>
         {/* Dashboard Route */}
         <Route path="/dashboard/*" element={<DashboardIndex />} >
-          {/* <Route path="profile" element={}/> */}
+          <Route path="profile" element={<AdminFranchiseProfile/>}/>
             <Route path="franchise/add" element={<AddFranchiseForm />}/>
             <Route path="franchise/view" element={<ViewFranchise/>}/>
             <Route path="batches/add" element={<AddBatchForm/>}/>

@@ -23,12 +23,15 @@ export interface StudentData {
   email: string;
   phone: string;
   course: string;
+  fatherName:string;
+  motherName:string;
   enrollmentNumber: string;
   status: "Active" | "Completed";
   marksheet: string;       // URL or identifier for the marksheet
   certificate: string;     // URL or identifier for the certificate
   institute: string;       // Institute name
   location: string;        // Location
+  percentage:number;
   marks: number;           // Overall marks obtained (e.g., out of 800)
   grade: string;           // Grade achieved
   date: string;            // Date (e.g., exam or certificate date)
@@ -48,12 +51,15 @@ const sampleStudents: StudentData[] = [
     email: "john@example.com",
     phone: "1234567890",
     course: "B.Sc Computer Science",
+    fatherName:"John Pandey",
+    motherName:"Elizabeth Chaubey",
     enrollmentNumber: "ENR001",
     status: "Active",
     marksheet: "/marksheet/john",
     certificate: "/certificate/john",
     institute: "ABC Institute",
     location: "Cityville",
+    percentage:79,
     marks: 680,
     grade: "A",
     date: "2023-07-15",

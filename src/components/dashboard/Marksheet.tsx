@@ -39,6 +39,24 @@ const Marksheet: React.FC = () => {
   const { student } = location.state as LocationState;
   const marksheetRef = useRef<HTMLDivElement>(null);
 
+  // Function to calculate total marks, percentage, and grade based on subjects marks
+  const calculateMarks = (subjects: Subject[]) => {
+    const totalObtained = subjects.reduce((acc, sub) => acc + sub.obtainedTotal, 0);
+    const totalMax = subjects.reduce((acc, sub) => acc + sub.totalMarks, 0);
+    const percentage = (totalObtained / totalMax) * 100;
+    let grade = "";
+    if (percentage >= 90) grade = "A+";
+    else if (percentage >= 80) grade = "A";
+    else if (percentage >= 70) grade = "B+";
+    else if (percentage >= 60) grade = "B";
+    else if (percentage >= 50) grade = "C";
+    else grade = "F";
+    return { totalObtained, totalMax, percentage, grade };
+  };
+
+  // Get computed marks from the subjects list
+  const computedMarks = calculateMarks(student.subjects);
+
   const handleDownload = async () => {
     if (!marksheetRef.current) return;
     const canvas = await html2canvas(marksheetRef.current, { scale: 2 });
@@ -108,15 +126,15 @@ const Marksheet: React.FC = () => {
               </tr>
               <tr>
                 <td><strong>Total Marks:</strong></td>
-                <td>{student.marks} out of 800</td>
+                <td>{computedMarks.totalObtained} out of {computedMarks.totalMax}</td>
               </tr>
               <tr>
                 <td><strong>Percentage:</strong></td>
-                <td>{student.percentage} %</td>
+                <td>{computedMarks.percentage.toFixed(2)}%</td>
               </tr>
               <tr>
                 <td><strong>Grade:</strong></td>
-                <td>{student.grade}</td>
+                <td>{computedMarks.grade}</td>
               </tr>
             </tbody>
           </table>

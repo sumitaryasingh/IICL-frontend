@@ -1,5 +1,4 @@
-/* Overall Dashboard Layout */
-  /* Page-specific content */
+
   .pageContent {
     padding: 2rem;
     background-color: #f4f6f8;
@@ -52,6 +51,8 @@
     border: 1px solid #ccc;
     border-radius: 4px;
   }
+
+  
   
   /* Responsive Table Container */
   .tableContainer {
@@ -68,14 +69,14 @@
   
   .table th,
   .table td {
-    padding: 10px;
+    padding:0.5rem 1rem;
     border: 1px solid #ddd;
     text-align: left;
     cursor: pointer;
   }
   
   .table th {
-    background-color: rgb(0, 0, 139);
+    background-color:#003366;
     color: #fff;
   }
   

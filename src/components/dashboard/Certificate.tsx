@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import styles from "./styles/Certificate.module.css";
@@ -15,6 +15,8 @@ interface StudentData {
   rollNumber: string;
   certificateNumber: string;
   organization: string;
+  fatherName: string;
+  motherName: string;
 }
 
 interface LocationState {
@@ -26,16 +28,19 @@ const Certificate: React.FC = () => {
   const { student } = location.state as LocationState;
   const certificateRef = useRef<HTMLDivElement>(null);
 
-  const handleDownload = async () => {
+  const handleDownload = useCallback(async () => {
     if (!certificateRef.current) return;
+    try {
+      const canvas = await html2canvas(certificateRef.current, { scale: 2 });
+      const imgData = canvas.toDataURL("image/png");
 
-    const canvas = await html2canvas(certificateRef.current, { scale: 2 });
-    const imgData = canvas.toDataURL("image/png");
-
-    const pdf = new jsPDF("landscape", "in", [11, 8.5]);
-    pdf.addImage(imgData, "PNG", 0, 0, 11, 8.5);
-    pdf.save(`${student.name}_Certificate.pdf`);
-  };
+      const pdf = new jsPDF("landscape", "in", [11, 8.5]);
+      pdf.addImage(imgData, "PNG", 0, 0, 11, 8.5);
+      pdf.save(`${student.name}_Certificate.pdf`);
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+    }
+  }, [student]);
 
   if (!student) return <p>Loading...</p>;
 
@@ -45,7 +50,11 @@ const Certificate: React.FC = () => {
         {/* Certificate Header */}
         <div className={styles.header}>
           <div className={styles.student_img_box}>
-            <img src="/images/student1.png" className={styles.student_img} alt="Student" />
+            <img
+              src="/images/student1.png"
+              className={styles.student_img}
+              alt="Student"
+            />
             <p className={styles.enrollment}>
               Enrollment No. : <strong>{student.rollNumber}</strong>
             </p>
@@ -53,10 +62,14 @@ const Certificate: React.FC = () => {
 
           <div className={styles.institue_box}>
             <div>
-              <img src="/images/iicl-iconT.png" className={styles.institute_icon} alt="IICL Logo" />
+              <img
+                src="/images/iicl-iconT.png"
+                className={styles.institute_icon}
+                alt="IICL Logo"
+              />
             </div>
             <div className={styles.certifications}>
-              Incorporated Under Section 8, Ministry of Corporate Affairs & Ministry of Labour, Govt. of India  
+              Incorporated Under Section 8, Ministry of Corporate Affairs &amp; Ministry of Labour, Govt. of India  
               Registered Under The Ordinance of Govt. of India  
               Registered Under NITI Aayog, Govt. of India  
               <br />
@@ -65,7 +78,11 @@ const Certificate: React.FC = () => {
           </div>
 
           <div className={styles.qr_code_box}>
-            <img src="/images/dca.png" alt="QR Code" className={styles.certificate_qr} />
+            <img
+              src="/images/dca.png"
+              alt="QR Code"
+              className={styles.certificate_qr}
+            />
             <p className={styles.certificate_no}>
               Certificate No. : <strong>{student.certificateNumber}</strong>
             </p>
@@ -76,7 +93,11 @@ const Certificate: React.FC = () => {
           </div>
         </div>
         <span className={styles.copyright}>
-        <img src="/images/iicl-iconT.png" className={styles.institute_icon} alt="IICL Logo" />
+          <img
+            src="/images/iicl-iconT.png"
+            className={styles.institute_icon}
+            alt="IICL Logo"
+          />
         </span>
         <div className={styles.subtitle}>
           <p>This Certificate is Proudly Presented To</p>
@@ -85,8 +106,8 @@ const Certificate: React.FC = () => {
         <h2 className={styles.studentName}>{student.name}</h2>
 
         <p className={styles.institute}>
-           Father's/ Husband's name <span> Javed Chaurasiya </span>
-           Mother's name <span> Shaimun Nisha </span> 
+           Father's/ Husband's name<span>{student.fatherName}</span>
+           Mother's name<span>{student.motherName}</span>
            <br />
            Learning at <strong>{student.institute}, {student.location}</strong>
            <br />
@@ -94,20 +115,17 @@ const Certificate: React.FC = () => {
            <br />
            on <strong>{student.date}</strong>
         </p>
-         <span className={styles.qrCode}>
+        
+        <span className={styles.qrCode}>
           <img src="/images/dummy_qr.png" alt="QR" />
-         </span>
+        </span>
         <p className={styles.certificationsLogos}>
           <img src="/images/iafLogo.svg" alt="IAF Logo" />
           <img src="/images/isoLogo1.jpg" alt="ISO Logo" />
           <img src="/images/msmeLogo.jpg" alt="MSME Logo" />
         </p>
-        <span className={styles.authSignature}>
-          Auth. Sign
-        </span>
-        <span className={styles.centreSignature}>
-          Centre Director Sign
-        </span>
+        <span className={styles.authSignature}>Auth. Sign</span>
+        <span className={styles.centreSignature}>Centre Director Sign</span>
       </div>
       {/* Download Button */}
       <button onClick={handleDownload} className={styles.downloadBtn}>

@@ -1,70 +1,38 @@
-import React, { useState, useEffect } from "react";
+// components/ViewStudent.tsx
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import styles from "./styles/ViewStudent.module.css";
 import Navbar from "./Navbar";
 import DashboardSidebar from "./DashboardSidebar";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
-
-export interface StudentData {
-  id: number;
-  name: string;
-  email: string;
-  phone: string;
-  course: string;
-  enrollmentNumber: string;
-  status: "Active" | "Completed";
-  marksheet: string;  // URL or identifier for the marksheet
-  certificate: string; // URL or identifier for the certificate
-}
-
-// Sample student data for demonstration
-const sampleStudents: StudentData[] = [
-  {
-    id: 1,
-    name: "John Doe",
-    email: "john@example.com",
-    phone: "1234567890",
-    course: "B.Sc Computer Science",
-    enrollmentNumber: "ENR001",
-    status: "Active",
-    marksheet: "/marksheet/john",
-    certificate: "/certificate/john",
-  },
-  {
-    id: 2,
-    name: "Jane Doe",
-    email: "jane@example.com",
-    phone: "0987654321",
-    course: "MBA",
-    enrollmentNumber: "ENR002",
-    status: "Completed",
-    marksheet: "/marksheet/jane",
-    certificate: "/certificate/jane",
-  },
-  // Add more sample student items as needed...
-];
+import { useNavigate } from "react-router-dom";
+import { fetchStudents, StudentData } from "../../services/studentService";
 
 const ViewStudent: React.FC = () => {
-  // Main student data state
+  // State variables
   const [students, setStudents] = useState<StudentData[]>([]);
-  // Filtered/sorted data for the table
-  const [filteredData, setFilteredData] = useState<StudentData[]>([]);
-
-  // For filtering, sorting, and pagination
   const [filterText, setFilterText] = useState("");
   const [sortField, setSortField] = useState<keyof StudentData | "">("");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState<number>(5);
+  const navigate = useNavigate();
 
-  // Initialize with sample data
+  // Fetch student data from the API on component mount.
   useEffect(() => {
-    setStudents(sampleStudents);
-    setFilteredData(sampleStudents);
+    const getStudents = async () => {
+      try {
+        const data = await fetchStudents();
+        setStudents(data);
+      } catch (error) {
+        console.error("Error fetching student data:", error);
+      }
+    };
+    getStudents();
   }, []);
 
-  // Update filtered data whenever filterText, sorting, or student data changes
-  useEffect(() => {
+  // Memoized filtered and sorted data
+  const filteredData = useMemo(() => {
     let data = [...students];
 
     // Filter by name or email (case-insensitive)
@@ -87,54 +55,68 @@ const ViewStudent: React.FC = () => {
       });
     }
 
-    setFilteredData(data);
-    setCurrentPage(1); // Reset to first page when filtering/sorting changes
-  }, [filterText, students, sortField, sortOrder]);
+    return data;
+  }, [students, filterText, sortField, sortOrder]);
 
-  // Calculate pagination indices
+  // Reset current page when filter or sort changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filterText, sortField, sortOrder]);
+
+  // Pagination calculation
   const indexOfLast = currentPage * pageSize;
   const indexOfFirst = indexOfLast - pageSize;
-  const currentItems = filteredData.slice(indexOfFirst, indexOfLast);
+  const currentItems = useMemo(
+    () => filteredData.slice(indexOfFirst, indexOfLast),
+    [filteredData, indexOfFirst, indexOfLast]
+  );
   const totalPages = Math.ceil(filteredData.length / pageSize);
 
-  // Toggle sorting on header click
-  const handleSort = (field: keyof StudentData) => {
-    if (sortField === field) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortField(field);
-      setSortOrder("asc");
-    }
-  };
+  // Event handlers wrapped in useCallback for performance optimization.
+  const handleSort = useCallback(
+    (field: keyof StudentData) => {
+      if (sortField === field) {
+        setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+      } else {
+        setSortField(field);
+        setSortOrder("asc");
+      }
+    },
+    [sortField]
+  );
 
-  // Change page
-  const handlePageChange = (page: number) => {
+  const handlePageChange = useCallback((page: number) => {
     setCurrentPage(page);
-  };
+  }, []);
 
-  // Dummy action handlers
-  const handleEdit = (student: StudentData) => {
+  const handleEdit = useCallback((student: StudentData) => {
     console.log("Editing student:", student);
     // Implement edit functionality here
-  };
+  }, []);
 
-  const handleDelete = (student: StudentData) => {
+  const handleDelete = useCallback((student: StudentData) => {
     console.log("Deleting student:", student);
     // Implement delete functionality here
-  };
+  }, []);
 
-  const handleViewMarksheet = (student: StudentData) => {
-    console.log("Viewing marksheet for:", student);
-    // Implement view marksheet functionality here
-  };
+  const handleViewMarksheet = useCallback(
+    (student: StudentData) => {
+      navigate(`/dashboard/students/view/marksheet/${student.id}`, { state: { student } });
+      console.log("Viewing marksheet for:", student);
+    },
+    [navigate]
+  );
 
-  const handleViewCertificate = (student: StudentData) => {
-    console.log("Viewing certificate for:", student);
-    // Implement view certificate functionality here
-  };
+  const handleViewCertificate = useCallback(
+    (student: StudentData) => {
+      navigate(`/dashboard/students/view/certificate/${student.id}`, { state: { student } });
+      console.log("Viewing certificate for:", student);
+    },
+    [navigate]
+  );
 
-  // Export the filtered student data to an Excel file (excluding certificate & marksheet)
-  const exportToExcel = () => {
+  const exportToExcel = useCallback(() => {
+    // Exclude certificate and marksheet from export
     const dataToExport = filteredData.map(({ certificate, marksheet, ...rest }) => rest);
     const worksheet = XLSX.utils.json_to_sheet(dataToExport);
     const workbook = XLSX.utils.book_new();
@@ -144,13 +126,11 @@ const ViewStudent: React.FC = () => {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
     saveAs(dataBlob, "iicl_students.xlsx");
-  };
+  }, [filteredData]);
 
   return (
     <div className={styles.dashboardContainer}>
-      <DashboardSidebar />
       <div className={styles.mainContent}>
-        <Navbar />
         <div className={styles.pageContent}>
           <h2>View Students</h2>
 
@@ -186,7 +166,7 @@ const ViewStudent: React.FC = () => {
             />
           </div>
 
-          {/* Responsive Table Container */}
+          {/* Table Container */}
           <div className={styles.tableContainer}>
             <table className={styles.table}>
               <thead>
@@ -196,9 +176,7 @@ const ViewStudent: React.FC = () => {
                   <th onClick={() => handleSort("email")}>Email</th>
                   <th onClick={() => handleSort("phone")}>Phone</th>
                   <th onClick={() => handleSort("course")}>Course</th>
-                  <th onClick={() => handleSort("enrollmentNumber")}>
-                    Enrollment No.
-                  </th>
+                  <th onClick={() => handleSort("enrollmentNumber")}>Enrollment No.</th>
                   <th onClick={() => handleSort("status")}>Status</th>
                   <th>Marksheet</th>
                   <th>Certificate</th>
@@ -216,43 +194,25 @@ const ViewStudent: React.FC = () => {
                       <td>{student.course}</td>
                       <td>{student.enrollmentNumber}</td>
                       <td>
-                        <span
-                          className={
-                            student.status === "Active"
-                              ? styles.active
-                              : styles.completed
-                          }
-                        >
+                        <span className={student.status === "Active" ? styles.active : styles.completed}>
                           {student.status}
                         </span>
                       </td>
                       <td>
-                        <button
-                          className={styles.viewBtn}
-                          onClick={() => handleViewMarksheet(student)}
-                        >
+                        <button className={styles.viewBtn} onClick={() => handleViewMarksheet(student)}>
                           View Marksheet
                         </button>
                       </td>
                       <td>
-                        <button
-                          className={styles.viewBtn}
-                          onClick={() => handleViewCertificate(student)}
-                        >
+                        <button className={styles.viewBtn} onClick={() => handleViewCertificate(student)}>
                           View Certificate
                         </button>
                       </td>
                       <td>
-                        <button
-                          className={styles.editBtn}
-                          onClick={() => handleEdit(student)}
-                        >
+                        <button className={styles.editBtn} onClick={() => handleEdit(student)}>
                           Edit
                         </button>
-                        <button
-                          className={styles.deleteBtn}
-                          onClick={() => handleDelete(student)}
-                        >
+                        <button className={styles.deleteBtn} onClick={() => handleDelete(student)}>
                           Delete
                         </button>
                       </td>
@@ -269,10 +229,7 @@ const ViewStudent: React.FC = () => {
 
           {/* Pagination Controls */}
           <div className={styles.pagination}>
-            <button
-              disabled={currentPage === 1}
-              onClick={() => handlePageChange(currentPage - 1)}
-            >
+            <button disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)}>
               Prev
             </button>
             <span>

@@ -1,10 +1,9 @@
+// components/AddFranchiseForm.tsx
 import React, { useState } from "react";
 import styles from "./styles/AddFranchiseForm.module.css";
-import Navbar from "./Navbar";
-import DashboardSidebar from "./DashboardSidebar";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { submitFranchiseData, FranchiseData } from "../../services/franchiseService";
+import { submitFranchiseData } from "../../services/franchiseService";
 
 interface FranchiseFormData {
   firstName: string;
@@ -41,7 +40,7 @@ const AddFranchiseForm: React.FC = () => {
     }));
   };
 
-  const handleSubmit =async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     // Regular expressions for email, mobile, and Aadhar validation
@@ -49,9 +48,7 @@ const AddFranchiseForm: React.FC = () => {
     const mobileRegex = /^[0-9]{10}$/;
     const aadharRegex = /^[0-9]{12}$/;
 
-    // Field validations
     if (!formData.firstName.trim()) {
-      console.log("First name is empty");
       toast.error("First name is required");
       return;
     }
@@ -100,12 +97,9 @@ const AddFranchiseForm: React.FC = () => {
       return;
     }
 
-    // If validation passes, simulate form submission.
-    // console.log("Franchise Data Submitted:", formData);
     try {
       await submitFranchiseData(formData);
       toast.success("Franchise added successfully!");
-      // Optionally, reset form data after successful submission
       setFormData({
         firstName: "",
         lastName: "",
@@ -124,135 +118,132 @@ const AddFranchiseForm: React.FC = () => {
   };
 
   return (
-    <>
-      <div className={styles.formContainer}>
-        <h2>Add Franchise</h2>
-        <form onSubmit={handleSubmit} noValidate className={styles.form}>
-          {/* First Row: First Name & Last Name */}
-          <div className={styles.formRow}>
-            <div className={styles.formGroup}>
-              <label htmlFor="firstName">First Name</label>
-              <input
-                type="text"
-                id="firstName"
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className={styles.formGroup}>
-              <label htmlFor="lastName">Last Name</label>
-              <input
-                type="text"
-                id="lastName"
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleChange}
-                required
-              />
-            </div>
+    <div className={styles.formContainer}>
+      <h2>Add Franchise</h2>
+      <form onSubmit={handleSubmit} noValidate className={styles.form}>
+        {/* First Row: First Name & Last Name */}
+        <div className={styles.formRow}>
+          <div className={styles.formGroup}>
+            <label htmlFor="firstName">First Name</label>
+            <input
+              type="text"
+              id="firstName"
+              name="firstName"
+              value={formData.firstName}
+              onChange={handleChange}
+              required
+            />
           </div>
-
-          {/* Second Row: Date of Birth & Director Name */}
-          <div className={styles.formRow}>
-            <div className={styles.formGroup}>
-              <label htmlFor="dob">Date of Birth</label>
-              <input
-                type="date"
-                id="dob"
-                name="dob"
-                value={formData.dob}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className={styles.formGroup}>
-              <label htmlFor="directorName">Director Name</label>
-              <input
-                type="text"
-                id="directorName"
-                name="directorName"
-                value={formData.directorName}
-                onChange={handleChange}
-                required
-              />
-            </div>
+          <div className={styles.formGroup}>
+            <label htmlFor="lastName">Last Name</label>
+            <input
+              type="text"
+              id="lastName"
+              name="lastName"
+              value={formData.lastName}
+              onChange={handleChange}
+              required
+            />
           </div>
+        </div>
 
-          {/* Third Row: Institute Name & Mobile Number */}
-          <div className={styles.formRow}>
-            <div className={styles.formGroup}>
-              <label htmlFor="instituteName">Institute Name</label>
-              <input
-                type="text"
-                id="instituteName"
-                name="instituteName"
-                value={formData.instituteName}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className={styles.formGroup}>
-              <label htmlFor="mobile">Mobile Number</label>
-              <input
-                type="tel"
-                id="mobile"
-                name="mobile"
-                value={formData.mobile}
-                onChange={handleChange}
-                required
-              />
-            </div>
+        {/* Second Row: Date of Birth & Director Name */}
+        <div className={styles.formRow}>
+          <div className={styles.formGroup}>
+            <label htmlFor="dob">Date of Birth</label>
+            <input
+              type="date"
+              id="dob"
+              name="dob"
+              value={formData.dob}
+              onChange={handleChange}
+              required
+            />
           </div>
-
-          {/* Fourth Row: Email & Aadhar ID */}
-          <div className={styles.formRow}>
-            <div className={styles.formGroup}>
-              <label htmlFor="email">Email</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className={styles.formGroup}>
-              <label htmlFor="aadharId">Aadhar ID</label>
-              <input
-                type="text"
-                id="aadharId"
-                name="aadharId"
-                value={formData.aadharId}
-                onChange={handleChange}
-                required
-              />
-            </div>
+          <div className={styles.formGroup}>
+            <label htmlFor="directorName">Director Name</label>
+            <input
+              type="text"
+              id="directorName"
+              name="directorName"
+              value={formData.directorName}
+              onChange={handleChange}
+              required
+            />
           </div>
+        </div>
 
-          {/* Full Row: Address */}
-          <div className={styles.formRow}>
-            <div className={styles.formGroup} style={{ flex: "1" }}>
-              <label htmlFor="address">Address</label>
-              <textarea
-                id="address"
-                name="address"
-                value={formData.address}
-                onChange={handleChange}
-                required
-              ></textarea>
-            </div>
+        {/* Third Row: Institute Name & Mobile Number */}
+        <div className={styles.formRow}>
+          <div className={styles.formGroup}>
+            <label htmlFor="instituteName">Institute Name</label>
+            <input
+              type="text"
+              id="instituteName"
+              name="instituteName"
+              value={formData.instituteName}
+              onChange={handleChange}
+              required
+            />
           </div>
+          <div className={styles.formGroup}>
+            <label htmlFor="mobile">Mobile Number</label>
+            <input
+              type="tel"
+              id="mobile"
+              name="mobile"
+              value={formData.mobile}
+              onChange={handleChange}
+              required
+            />
+          </div>
+        </div>
 
-          <button type="submit" className={styles.submitBtn}>
-            Submit
-          </button>
-        </form>
-      </div>
-      <ToastContainer position="top-right" autoClose={3000} />
-    </>
+        {/* Fourth Row: Email & Aadhar ID */}
+        <div className={styles.formRow}>
+          <div className={styles.formGroup}>
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className={styles.formGroup}>
+            <label htmlFor="aadharId">Aadhar ID</label>
+            <input
+              type="text"
+              id="aadharId"
+              name="aadharId"
+              value={formData.aadharId}
+              onChange={handleChange}
+              required
+            />
+          </div>
+        </div>
+
+        {/* Full Row: Address */}
+        <div className={styles.formRow}>
+          <div className={styles.formGroup} style={{ flex: "1" }}>
+            <label htmlFor="address">Address</label>
+            <textarea
+              id="address"
+              name="address"
+              value={formData.address}
+              onChange={handleChange}
+              required
+            ></textarea>
+          </div>
+        </div>
+
+        <button type="submit" className={styles.submitBtn}>
+          Submit
+        </button>
+      </form>
+    </div>
   );
 };
 

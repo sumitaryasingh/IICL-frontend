@@ -32,6 +32,8 @@ import AddStudentForm from "./components/dashboard/AddStudentForm";
 import ViewStudent from "./components/dashboard/ViewStudent";
 import AddPhoto from "./components/dashboard/AddPhoto";
 import AdminFranchiseProfile from "./components/dashboard/Profile";
+import Certificate from "./components/dashboard/Certificate";
+import Marksheet from "./components/dashboard/Marksheet";
 const App: React.FC = () => {
   return (
     <div className="App">
@@ -63,7 +65,10 @@ const App: React.FC = () => {
             <Route path="batches/view" element={<ViewBatch/>}/>
             <Route path="students/add" element={<AddStudentForm/>} />
             <Route path="students/view" element={<ViewStudent/>} />
+            <Route path="students/view/certificate/:studentId" element={<Certificate/>}/>
+            <Route path="students/view/marksheet/:studentId" element={<Marksheet/>}/>
             <Route path="gallery-photo/add" element={<AddPhoto/>} />
+
         </Route>
 
         {/* Student Zone Parent Route */}

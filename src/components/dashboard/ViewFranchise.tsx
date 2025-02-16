@@ -1,79 +1,39 @@
-import React, { useState, useEffect } from "react";
+// components/ViewFranchise.tsx
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import styles from "./styles/ViewFranchise.module.css";
-import Navbar from "./Navbar";
-import DashboardSidebar from "./DashboardSidebar";
-
-export interface FranchiseData {
-  firstName: string;
-  lastName: string;
-  dob: string;
-  directorName: string;
-  instituteName: string;
-  address: string;
-  mobile: string;
-  email: string;
-  aadharId: string;
-}
-
-// Sample data for demonstration
-const sampleData: FranchiseData[] = [
-  {
-    firstName: "John",
-    lastName: "Doe",
-    dob: "1990-01-01",
-    directorName: "Alice Smith",
-    instituteName: "Institute A",
-    address: "123 Main St, Cityville",
-    mobile: "1234567890",
-    email: "john.doe@example.com",
-    aadharId: "123456789012"
-  },
-  {
-    firstName: "Jane",
-    lastName: "Roe",
-    dob: "1988-05-12",
-    directorName: "Bob Johnson",
-    instituteName: "Institute B",
-    address: "456 Elm St, Townsville",
-    mobile: "0987654321",
-    email: "jane.roe@example.com",
-    aadharId: "987654321098"
-  },
-  // Add more sample items as needed...
-];
+import { fetchFranchiseData, FranchiseData } from "../../services/viewFranchise";
 
 const ViewFranchise: React.FC = () => {
-  // Original franchise data and filtered data
-  const [franchises, setFranchises] = useState<FranchiseData[]>([]);
-  const [filteredData, setFilteredData] = useState<FranchiseData[]>([]);
 
-  // For filtering, sorting, and pagination
+  // Franchise data state
+  const [franchises, setFranchises] = useState<FranchiseData[]>([]);
   const [filterText, setFilterText] = useState("");
   const [sortField, setSortField] = useState<keyof FranchiseData | "">("");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 5;
 
-  // Initialize with sample data
+  // Fetch franchise data on mount
   useEffect(() => {
-    setFranchises(sampleData);
-    setFilteredData(sampleData);
+    const getData = async () => {
+      const data = await fetchFranchiseData();
+      setFranchises(data);
+    };
+    getData();
   }, []);
 
-  // Filter and sort whenever dependencies change
-  useEffect(() => {
+  // Compute filtered and sorted data
+  const filteredData = useMemo(() => {
     let data = [...franchises];
-
-    // Filtering by firstName, lastName, or email
     if (filterText) {
-      data = data.filter((item) =>
-        item.firstName.toLowerCase().includes(filterText.toLowerCase()) ||
-        item.lastName.toLowerCase().includes(filterText.toLowerCase()) ||
-        item.email.toLowerCase().includes(filterText.toLowerCase())
+      const lowerFilter = filterText.toLowerCase();
+      data = data.filter(
+        (item) =>
+          item.firstName.toLowerCase().includes(lowerFilter) ||
+          item.lastName.toLowerCase().includes(lowerFilter) ||
+          item.email.toLowerCase().includes(lowerFilter)
       );
     }
-
-    // Sorting if a sort field is selected
     if (sortField) {
       data.sort((a, b) => {
         const aField = a[sortField];
@@ -83,47 +43,55 @@ const ViewFranchise: React.FC = () => {
         return 0;
       });
     }
+    return data;
+  }, [franchises, filterText, sortField, sortOrder]);
 
-    setFilteredData(data);
-    setCurrentPage(1); // Reset to first page whenever data changes
-  }, [filterText, franchises, sortField, sortOrder]);
+  // Reset current page when filter or sort changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filterText, sortField, sortOrder]);
 
-  // Calculate pagination
+  // Pagination
   const indexOfLast = currentPage * pageSize;
   const indexOfFirst = indexOfLast - pageSize;
-  const currentItems = filteredData.slice(indexOfFirst, indexOfLast);
+  const currentItems = useMemo(
+    () => filteredData.slice(indexOfFirst, indexOfLast),
+    [filteredData, indexOfFirst, indexOfLast]
+  );
   const totalPages = Math.ceil(filteredData.length / pageSize);
 
-  // Toggle sort field and order
-  const handleSort = (field: keyof FranchiseData) => {
-    if (sortField === field) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortField(field);
-      setSortOrder("asc");
-    }
-  };
+  // Handlers
+  const handleSort = useCallback(
+    (field: keyof FranchiseData) => {
+      if (sortField === field) {
+        setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+      } else {
+        setSortField(field);
+        setSortOrder("asc");
+      }
+    },
+    [sortField]
+  );
 
-  // Change page
-  const handlePageChange = (page: number) => {
+  const handlePageChange = useCallback((page: number) => {
     setCurrentPage(page);
-  };
+  }, []);
 
-  // Handlers for action buttons (for demonstration)
-  const handleEdit = (data: FranchiseData) => {
+  const handleEdit = useCallback((data: FranchiseData) => {
     console.log("Edit clicked for:", data);
     // Implement your edit logic here
-  };
+  }, []);
 
-  const handleDelete = (data: FranchiseData) => {
+  const handleDelete = useCallback((data: FranchiseData) => {
     console.log("Delete clicked for:", data);
     // Implement your delete logic here
-  };
+  }, []);
 
   return (
-    <div className={styles.dashboardContainer}>
+    // Add "sidebar-closed" class when the sidebar is not open.
+    <div>
+
       <div className={styles.mainContent}>
-        <Navbar />
         <div className={styles.pageContent}>
           <h2>View Franchise</h2>
           <div className={styles.filterContainer}>
@@ -142,7 +110,9 @@ const ViewFranchise: React.FC = () => {
                   <th onClick={() => handleSort("lastName")}>Last Name</th>
                   <th onClick={() => handleSort("dob")}>DOB</th>
                   <th onClick={() => handleSort("directorName")}>Director Name</th>
-                  <th onClick={() => handleSort("instituteName")}>Institute Name</th>
+                  <th onClick={() => handleSort("instituteName")}>
+                    Institute Name
+                  </th>
                   <th>Address</th>
                   <th onClick={() => handleSort("mobile")}>Mobile</th>
                   <th onClick={() => handleSort("email")}>Email</th>

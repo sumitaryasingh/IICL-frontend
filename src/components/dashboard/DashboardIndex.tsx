@@ -15,6 +15,8 @@ import Certificate from "./Certificate";
 import Marksheet from "./Marksheet";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ViewFranchiseEnquiry from "./ViewFranchiseEnquiry";
+import ViewContactEnquiry from "./ViewContactEnquiry";
 
 const DashboardIndex: React.FC = () => {
   return (
@@ -36,6 +38,10 @@ const DashboardIndex: React.FC = () => {
           path="/students/view/marksheet/:studentId"
           element={<Marksheet />}
         />
+        <Route path="/enquiry">
+        <Route path="view-franchise" element={<ViewFranchiseEnquiry/>}/>
+        <Route path="view-contacts" element={<ViewContactEnquiry/>}/>
+        </Route>
         <Route path="/gallery-photo/add" element={<AddPhoto />} />
       </Routes>
       <ToastContainer position="top-right" autoClose={3000} />

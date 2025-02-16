@@ -1,4 +1,4 @@
-// components/AddFranchiseForm.tsx
+ // components/AddFranchiseForm.tsx
 import React, { useState } from "react";
 import styles from "./styles/AddFranchiseForm.module.css";
 import { toast } from "react-toastify";
@@ -15,6 +15,7 @@ interface FranchiseFormData {
   mobile: string;
   email: string;
   aadharId: string;
+  password: string;
 }
 
 const AddFranchiseForm: React.FC = () => {
@@ -28,7 +29,11 @@ const AddFranchiseForm: React.FC = () => {
     mobile: "",
     email: "",
     aadharId: "",
+    password: "",
   });
+
+  // State to manage whether the password field is editable.
+  const [isPasswordEditable, setIsPasswordEditable] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -40,10 +45,22 @@ const AddFranchiseForm: React.FC = () => {
     }));
   };
 
+  // When the "Edit" button is clicked, enable the password field.
+  const handlePasswordEdit = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setIsPasswordEditable(true);
+    if (!formData.password) {
+      setFormData((prevData) => ({
+        ...prevData,
+        password: prevData.mobile, // initialize with mobile value if password is empty
+      }));
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Regular expressions for email, mobile, and Aadhar validation
+    // Regular expressions for validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const mobileRegex = /^[0-9]{10}$/;
     const aadharRegex = /^[0-9]{12}$/;
@@ -110,7 +127,9 @@ const AddFranchiseForm: React.FC = () => {
         mobile: "",
         email: "",
         aadharId: "",
+        password: "",
       });
+      setIsPasswordEditable(false);
     } catch (error) {
       console.error("Error submitting franchise data:", error);
       toast.error("Submission failed. Please try again.");
@@ -173,7 +192,7 @@ const AddFranchiseForm: React.FC = () => {
           </div>
         </div>
 
-        {/* Third Row: Institute Name & Mobile Number */}
+        {/* Third Row: Institute Name, Mobile Number, and Password */}
         <div className={styles.formRow}>
           <div className={styles.formGroup}>
             <label htmlFor="instituteName">Institute Name</label>
@@ -195,6 +214,22 @@ const AddFranchiseForm: React.FC = () => {
               value={formData.mobile}
               onChange={handleChange}
               required
+            />
+          </div>
+          <div className={styles.formGroup}>
+            <label htmlFor="password">Password
+            <button type="button" className={styles.passEditBtn} onClick={handlePasswordEdit}>
+              Edit
+            </button>
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={isPasswordEditable ? formData.password : formData.mobile}
+              onChange={handleChange}
+              required
+              disabled={!isPasswordEditable}
             />
           </div>
         </div>

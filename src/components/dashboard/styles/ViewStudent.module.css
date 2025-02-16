@@ -1,19 +1,4 @@
 /* Overall Dashboard Layout */
-.dashboardContainer {
-    display: flex;
-    min-height: 100vh;
-    flex-wrap: nowrap;
-    margin: 0rem;
-  }
-  
-  /* Main content area beside the sidebar */
-  .mainContent {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    margin-left: 12.5rem; /* Adjust this based on your sidebar width */
-  }
-  
   /* Page-specific content */
   .pageContent {
     padding: 2rem;

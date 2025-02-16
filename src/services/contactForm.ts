@@ -1,5 +1,5 @@
 import axios from "axios";
-const API_URL = import.meta.env.VITE_APP_API_BASE_URL;
+// const API_URL = import.meta.env.VITE_APP_API_BASE_URL;
 export const submitContactForm = async (formData: any) => {
     try {
         console.log("This is formData:", formData);
@@ -27,3 +27,33 @@ export const submitContactForm = async (formData: any) => {
         }
     }
 };
+
+
+export interface ContactEnquiry {
+    id: number;
+    name: string;
+    email: string;
+    phone: string;
+    message: string;
+  }
+  
+  export const fetchContactEnquiries = async (): Promise<ContactEnquiry[]> => {
+    try {
+      // Replace with your actual API endpoint for contact enquiries
+      const response = await axios.get<ContactEnquiry[]>("/api/contact");
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching contact enquiries:", error);
+      // Fallback sample data if API call fails
+      const sampleData: ContactEnquiry[] = [
+        {
+          id: 1,
+          name: "Alice Johnson",
+          email: "alice@example.com",
+          phone: "9876543210",
+          message: "I would like to know more about your services.",
+        }
+      ];
+      return sampleData;
+    }
+  };

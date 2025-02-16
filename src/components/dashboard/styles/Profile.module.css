@@ -1,0 +1,97 @@
+/* Profile.module.css */
+
+
+
+/* Page content inside main content */
+.pageContent {
+  margin-top: 1rem;
+}
+
+/* Profile Title */
+.profileTitle {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+/* Profile Section Card */
+.profileSection {
+  background-color: #ffffff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Paragraph styling inside profile card */
+.profileSection p {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+  color: #555;
+}
+
+.profileSection strong {
+  color: #333;
+}
+
+/* Profile Table Styles */
+.profileTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.profileTable td {
+  padding: 0.75rem;
+  border: 1px solid #dcdcdc;
+  font-size: 1rem;
+  color: #555;
+}
+
+.profileTable td:first-child {
+  width: 40%;
+  font-weight: bold;
+  color: #ececec;
+  background-color: rgba(0, 0, 139, 0.774);
+}
+
+/* Loading message styling */
+.loading {
+  text-align: center;
+  font-size: 1.5rem;
+  color: #999;
+  margin-top: 4rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .mainContent {
+    width: 95%;
+    padding: 1rem;
+  }
+
+  .profileTitle {
+    font-size: 1.75rem;
+  }
+
+  .profileSection,
+  .profileTable td {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .mainContent {
+    width: 100%;
+    padding: 0.75rem;
+  }
+
+  .profileTitle {
+    font-size: 1.5rem;
+  }
+
+  .profileSection,
+  .profileTable td {
+    font-size: 0.85rem;
+  }
+}

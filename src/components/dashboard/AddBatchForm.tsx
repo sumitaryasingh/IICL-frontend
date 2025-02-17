@@ -57,10 +57,6 @@ const AddBatchForm: React.FC = () => {
       console.error("Error adding batch:", error);
       toast.error("Failed to add batch");
     }
-
-     // Simulate form submission
-     toast.success("Batch added successfully!");
-
      // Optionally clear the form after submission
      setFormData({
        course: "",

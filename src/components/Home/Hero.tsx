@@ -1,11 +1,10 @@
 import React from "react";
-import { PlayIcon } from "@heroicons/react/24/solid";
 import "./Hero.css";
 
 const Hero: React.FC = () => {
   return (
     <section className="hero-container">
-      <div className="overlay"></div>
+      <div className="overlays"></div>
 
       <div className="hero-content">
         <h1 className="hero-heading">

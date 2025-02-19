@@ -28,8 +28,8 @@ const DashboardIndex: React.FC = () => {
         <Route path="/franchise/view" element={<ViewFranchise />} />
         <Route path="/batches/add" element={<AddBatchForm />} />
         <Route path="/batches/view" element={<ViewBatch />} />
-        <Route path="/students/add" element={<AddStudentForm />} />
         <Route path="/students/view" element={<ViewStudent />} />
+        <Route path="/student/add-student/:enrollmentId?" element={<AddStudentForm />} />
         <Route
           path="/students/view/certificate/:studentId"
           element={<Certificate />}

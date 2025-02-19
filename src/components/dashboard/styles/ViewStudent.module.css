@@ -120,11 +120,30 @@
     padding: 5px 10px;
     border-radius: 4px;
     cursor: pointer;
+    font-size: 0.9rem;
     margin-right: 5px;
+    margin-bottom: 0.3rem;
+    width: 100%;
+
   }
   
   .deleteBtn {
     background-color: #f44336;
+    border: none;
+    color: #fff;
+    font-size: 0.9rem;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 0.3rem;
+
+  }
+  
+  .viewImageBtn{
+    background-color: rgb(181, 160, 0);
+    width: 100%;
+    font-size: 0.9rem;
     border: none;
     color: #fff;
     padding: 5px 10px;
@@ -132,6 +151,54 @@
     cursor: pointer;
   }
   
+  .imageModal{
+    background-color: rgba(0, 0, 73, 0.313);
+    backdrop-filter: blur(8px);
+    width:20rem;
+    height: 20rem;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    translate:-50% -40%;
+    border-radius: 1rem;
+    box-shadow: 0 0 10px rgb(38, 38, 38);
+  }
+
+  .modalBody{
+    height: 100%;
+    position: relative;
+    top: 50%;
+    translate: 0 -50%;
+    
+  }
+  .modalCloseBtn{
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: rgba(255, 0, 0, 0.92);
+    /* backdrop-filter: blur(10px); */
+    border-radius: 0;
+    color: white;
+    border-top-right-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+    padding: 0.5rem 1rem;
+    transition:all 0.3s;
+  }
+  .modalCloseBtn:hover{
+    box-shadow: 0 0 10px rgb(255, 0, 0);
+  }
+  .closeIcon{
+    font-size: 1.5rem;
+  }
+  .studentImage{
+    height: 13rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate:-50% -50%;
+    padding: 1rem;
+
+  }
   /* Pagination Styles */
   .pagination {
     display: flex;

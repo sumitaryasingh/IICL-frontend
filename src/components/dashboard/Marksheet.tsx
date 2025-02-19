@@ -16,7 +16,7 @@ interface Subject {
 
 export interface StudentData {
   name: string;
-  enrollmentNumber: string;
+  enrollmentId: string;
   certificateNumber: string;
   course: string;
   fatherName: string;
@@ -41,8 +41,8 @@ const Marksheet: React.FC = () => {
 
   // Function to calculate total marks, percentage, and grade based on subjects marks
   const calculateMarks = (subjects: Subject[]) => {
-    const totalObtained = subjects.reduce((acc, sub) => acc + sub.obtainedTotal, 0);
-    const totalMax = subjects.reduce((acc, sub) => acc + sub.totalMarks, 0);
+    const totalObtained = subjects?.reduce((acc, sub) => acc + sub.obtainedTotal, 0);
+    const totalMax = subjects?.reduce((acc, sub) => acc + sub.totalMarks, 0);
     const percentage = (totalObtained / totalMax) * 100;
     let grade = "";
     if (percentage >= 90) grade = "A+";
@@ -98,7 +98,7 @@ const Marksheet: React.FC = () => {
               </tr>
               <tr>
                 <td><strong>Enrollment No:</strong></td>
-                <td>{student.enrollmentNumber}</td>
+                <td>{student.enrollmentId}</td>
               </tr>
               <tr>
                 <td><strong>Certificate No:</strong></td>
@@ -155,7 +155,7 @@ const Marksheet: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {student.subjects.map((sub, index) => (
+              {student.subjects?.map((sub, index) => (
                 <tr key={index}>
                   <td className={styles.subjects}>{sub.subject}</td>
                   <td>{sub.theory}</td>

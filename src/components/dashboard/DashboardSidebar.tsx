@@ -134,7 +134,7 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
             {dropdowns.students && (
               <ul className={styles.dropdownMenu}>
                 <li>
-                  <Link to="/dashboard/students/add" onClick={toggleSidebar}>
+                  <Link to="/dashboard/student/add-student/" onClick={toggleSidebar}>
                     Add Student
                   </Link>
                 </li>

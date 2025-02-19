@@ -4,12 +4,19 @@ import html2canvas from "html2canvas";
 import styles from "./styles/Certificate.module.css";
 import { useLocation } from "react-router-dom";
 
+interface Subject {
+  name: string;
+  obtainedTotal: number;
+  totalMarks: number;
+}
+
 interface StudentData {
   name: string;
   course: string;
   institute: string;
   location: string;
   marks: number;
+  percentage: number;
   grade: string;
   date: string;
   rollNumber: string;
@@ -17,16 +24,45 @@ interface StudentData {
   organization: string;
   fatherName: string;
   motherName: string;
+  subjects: Subject[];
 }
 
 interface LocationState {
   student: StudentData;
 }
 
+const calculateMarks = (subjects: Subject[]) => {
+  const totalObtained = subjects?.reduce((acc, sub) => acc + sub.obtainedTotal, 0);
+  const totalMax = subjects?.reduce((acc, sub) => acc + sub.totalMarks, 0);
+  const percentage = (totalObtained / totalMax) * 100;
+  let grade = "";
+  if (percentage >= 90) grade = "A+";
+  else if (percentage >= 80) grade = "A";
+  else if (percentage >= 70) grade = "B+";
+  else if (percentage >= 60) grade = "B";
+  else if (percentage >= 50) grade = "C";
+  else grade = "F";
+  return { totalObtained, totalMax, percentage, grade };
+};
+
 const Certificate: React.FC = () => {
   const location = useLocation();
   const { student } = location.state as LocationState;
   const certificateRef = useRef<HTMLDivElement>(null);
+
+  // Define a mapping for course to QR image URLs
+  const courseImages: { [key: string]: string } = {
+    dca: "/images/dca.png",
+    adca: "/images/adca.png",
+  };
+  console.log("Student Course:", student.course);
+ 
+  const courseAbbr = student.course.split("(")[0].trim().toLowerCase();
+  // Determine the correct image URL based on the course (case-insensitive)
+  const CourseImageSrc =
+      student.course && courseAbbr
+      ? courseImages[courseAbbr]
+      : "/images/adca.png"; // fallback image
 
   const handleDownload = useCallback(async () => {
     if (!certificateRef.current) return;
@@ -42,6 +78,7 @@ const Certificate: React.FC = () => {
     }
   }, [student]);
 
+  const computedMarks = calculateMarks(student.subjects);
   if (!student) return <p>Loading...</p>;
 
   return (
@@ -79,8 +116,8 @@ const Certificate: React.FC = () => {
 
           <div className={styles.qr_code_box}>
             <img
-              src="/images/dca.png"
-              alt="QR Code"
+              src={CourseImageSrc}
+              alt="Course Logo"
               className={styles.certificate_qr}
             />
             <p className={styles.certificate_no}>
@@ -104,6 +141,10 @@ const Certificate: React.FC = () => {
         </div>
         
         <h2 className={styles.studentName}>{student.name}</h2>
+       <div className={styles.courseName}>
+       <p>for successfully completing</p>
+       <p>{student.course}</p>
+       </div>
 
         <p className={styles.institute}>
            Father's/ Husband's name<span>{student.fatherName}</span>
@@ -111,7 +152,7 @@ const Certificate: React.FC = () => {
            <br />
            Learning at <strong>{student.institute}, {student.location}</strong>
            <br />
-           Achieved <span>{student.marks}%</span> marks and secured <span>{student.grade}</span> Grade
+           Achieved <span>{computedMarks.percentage.toFixed(2)}%</span> marks and secured <span>{computedMarks.grade}</span> Grade
            <br />
            on <strong>{student.date}</strong>
         </p>

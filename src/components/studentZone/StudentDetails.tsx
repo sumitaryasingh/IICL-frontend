@@ -6,7 +6,7 @@ import { fetchStudentDetails } from "../../services/studentZone";
 interface StudentData {
     studentName: string;
     email: string;
-    enrollmentNo: string;
+    enrollmentId: string;
     fatherName: string;
     motherName: string;
     dob: string;
@@ -28,11 +28,11 @@ const StudentDetails: React.FC = () => {
             return;
         }
 
-        const enrollmentNo = atob(encodedEnrollment); // Decode Enrollment No.
+        const enrollmentId = atob(encodedEnrollment); // Decode Enrollment No.
 
         const fetchData = async () => {
             try {
-                const data = await fetchStudentDetails(enrollmentNo);
+                const data = await fetchStudentDetails(enrollmentId);
                 if (data.success) {
                     setStudentData(data.student);
                 } else {
@@ -62,7 +62,7 @@ const StudentDetails: React.FC = () => {
                 <h3>📌 Profile Information</h3>
                 <p><strong>👤 Name:</strong> {studentData.studentName}</p>
                 <p><strong>📧 Email:</strong> {studentData.email}</p>
-                <p><strong>🆔 Enrollment No:</strong> {studentData.enrollmentNo}</p>
+                <p><strong>🆔 Enrollment No:</strong> {studentData.enrollmentId}</p>
                 <p><strong>👨‍👩‍👦 Father:</strong> {studentData.fatherName}</p>
                 <p><strong>👩 Mother:</strong> {studentData.motherName}</p>
                 <p><strong>🎂 DOB:</strong> {studentData.dob}</p>

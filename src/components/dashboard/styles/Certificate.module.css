@@ -1,29 +1,32 @@
 @font-face {
   font-family:certificateFont ;
   font-weight: 900;
-  src: url(../fonts/GregorianFLF.ttf);
+  src: url("/fonts/GregorianFLF.ttf");
 }
 @font-face {
   font-family: instituteFont;
-  src: url("../fonts/NHL Ducks.ttf");
+  src: url("/fonts/NHL Ducks.ttf");
 }
 .container {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
-    /* background: white; */
     min-height: 100vh;
+    margin: 6rem 0;
+    width: 100rem;
+    /* border: 1px solid red; */
 }
 
 .certificate {
   width: 1056px;
   height: 816px;
-  background-image: url('../images/iicl_certificate.png');
+  background-image: url("/images/iicl_certificate.png");
   background-size:1056px 816px;
   background-repeat:no-repeat ;
   padding: 40px;
   position: relative;
+  z-index: -1;
   text-align: center;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     /* border-radius: 10px; */
@@ -177,7 +180,7 @@
     /* border: 1px solid red; */
     position: relative;
     top: 3rem;
-    left: 0.6rem;
+    left: 0.2rem;
    }
 
    .certificationsLogos img{
@@ -191,19 +194,37 @@
     color: #333;
   }
 
+  .authSignature{
+    position: absolute;
+    color: rgb(170, 130, 0);
+    bottom: 6rem;
+    left: 13.5rem;
+    background-color: white;
+    padding: 0rem 1rem;
+  }
+
+  .centreSignature{
+    position: absolute;
+    color: rgb(170, 130, 0);
+    bottom: 6rem;
+    right: 11rem;
+    background-color: white;
+    padding: 0rem 1rem;
+  }
+
   .description, .institute, .achievement, .date{
     font-size: 1.3rem;
     color: #333;
 
   }
-  .copyright{
-    font-size: 25rem;
+  .copyright img{
+    height:20rem;
     color: #333;
     margin-top: 1rem;
     font-family: "instituteFont", sans-serif;
     position: absolute;
-    opacity: 0.08;
-    top: 7rem;
+    opacity: 0.05;
+    bottom: 15rem;
     left: 15rem;
   }
 

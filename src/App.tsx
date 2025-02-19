@@ -24,6 +24,16 @@ import Gallery from "./components/Gallery";
 
 import ContactUs from "./components/ContactUs";
 import DashboardIndex from "./components/dashboard/DashboardIndex";
+import AddFranchiseForm from "./components/dashboard/AddFranchiseForm";
+import ViewFranchise from "./components/dashboard/ViewFranchise";
+import AddBatchForm from "./components/dashboard/AddBatchForm";
+import ViewBatch from "./components/dashboard/ViewBatch";
+import AddStudentForm from "./components/dashboard/AddStudentForm";
+import ViewStudent from "./components/dashboard/ViewStudent";
+import AddPhoto from "./components/dashboard/AddPhoto";
+import AdminFranchiseProfile from "./components/dashboard/Profile";
+import Certificate from "./components/dashboard/Certificate";
+import Marksheet from "./components/dashboard/Marksheet";
 const App: React.FC = () => {
   return (
     <div className="App">
@@ -47,16 +57,18 @@ const App: React.FC = () => {
           <Route path="testimonials" element={<FranchiseTestimonials />} />
         </Route>
         {/* Dashboard Route */}
-        <Route path="/dashboard" element={<DashboardIndex />} >
-          {/* <Route path="profile" element={}/>
-            <Route path="franchise/add" element={}/>
-            <Route path="franchise/view" element={}/>
-            <Route path="batches/add" element={}/>
-            <Route path="batches/view" element={}/>
-            <Route path="students/add" element={}/> 
-            <Route path="students/view" element={}/> 
-            <Route path="enquiry/view" element={}/>
-            */}
+        <Route path="/dashboard/*" element={<DashboardIndex />} >
+          <Route path="profile" element={<AdminFranchiseProfile/>}/>
+            <Route path="franchise/add" element={<AddFranchiseForm />}/>
+            <Route path="franchise/view" element={<ViewFranchise/>}/>
+            <Route path="batches/add" element={<AddBatchForm/>}/>
+            <Route path="batches/view" element={<ViewBatch/>}/>
+            <Route path="students/add" element={<AddStudentForm/>} />
+            <Route path="students/view" element={<ViewStudent/>} />
+            <Route path="students/view/certificate/:studentId" element={<Certificate/>}/>
+            <Route path="students/view/marksheet/:studentId" element={<Marksheet/>}/>
+            <Route path="gallery-photo/add" element={<AddPhoto/>} />
+
         </Route>
 
         {/* Student Zone Parent Route */}

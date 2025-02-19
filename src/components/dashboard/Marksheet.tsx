@@ -2,8 +2,8 @@ import React, { useRef } from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import styles from "./styles/Marksheet.module.css";
+import { useLocation } from "react-router-dom";
 
-// Optional: Extend the student interface with subject marks details.
 interface Subject {
   subject: string;
   theory: number;
@@ -13,7 +13,6 @@ interface Subject {
   totalMarks: number;
   obtainedTotal: number;
 }
-
 
 export interface StudentData {
   name: string;
@@ -31,21 +30,19 @@ export interface StudentData {
   subjects: Subject[]; // Array of subject marks details
 }
 
-interface MarksheetProps {
+interface LocationState {
   student: StudentData;
 }
 
-const Marksheet: React.FC<MarksheetProps> = ({ student }) => {
+const Marksheet: React.FC = () => {
+  const location = useLocation();
+  const { student } = location.state as LocationState;
   const marksheetRef = useRef<HTMLDivElement>(null);
 
   const handleDownload = async () => {
     if (!marksheetRef.current) return;
-
-    // Render the marksheet DOM to a canvas
     const canvas = await html2canvas(marksheetRef.current, { scale: 2 });
     const imgData = canvas.toDataURL("image/png");
-
-    // Create a new PDF document in portrait mode with dimensions 8.5" x 11"
     const pdf = new jsPDF("p", "in", [8.5, 11]);
     pdf.addImage(imgData, "PNG", 0, 0, 8.5, 11);
     pdf.save(`${student.name}_Marksheet.pdf`);
@@ -57,21 +54,19 @@ const Marksheet: React.FC<MarksheetProps> = ({ student }) => {
 
         {/* Header */}
         <div className={styles.header}>
-          <img src="../images/iicl-iconT.png" alt="iicl icon" className={styles.iiclLogo} />
+          <img src="/images/iicl-iconT.png" alt="iicl icon" className={styles.iiclLogo} />
         </div>
 
         <div className={styles.certifications}>
-
           भारत सरकार के अधिनियम 2013 द्वारा पंजीकृत
           <p>
             Incorporated Under Section 8,Ministry of Corporate Affairs & Ministry of Labour, Govt. of India
             <br />
-            Registered Under The Ordinance of Govt. fo India
+            Registered Under The Ordinance of Govt. of India
             <br />
             Registered Under NITI Aayog, Govt. of India
           </p>
           ISO 9001 : 2015 Certified.
-
         </div>
         <p className={styles.title}>Marksheet</p>
 
@@ -92,7 +87,7 @@ const Marksheet: React.FC<MarksheetProps> = ({ student }) => {
                 <td>{student.certificateNumber}</td>
               </tr>
               <tr>
-                <td><strong >Course:</strong></td>
+                <td><strong>Course:</strong></td>
                 <td className={styles.courseName}>{student.course}</td>
               </tr>
               <tr>
@@ -127,7 +122,6 @@ const Marksheet: React.FC<MarksheetProps> = ({ student }) => {
           </table>
         </div>
 
-
         {/* Marks Table */}
         <div className={styles.tableContainer}>
           <table className={styles.marksTable}>
@@ -159,32 +153,47 @@ const Marksheet: React.FC<MarksheetProps> = ({ student }) => {
         </div>
 
         <div className={styles.performanceCriteria}>
-          <div className={styles.certifiedLogo}>
-            <img src="../images/isoLogo.gif" alt="" className={styles.isoLogo} />
-            <img src="../images/iafLogo.svg" alt="" className={styles.iafLogo} />
-            <img src="../images/MSME_Logo.svg" alt="" className={styles.msmeLogo} />
-            {/* <img src="../images/" alt="" /> */}
-          </div>
           <table className={styles.criteriaTable}>
             <thead>
               <tr>
                 <th>Grade</th>
-                <th>Percentage Range</th>
-                <th>Performance</th>
+                <th>A+</th>
+                <th>A</th>
+                <th>B+</th>
+                <th>B</th>
+                <th>C</th>
+                <th>F</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td>A+</td><td>90% - 100%</td><td>Excellent</td></tr>
-              <tr><td>A</td><td>80% - 89%</td><td>Very Good</td></tr>
-              <tr><td>B+</td><td>70% - 79%</td><td>Good</td></tr>
-              <tr><td>B</td><td>60% - 69%</td><td>Satisfactory</td></tr>
-              <tr><td>C</td><td>50% - 59%</td><td>Needs Improvement</td></tr>
-              <tr><td>F</td><td>Below 50%</td><td>Fail</td></tr>
+              <tr>
+                <td>Percentage Range</td>
+                <td>90% - 100%</td>
+                <td>80% - 89%</td>
+                <td>70% - 79%</td>
+                <td>60% - 69%</td>
+                <td>50% - 59%</td>
+                <td>Below 50%</td>
+              </tr>
+              <tr>
+                <td>Performance</td>
+                <td>Excellent</td>
+                <td>Very Good</td>
+                <td>Good</td>
+                <td>Satisfactory</td>
+                <td>Needs Improvement</td>
+                <td>Fail</td>
+              </tr>
             </tbody>
           </table>
+          <div className={styles.certifiedLogo}>
+            <img src="/images/dummy_qr.png" alt="QR" className={styles.isoLogo} />
+            <img src="/images/isoLogo.jpg" alt="ISO Logo" className={styles.isoLogo} />
+            <img src="/images/iafLogo.svg" alt="IAF Logo" className={styles.iafLogo} />
+            <img src="/images/msmeLogo.jpg" alt="MSME Logo" className={styles.msmeLogo} />
+          </div>
         </div>
       </div>
-
       {/* Download Button */}
       <button onClick={handleDownload} className={styles.downloadBtn}>
         Download PDF

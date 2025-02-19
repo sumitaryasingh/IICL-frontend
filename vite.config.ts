@@ -10,7 +10,12 @@ export default defineConfig({
         target: 'http://localhost:4000', // Proxy to backend
         changeOrigin: true,
         secure: false,
+        configure: (proxy) => {
+          proxy.on('proxyReq', (proxyReq) => {
+            console.log('Proxying request to:', proxyReq.path);
+          });
+        },
       },
-    },
-  },
+    },
+  },
 });

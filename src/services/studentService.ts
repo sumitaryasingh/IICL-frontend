@@ -14,6 +14,9 @@ export interface Subject {
   obtainedTotal: number;
 }
 
+
+
+
 /**
  * Interface for student data as returned from the GET API.
  */
@@ -23,12 +26,15 @@ export interface StudentData {
   email: string;
   phone: string;
   course: string;
-  enrollmentNumber: string;
+  fatherName:string;
+  motherName:string;
+  enrollmentId: string;
   status: "Active" | "Completed";
   marksheet: string;       // URL or identifier for the marksheet
   certificate: string;     // URL or identifier for the certificate
   institute: string;       // Institute name
   location: string;        // Location
+  percentage:number;
   marks: number;           // Overall marks obtained (e.g., out of 800)
   grade: string;           // Grade achieved
   date: string;            // Date (e.g., exam or certificate date)
@@ -36,6 +42,7 @@ export interface StudentData {
   certificateNumber: string; // Certificate number
   organization: string;    // Organization (e.g., IICL)
   subjects: Subject[];     // Subjects and their marks details
+  image: any; // Array of image URLs or identifiers
 }
 
 /**
@@ -47,13 +54,16 @@ const sampleStudents: StudentData[] = [
     name: "John Doe",
     email: "john@example.com",
     phone: "1234567890",
-    course: "B.Sc Computer Science",
-    enrollmentNumber: "ENR001",
+    course: "DCA (Diploma in Computer Application)",
+    fatherName:"John Pandey",
+    motherName:"Elizabeth Chaubey",
+    enrollmentId: "ENR001",
     status: "Active",
     marksheet: "/marksheet/john",
     certificate: "/certificate/john",
     institute: "ABC Institute",
     location: "Cityville",
+    percentage:79,
     marks: 680,
     grade: "A",
     date: "2023-07-15",
@@ -80,6 +90,7 @@ const sampleStudents: StudentData[] = [
         obtainedTotal: 87,
       },
     ],
+    image: ["/images/john1.jpg", "/images/john2.jpg"]
   }
   // Add more sample students as needed...
 ];
@@ -88,13 +99,14 @@ const sampleStudents: StudentData[] = [
  * GET API call to fetch student data.
  * If the call fails, the function returns fallback sample data.
  */
-export const fetchStudents = async (): Promise<StudentData[]> => {
+export const fetchStudents = async (franchiseId: string): Promise<StudentData[]> => {
   try {
     // Replace with your actual API endpoint.
-    const response = await axios.get<StudentData[]>("/api/students/get-students");
+    const response = await axios.get<StudentData[]>(`/api/student/get-studentsList/${franchiseId}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching students:", error);
+    // Ensure sampleStudents is defined and matches StudentData[]
     return sampleStudents;
   }
 };
@@ -120,26 +132,43 @@ export interface NewStudentData {
   qualification: string;
   idProof: string;
   idProofNumber: string;
-  image?: File | null;
+  image: File;
+  franchiseId: string;
+  enrollmentId: string;
 }
 
 /**
  * POST API call to submit new student data.
  * The function creates a FormData object to handle file uploads (if an image is provided).
  */
+
 export const submitStudentData = async (data: NewStudentData): Promise<any> => {
   try {
     const formData = new FormData();
+    // Append all the fields to the FormData
+    formData.append("name", data.name);
+    formData.append("email", data.email);
+    formData.append("fatherName", data.fatherName);
+    formData.append("motherName", data.motherName);
+    formData.append("phone", data.phone);
+    formData.append("registrationDate", data.registrationDate);
+    formData.append("sessionFrom", data.sessionFrom);
+    formData.append("sessionTo", data.sessionTo);
+    formData.append("dob", data.dob);
+    formData.append("gender", data.gender);
+    formData.append("address", data.address);
+    formData.append("course", data.course);
+    formData.append("batch", data.batch);
+    formData.append("qualification", data.qualification);
+    formData.append("idProof", data.idProof);
+    formData.append("idProofNumber", data.idProofNumber);
+    formData.append("franchiseId", data.franchiseId);
+    formData.append("enrollmentId", data.enrollmentId);
+    
+    // Append the file. The 'image' field must be a File object.
+    formData.append("image", data.image);
 
-    // Append each key/value pair to the FormData.
-    for (const key in data) {
-      // Skip the "image" key if no file is provided.
-      if (key === "image" && !data.image) continue;
-      const value = data[key as keyof NewStudentData];
-      formData.append(key, value instanceof File ? value : String(value));
-    }
-
-    // POST the form data using axios.
+    // Use axios to POST the FormData. Axios will automatically set the correct headers for multipart/form-data.
     const response = await axios.post("/api/student/add-student", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -148,6 +177,67 @@ export const submitStudentData = async (data: NewStudentData): Promise<any> => {
     return response.data;
   } catch (error) {
     console.error("Error in submitStudentData:", error);
+    throw error;
+  }
+};
+
+export const getStudentDataByEnrollmentId = async (
+  enrollmentId: string
+): Promise<NewStudentData> => {
+  try {
+    const response = await axios.get<NewStudentData>(`/api/student/get-studentData/${enrollmentId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching student data by enrollmentId:", error);
+    throw error;
+  }
+};
+
+
+export const editStudentData = async (
+  enrollmentId: string,
+  data: NewStudentData
+): Promise<any> => {
+  try {
+    const formData = new FormData();
+    // Append all the fields to the FormData
+    formData.append("name", data.name);
+    formData.append("email", data.email);
+    formData.append("fatherName", data.fatherName);
+    formData.append("motherName", data.motherName);
+    formData.append("phone", data.phone);
+    formData.append("registrationDate", data.registrationDate);
+    formData.append("sessionFrom", data.sessionFrom);
+    formData.append("sessionTo", data.sessionTo);
+    formData.append("dob", data.dob);
+    formData.append("gender", data.gender);
+    formData.append("address", data.address);
+    formData.append("course", data.course);
+    formData.append("batch", data.batch);
+    formData.append("qualification", data.qualification);
+    formData.append("idProof", data.idProof);
+    formData.append("idProofNumber", data.idProofNumber);
+    formData.append("franchiseId", data.franchiseId);
+    formData.append("enrollmentId", data.enrollmentId);
+    
+    // Append the image file if it exists.
+    if (data.image) {
+      formData.append("image", data.image);
+    }
+    
+    // Use axios.put to update student data at the correct endpoint.
+    const response = await axios.put(
+      `/api/student/edit-studentData/${enrollmentId}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error editing student data:", error);
     throw error;
   }
 };

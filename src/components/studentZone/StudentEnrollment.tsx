@@ -5,7 +5,7 @@ import "./styles/studentEnrollment.css";
 import { fetchStudentDetails } from "../../services/studentZone";
 
 const StudentEnrollment: React.FC = () => {
-    const [enrollmentNo, setEnrollmentNo] = useState("");
+    const [enrollmentId, setEnrollmentId] = useState("");
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
@@ -14,10 +14,10 @@ const StudentEnrollment: React.FC = () => {
         setLoading(true);
 
         try {
-            const data = await fetchStudentDetails(enrollmentNo);
+            const data = await fetchStudentDetails(enrollmentId);
 
             if (data.success) {
-                const encodedEnrollment = btoa(enrollmentNo); // Encode Enrollment No.
+                const encodedEnrollment = btoa(enrollmentId); // Encode Enrollment No.
                 navigate(`/student/details/${encodedEnrollment}`);
             } else {
                 toast.error("❌ Student not found! Please check the enrollment number.");
@@ -36,8 +36,8 @@ const StudentEnrollment: React.FC = () => {
                 <input
                     type="text"
                     placeholder="Enter Enrollment Number"
-                    value={enrollmentNo}
-                    onChange={(e) => setEnrollmentNo(e.target.value)}
+                    value={enrollmentId}
+                    onChange={(e) => setEnrollmentId(e.target.value)}
                     required
                     className="enrollment-input"
                 />

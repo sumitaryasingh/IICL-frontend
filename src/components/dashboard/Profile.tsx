@@ -1,12 +1,11 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getProfileData } from '../../services/profileService';
-import styles from './styles/Dashboard.module.css'; // Layout styles (dashboardContainer, mainContent, etc.)
-import './styles/profile.css'; // Profile-specific styles
+import styles from './styles/Profile.module.css'; // Using our new CSS module
 
 const AdminFranchiseProfile: React.FC = () => {
   const [profileData, setProfileData] = useState<any>(null);
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
- 
+
   useEffect(() => {
     getProfileData().then((data: any) => {
       if (!data) {
@@ -31,21 +30,18 @@ const AdminFranchiseProfile: React.FC = () => {
   }, []);
 
   if (!profileData) {
-    return <div className="loading">Loading...</div>;
+    return <div className={styles.loading}>Loading...</div>;
   }
 
   return (
-    // Add the "sidebar-closed" class when the sidebar is not open.
-    <div className={`${styles.dashboardContainer} `}>
-     
-      
-      {/* Main Content Area */}
+    <div className={styles.dashboardContainer}>
       <div className={styles.mainContent}>
-        
         <div className={styles.pageContent}>
-          <h1 className="profile-title">{isAdmin ? 'Admin Profile' : 'Franchise Profile'}</h1>
+          <h1 className={styles.profileTitle}>
+            {isAdmin ? 'Admin Profile' : 'Franchise Profile'}
+          </h1>
           {isAdmin ? (
-            <div className="admin-profile profile-section">
+            <div className={styles.profileSection}>
               <p><strong>Name:</strong> {profileData.name}</p>
               <p><strong>Franchise Name:</strong> {profileData.franchiseName}</p>
               <p><strong>Contact Number:</strong> {profileData.contactNumber}</p>
@@ -55,47 +51,47 @@ const AdminFranchiseProfile: React.FC = () => {
               <p><strong>Number of Students:</strong> {profileData.numberOfStudents}</p>
             </div>
           ) : (
-            <div className="franchise-profile profile-section">
-              <table className="profile-table">
+            <div className={styles.profileSection}>
+              <table className={styles.profileTable}>
                 <tbody>
                   <tr>
-                    <td><strong>Centre Code</strong></td>
+                    <td>Centre Code</td>
                     <td>{profileData.centreCode}</td>
                   </tr>
                   <tr>
-                    <td><strong>Centre Name</strong></td>
+                    <td>Centre Name</td>
                     <td>{profileData.centreName}</td>
                   </tr>
                   <tr>
-                    <td><strong>Centre Address</strong></td>
+                    <td>Centre Address</td>
                     <td>{profileData.centreAddress}</td>
                   </tr>
                   <tr>
-                    <td><strong>Director's Name</strong></td>
+                    <td>Director's Name</td>
                     <td>{profileData.directorName}</td>
                   </tr>
                   <tr>
-                    <td><strong>Designation</strong></td>
+                    <td>Designation</td>
                     <td>{profileData.designation}</td>
                   </tr>
                   <tr>
-                    <td><strong>Mobile No.</strong></td>
+                    <td>Mobile No.</td>
                     <td>{profileData.mobileNo}</td>
                   </tr>
                   <tr>
-                    <td><strong>E-Mail</strong></td>
+                    <td>E-Mail</td>
                     <td>{profileData.email}</td>
                   </tr>
                   <tr>
-                    <td><strong>Password</strong></td>
+                    <td>Password</td>
                     <td>{profileData.password}</td>
                   </tr>
                   <tr>
-                    <td><strong>Card</strong></td>
+                    <td>Card</td>
                     <td>{profileData.card}</td>
                   </tr>
                   <tr>
-                    <td><strong>Authorization Certificate</strong></td>
+                    <td>Authorization Certificate</td>
                     <td>{profileData.authorizationCertificate}</td>
                   </tr>
                 </tbody>

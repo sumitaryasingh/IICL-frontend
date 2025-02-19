@@ -5,7 +5,7 @@ const jsonData = {
     "student": {
         "studentName": "AKDAS ALI",
         "email": "AKDASALI46@GMAIL.COM",
-        "enrollmentNo": "STP414520653976",
+        "enrollmentId": "STP414520653976",
         "fatherName": "MOHAMMAD ASLAM",
         "motherName": "NIKHAT PARWEEN",
         "dob": "08-04-2003",
@@ -17,9 +17,9 @@ const jsonData = {
     }
 }
 // const API_URL = import.meta.env.VITE_APP_API_BASE_URL;
-export const fetchStudentDetails = async (enrollmentNo: string) => {
+export const fetchStudentDetails = async (enrollmentId: string) => {
     try {
-        const response = await axios.post(`/api/student-details`, { enrollmentNo });
+        const response = await axios.post(`/api/student-details`, { enrollmentId });
         return jsonData;
         // return response.data;
     } catch (error) {

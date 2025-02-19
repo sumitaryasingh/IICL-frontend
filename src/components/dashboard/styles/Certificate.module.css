@@ -13,8 +13,8 @@
     align-items: center;
     padding: 20px;
     min-height: 100vh;
-    margin: 6rem 0;
-    width: 100rem;
+    margin: 1rem 0;
+    width: 100%;
     /* border: 1px solid red; */
 }
 
@@ -77,7 +77,15 @@
     margin:0.2rem 0 0 0;
     /* margin-top: 1rem; */
   }
+.courseName{
+  margin-top: -1.5rem;
+}
 
+.courseName p:last-child{
+  color: rgb(170, 130, 0);
+  font-size: 1.2rem;
+  font-weight: 500;
+}
   .qr_code_box{
     /* border:1px solid red; */
     position: relative;

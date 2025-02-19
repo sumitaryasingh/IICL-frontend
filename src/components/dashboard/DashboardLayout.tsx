@@ -18,7 +18,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   return (
     <div
       className={`${styles.dashboardContainer} ${
-        !isSidebarOpen ? styles["sidebar-closed"] : ""
+        !isSidebarOpen ? styles["sidebar-closed"] : "" 
       }`}
     >
       <DashboardSidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />

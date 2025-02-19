@@ -6,7 +6,8 @@ import DashboardSidebar from "./DashboardSidebar";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { useNavigate } from "react-router-dom";
-import { fetchStudents, StudentData } from "../../services/studentService";
+import { fetchStudents, StudentData, getStudentDataByEnrollmentId } from "../../services/studentService";
+import { IoIosCloseCircle } from "react-icons/io";
 
 const ViewStudent: React.FC = () => {
   // State variables
@@ -18,11 +19,26 @@ const ViewStudent: React.FC = () => {
   const [pageSize, setPageSize] = useState<number>(5);
   const navigate = useNavigate();
 
+  // New state for image modal
+  const [showImageModal, setShowImageModal] = useState<boolean>(false);
+  const [selectedImage, setSelectedImage] = useState<string>("");
+
+  // Helper function to convert a buffer to base64
+  const convertBufferToBase64 = (buffer: ArrayBuffer): string => {
+    let binary = "";
+    const bytes = new Uint8Array(buffer);
+    for (let i = 0; i < bytes.byteLength; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return window.btoa(binary);
+  };
+
   // Fetch student data from the API on component mount.
   useEffect(() => {
     const getStudents = async () => {
       try {
-        const data = await fetchStudents();
+        const franchiseIdData = localStorage.getItem("franchiseId") || ''; 
+        const data = await fetchStudents(franchiseIdData);
         setStudents(data);
       } catch (error) {
         console.error("Error fetching student data:", error);
@@ -91,8 +107,8 @@ const ViewStudent: React.FC = () => {
 
   const handleEdit = useCallback((student: StudentData) => {
     console.log("Editing student:", student);
-    // Implement edit functionality here
-  }, []);
+    navigate(`/dashboard/student/add-student/${student.enrollmentId}`);
+  }, [navigate]);
 
   const handleDelete = useCallback((student: StudentData) => {
     console.log("Deleting student:", student);
@@ -101,7 +117,7 @@ const ViewStudent: React.FC = () => {
 
   const handleViewMarksheet = useCallback(
     (student: StudentData) => {
-      navigate(`/dashboard/students/view/marksheet/${student.id}`, { state: { student } });
+      navigate(`/dashboard/students/view/marksheet/${student.enrollmentId}`, { state: { student } });
       console.log("Viewing marksheet for:", student);
     },
     [navigate]
@@ -109,11 +125,26 @@ const ViewStudent: React.FC = () => {
 
   const handleViewCertificate = useCallback(
     (student: StudentData) => {
-      navigate(`/dashboard/students/view/certificate/${student.id}`, { state: { student } });
+      navigate(`/dashboard/students/view/certificate/${student.enrollmentId}`, { state: { student } });
       console.log("Viewing certificate for:", student);
     },
     [navigate]
   );
+
+  // New handler to show the image modal and convert buffer to image URL
+  const handleViewImage = useCallback((student: StudentData) => {
+    if (student.image && student.image.data) {
+      const { data, contentType } = student.image;
+      // Create a data URL for the image
+      setSelectedImage(`data:${contentType};base64,${data}`);
+      setShowImageModal(true);
+      console.log("Converted image to data URL");
+      console.log(setSelectedImage(`data:${contentType};base64,${data}`));
+    } else {
+      console.error("No image available for student", student);
+    }
+  }, []);
+  
 
   const exportToExcel = useCallback(() => {
     // Exclude certificate and marksheet from export
@@ -176,7 +207,7 @@ const ViewStudent: React.FC = () => {
                   <th onClick={() => handleSort("email")}>Email</th>
                   <th onClick={() => handleSort("phone")}>Phone</th>
                   <th onClick={() => handleSort("course")}>Course</th>
-                  <th onClick={() => handleSort("enrollmentNumber")}>Enrollment No.</th>
+                  <th onClick={() => handleSort("enrollmentId")}>Enrollment No.</th>
                   <th onClick={() => handleSort("status")}>Status</th>
                   <th>Marksheet</th>
                   <th>Certificate</th>
@@ -192,7 +223,7 @@ const ViewStudent: React.FC = () => {
                       <td>{student.email}</td>
                       <td>{student.phone}</td>
                       <td>{student.course}</td>
-                      <td>{student.enrollmentNumber}</td>
+                      <td>{student.enrollmentId}</td>
                       <td>
                         <span className={student.status === "Active" ? styles.active : styles.completed}>
                           {student.status}
@@ -208,12 +239,15 @@ const ViewStudent: React.FC = () => {
                           View Certificate
                         </button>
                       </td>
-                      <td>
+                      <td className={styles.btns}>
                         <button className={styles.editBtn} onClick={() => handleEdit(student)}>
                           Edit
                         </button>
                         <button className={styles.deleteBtn} onClick={() => handleDelete(student)}>
                           Delete
+                        </button>
+                        <button className={styles.viewImageBtn} onClick={() => handleViewImage(student)}>
+                          View Image
                         </button>
                       </td>
                     </tr>
@@ -244,6 +278,20 @@ const ViewStudent: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* View Image Modal */}
+      {showImageModal && (
+        <div className={styles.imageModal}>
+          <div className={styles.modalBody}>
+            <img src={selectedImage} alt="Student" className={styles.studentImage}/>
+          </div>
+            <button
+              className={styles.modalCloseBtn}
+              onClick={() => setShowImageModal(false)}>
+              <IoIosCloseCircle className={styles.closeIcon} />
+            </button>
+        </div>
+      )}
     </div>
   );
 };

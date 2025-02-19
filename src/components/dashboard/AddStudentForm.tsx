@@ -2,8 +2,9 @@ import React, { useState, ChangeEvent, useEffect } from "react";
 import styles from "./styles/AddStudentForm.module.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { submitStudentData,StudentData  } from "../../services/studentService";
+import { submitStudentData, StudentData, getStudentDataByEnrollmentId, editStudentData  } from "../../services/studentService";
 import { fetchBatchOptions } from "../../services/batchService";
+import { useParams } from "react-router-dom";
 
 // Define an interface for the form data
 interface StudentFormData {
@@ -24,19 +25,22 @@ interface StudentFormData {
   qualification: string;
   idProof: string;
   idProofNumber: string;
+  franchiseId: string;
+  enrollmentId: string;
 }
 
 // Simulated batch options (in a real app, these would come from your ViewBatch data or API)
 interface BatchOption {
   id: string;
-  name: string;
+  course: string;
+  time: string;
 }
 
 
 
-  // Rest of the component code...
+// Rest of the component code...
 
-const IMAGE_SIZE_LIMIT = 1 * 1024 * 1024; // 1 MB
+const IMAGE_SIZE_LIMIT = 50 * 1024; // 50 KB
 
 const AddStudentForm: React.FC = () => {
   const [formData, setFormData] = useState<StudentFormData>({
@@ -57,15 +61,24 @@ const AddStudentForm: React.FC = () => {
     qualification: "",
     idProof: "",
     idProofNumber: "",
+    franchiseId: "",
+    enrollmentId: "",
   });
 
   const [batchOptions, setBatchOptions] = useState<BatchOption[]>([]);
+  console.log(batchOptions);
+  const { enrollmentId: routeEnrollmentId } = useParams<{ enrollmentId?: string }>();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await fetchBatchOptions();
-        setBatchOptions(data);
+        const batchOptions = data.map((batch: any) => ({
+          id: batch._id,
+          course: batch.course,
+          time: batch.time,
+        }));
+        setBatchOptions(batchOptions);
       } catch (error) {
         console.error("Error fetching batch options:", error);
         toast.error("Failed to load batch options");
@@ -101,66 +114,132 @@ const AddStudentForm: React.FC = () => {
     }
   };
 
+
+useEffect(() => {
+  // Retrieve franchiseId from localStorage
+  const storedFranchiseId = localStorage.getItem("franchiseId") || "";
+  
+  if (routeEnrollmentId) {
+    // Edit Mode: fetch student data by enrollmentId and prefill the form.
+    getStudentDataByEnrollmentId(routeEnrollmentId)
+      .then((studentData) => {
+        // Assuming studentData matches your StudentFormData structure
+        setFormData({
+          name: studentData.name,
+          email: studentData.email,
+          fatherName: studentData.fatherName,
+          motherName: studentData.motherName,
+          phone: studentData.phone,
+          sessionFrom: studentData.sessionFrom,
+          sessionTo: studentData.sessionTo,
+          registrationDate: studentData.registrationDate,
+          address: studentData.address,
+          dob: studentData.dob,
+          gender: studentData.gender,
+          course: studentData.course,
+          batch: studentData.batch,
+          image: null, // File input cannot be prefilled; user can upload a new image if needed.
+          qualification: studentData.qualification,
+          idProof: studentData.idProof,
+          idProofNumber: studentData.idProofNumber,
+          franchiseId: studentData.franchiseId, // This should match the stored franchiseId if applicable
+          enrollmentId: studentData.enrollmentId,
+        });
+      })
+      .catch((error) => {
+        console.error("Error fetching student data:", error);
+        toast.error("Error fetching student data");
+      });
+  } else {
+    // Add Mode: Generate a random eight-digit enrollmentId and set franchiseId.
+    const generatedEnrollmentId = Math.floor(10000000 + Math.random() * 90000000).toString();
+    setFormData((prev: any) => ({
+      ...prev,
+      franchiseId: storedFranchiseId,
+      enrollmentId: generatedEnrollmentId,
+    }));
+  }
+}, [routeEnrollmentId]);
+
+  
+  
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+   
 
     // Required fields validation
     const requiredFields: { [key: string]: string } = {
-        name: "Name",
-        email: "Email",
-        fatherName: "Father's name",
-        motherName: "Mother's name",
-        phone: "Phone",
-        sessionFrom: "Session from date",
-        sessionTo: "Session to date",
-        registrationDate: "Registration date",
-        address: "Address",
-        dob: "Date of birth",
-        gender: "Gender",
-        course: "Course",
-        batch: "Batch",
-        qualification: "Qualification",
-        idProof: "ID proof",
-        idProofNumber: "ID proof number",
+      name: "Name",
+      email: "Email",
+      fatherName: "Father's name",
+      motherName: "Mother's name",
+      phone: "Phone",
+      sessionFrom: "Session from date",
+      sessionTo: "Session to date",
+      registrationDate: "Registration date",
+      address: "Address",
+      dob: "Date of birth",
+      gender: "Gender",
+      course: "Course",
+      batch: "Batch",
+      qualification: "Qualification",
+      idProof: "ID proof",
+      idProofNumber: "ID proof number",
+      franchiseId: "franchise id Automatic Generation",
+      enrollmentId: "Enrollment Number Automatic Generation"
     };
 
     for (const field in requiredFields) {
-        if (!formData[field as keyof typeof formData]?.toString().trim()) {
-            toast.error(`${requiredFields[field]} is required`);
-            return;
-        }
+      if (!formData[field as keyof typeof formData]?.toString().trim()) {
+        toast.error(`${requiredFields[field]} is required`);
+        return;
+      }
     }
 
+
+    // Append franchiseId to formData
+    const studentData = { ...formData ,image: formData.image ?? new File([], "placeholder.jpg"), };
     // Submit data if all validations pass
     try {
-        await submitStudentData(formData);
+      if (routeEnrollmentId) {
+        // Edit mode: call editStudentData with enrollmentId from URL and formData.
+        await editStudentData(routeEnrollmentId, studentData);
+        toast.success("Student edited successfully!");
+      } else {
+        // Add mode: call submitStudentData to add a new student.
+        await submitStudentData(studentData);
         toast.success("Student added successfully!");
+      }
 
-        // Reset form
-        setFormData({
-            name: "",
-            email: "",
-            fatherName: "",
-            motherName: "",
-            phone: "",
-            registrationDate: "",
-            sessionFrom: "",
-            sessionTo: "",
-            dob: "",
-            gender: "",
-            address: "",
-            course: "",
-            batch: "",
-            qualification: "",
-            idProof: "",
-            idProofNumber: "",
-            image: null,
-        });
+      // Reset form
+      setFormData({
+        name: "",
+        email: "",
+        fatherName: "",
+        motherName: "",
+        phone: "",
+        registrationDate: "",
+        sessionFrom: "",
+        sessionTo: "",
+        dob: "",
+        gender: "",
+        address: "",
+        course: "",
+        batch: "",
+        qualification: "",
+        idProof: "",
+        idProofNumber: "",
+        image: null,
+        franchiseId: "",
+        enrollmentId: "",
+      });
     } catch (error) {
-        console.error("Error submitting student data:", error);
-        toast.error("Submission failed. Please try again.");
+      console.error("Error submitting student data:", error);
+      toast.error("Submission failed. Please try again.");
     }
-};
+  };
+
 
 
 
@@ -172,7 +251,7 @@ const AddStudentForm: React.FC = () => {
         <div className={styles.formRow}>
           <div className={styles.formGroup}>
             <label htmlFor="name">Name</label>
-            <input 
+            <input
               type="text"
               id="name"
               name="name"
@@ -183,7 +262,7 @@ const AddStudentForm: React.FC = () => {
           </div>
           <div className={styles.formGroup}>
             <label htmlFor="email">Email</label>
-            <input 
+            <input
               type="email"
               id="email"
               name="email"
@@ -198,7 +277,7 @@ const AddStudentForm: React.FC = () => {
         <div className={styles.formRow}>
           <div className={styles.formGroup}>
             <label htmlFor="fatherName">Father's Name</label>
-            <input 
+            <input
               type="text"
               id="fatherName"
               name="fatherName"
@@ -209,7 +288,7 @@ const AddStudentForm: React.FC = () => {
           </div>
           <div className={styles.formGroup}>
             <label htmlFor="motherName">Mother's Name</label>
-            <input 
+            <input
               type="text"
               id="motherName"
               name="motherName"
@@ -224,7 +303,7 @@ const AddStudentForm: React.FC = () => {
         <div className={styles.formRow}>
           <div className={styles.formGroup}>
             <label htmlFor="phone">Phone</label>
-            <input 
+            <input
               type="tel"
               id="phone"
               name="phone"
@@ -235,7 +314,7 @@ const AddStudentForm: React.FC = () => {
           </div>
           <div className={styles.formGroup}>
             <label htmlFor="registrationDate">Registration Date</label>
-            <input 
+            <input
               type="date"
               id="registrationDate"
               name="registrationDate"
@@ -250,7 +329,7 @@ const AddStudentForm: React.FC = () => {
         <div className={styles.formRow}>
           <div className={styles.formGroup}>
             <label htmlFor="sessionFrom">Session From</label>
-            <input 
+            <input
               type="date"
               id="sessionFrom"
               name="sessionFrom"
@@ -261,7 +340,7 @@ const AddStudentForm: React.FC = () => {
           </div>
           <div className={styles.formGroup}>
             <label htmlFor="sessionTo">Session To</label>
-            <input 
+            <input
               type="date"
               id="sessionTo"
               name="sessionTo"
@@ -276,7 +355,7 @@ const AddStudentForm: React.FC = () => {
         <div className={styles.formRow}>
           <div className={styles.formGroup}>
             <label htmlFor="dob">Date of Birth</label>
-            <input 
+            <input
               type="date"
               id="dob"
               name="dob"
@@ -287,7 +366,7 @@ const AddStudentForm: React.FC = () => {
           </div>
           <div className={styles.formGroup}>
             <label htmlFor="gender">Gender</label>
-            <select 
+            <select
               id="gender"
               name="gender"
               value={formData.gender}
@@ -306,7 +385,7 @@ const AddStudentForm: React.FC = () => {
         <div className={styles.formRow}>
           <div className={styles.formGroup} style={{ flex: "1" }}>
             <label htmlFor="address">Address</label>
-            <textarea 
+            <textarea
               id="address"
               name="address"
               value={formData.address}
@@ -320,7 +399,7 @@ const AddStudentForm: React.FC = () => {
         <div className={styles.formRow}>
           <div className={styles.formGroup}>
             <label htmlFor="course">Select Course</label>
-            <select 
+            <select
               id="course"
               name="course"
               value={formData.course}
@@ -338,7 +417,7 @@ const AddStudentForm: React.FC = () => {
           </div>
           <div className={styles.formGroup}>
             <label htmlFor="batch">Select Batch</label>
-            <select 
+            <select
               id="batch"
               name="batch"
               value={formData.batch}
@@ -347,9 +426,12 @@ const AddStudentForm: React.FC = () => {
             >
               <option value="">Select Batch</option>
               {batchOptions.map((batch) => (
+                
                 <option key={batch.id} value={batch.id}>
-                  {batch.name}
+                  {batch.course} - {batch.time}
                 </option>
+
+                
               ))}
             </select>
           </div>
@@ -359,7 +441,7 @@ const AddStudentForm: React.FC = () => {
         <div className={styles.formRow}>
           <div className={styles.formGroup}>
             <label htmlFor="image">Upload Image</label>
-            <input 
+            <input
               type="file"
               id="image"
               name="image"
@@ -373,7 +455,7 @@ const AddStudentForm: React.FC = () => {
         <div className={styles.formRow}>
           <div className={styles.formGroup} style={{ flex: "1" }}>
             <label htmlFor="qualification">Student Qualification</label>
-            <input 
+            <input
               id="qualification"
               name="qualification"
               value={formData.qualification}
@@ -387,7 +469,7 @@ const AddStudentForm: React.FC = () => {
         <div className={styles.formRow}>
           <div className={styles.formGroup}>
             <label htmlFor="idProof">Select ID Proof</label>
-            <select 
+            <select
               id="idProof"
               name="idProof"
               value={formData.idProof}
@@ -402,7 +484,7 @@ const AddStudentForm: React.FC = () => {
           </div>
           <div className={styles.formGroup}>
             <label htmlFor="idProofNumber">ID Proof Number</label>
-            <input 
+            <input
               type="text"
               id="idProofNumber"
               name="idProofNumber"

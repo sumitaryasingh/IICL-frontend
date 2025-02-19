@@ -1,5 +1,5 @@
-// components/AddFranchiseForm.tsx
-import React, { useState } from "react";
+ // components/AddFranchiseForm.tsx
+import React, { useEffect, useState } from "react";
 import styles from "./styles/AddFranchiseForm.module.css";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -15,6 +15,8 @@ interface FranchiseFormData {
   mobile: string;
   email: string;
   aadharId: string;
+  password: string;
+  franchiseId:number;
 }
 
 const AddFranchiseForm: React.FC = () => {
@@ -28,7 +30,12 @@ const AddFranchiseForm: React.FC = () => {
     mobile: "",
     email: "",
     aadharId: "",
+    password: "",
+    franchiseId:0,
   });
+
+  // State to manage whether the password field is editable.
+  const [isPasswordEditable, setIsPasswordEditable] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -38,67 +45,77 @@ const AddFranchiseForm: React.FC = () => {
       ...prevData,
       [name]: value,
     }));
+    // console.log(formData);
+  };
+
+
+  useEffect(() => {
+    const changeFranchiseId = () => {
+      const franchiseId = Math.floor(100000 + Math.random() * 900000);
+      
+      // Create a synthetic event object
+      const syntheticEvent = {
+        target: {
+          name: 'franchiseId',
+          value: franchiseId,
+        },
+      };
+  
+      handleChange(syntheticEvent as unknown as React.ChangeEvent<HTMLInputElement>);
+    };
+  
+    changeFranchiseId();
+  }, []);
+
+  // When the "Edit" button is clicked, enable the password field.
+  const handlePasswordEdit = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setIsPasswordEditable(true);
+    if (!formData.password) {
+      setFormData((prevData) => ({
+        ...prevData,
+        password: prevData.mobile, // initialize with mobile value if password is empty
+      }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Regular expressions for email, mobile, and Aadhar validation
+    // Regular expressions for validation
+   
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const mobileRegex = /^[0-9]{10}$/;
     const aadharRegex = /^[0-9]{12}$/;
 
-    if (!formData.firstName.trim()) {
-      toast.error("First name is required");
-      return;
+    const validations = [
+      { condition: !formData.firstName.trim(), message: "First name is required" },
+      { condition: !formData.lastName.trim(), message: "Last name is required" },
+      { condition: !formData.dob.trim(), message: "Date of birth is required" },
+      { condition: !formData.directorName.trim(), message: "Director name is required" },
+      { condition: !formData.instituteName.trim(), message: "Institute name is required" },
+      { condition: !formData.address.trim(), message: "Address is required" },
+      { condition: !formData.mobile.trim(), message: "Mobile number is required" },
+      { condition: !mobileRegex.test(formData.mobile), message: "Invalid mobile number. It should be 10 digits." },
+      { condition: !formData.email.trim(), message: "Email is required" },
+      { condition: !emailRegex.test(formData.email), message: "Invalid email address." },
+      { condition: !formData.aadharId.trim(), message: "Aadhar ID is required" },
+      { condition: !aadharRegex.test(formData.aadharId), message: "Invalid Aadhar ID. It should be 12 digits." }
+    ];
+    
+    for (let validation of validations) {
+      if (validation.condition) {
+        toast.error(validation.message);
+        return;
+      }
     }
-    if (!formData.lastName.trim()) {
-      toast.error("Last name is required");
-      return;
-    }
-    if (!formData.dob.trim()) {
-      toast.error("Date of birth is required");
-      return;
-    }
-    if (!formData.directorName.trim()) {
-      toast.error("Director name is required");
-      return;
-    }
-    if (!formData.instituteName.trim()) {
-      toast.error("Institute name is required");
-      return;
-    }
-    if (!formData.address.trim()) {
-      toast.error("Address is required");
-      return;
-    }
-    if (!formData.mobile.trim()) {
-      toast.error("Mobile number is required");
-      return;
-    }
-    if (!mobileRegex.test(formData.mobile)) {
-      toast.error("Invalid mobile number. It should be 10 digits.");
-      return;
-    }
-    if (!formData.email.trim()) {
-      toast.error("Email is required");
-      return;
-    }
-    if (!emailRegex.test(formData.email)) {
-      toast.error("Invalid email address.");
-      return;
-    }
-    if (!formData.aadharId.trim()) {
-      toast.error("Aadhar ID is required");
-      return;
-    }
-    if (!aadharRegex.test(formData.aadharId)) {
-      toast.error("Invalid Aadhar ID. It should be 12 digits.");
-      return;
-    }
+    
 
+    const payload = { ...formData, password: formData.password || formData.mobile };
+
+    console.log("Submitting formData:", formData);
     try {
-      await submitFranchiseData(formData);
+      await submitFranchiseData(payload);
       toast.success("Franchise added successfully!");
       setFormData({
         firstName: "",
@@ -110,7 +127,10 @@ const AddFranchiseForm: React.FC = () => {
         mobile: "",
         email: "",
         aadharId: "",
+        password: "",
+        franchiseId:0,
       });
+      setIsPasswordEditable(false);
     } catch (error) {
       console.error("Error submitting franchise data:", error);
       toast.error("Submission failed. Please try again.");
@@ -173,7 +193,7 @@ const AddFranchiseForm: React.FC = () => {
           </div>
         </div>
 
-        {/* Third Row: Institute Name & Mobile Number */}
+        {/* Third Row: Institute Name, Mobile Number, and Password */}
         <div className={styles.formRow}>
           <div className={styles.formGroup}>
             <label htmlFor="instituteName">Institute Name</label>
@@ -195,6 +215,22 @@ const AddFranchiseForm: React.FC = () => {
               value={formData.mobile}
               onChange={handleChange}
               required
+            />
+          </div>
+          <div className={styles.formGroup}>
+            <label htmlFor="password">Password
+            <button type="button" className={styles.passEditBtn} onClick={handlePasswordEdit}>
+              Edit
+            </button>
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={isPasswordEditable ? formData.password : formData.mobile}
+              onChange={handleChange}
+              required
+              disabled={!isPasswordEditable}
             />
           </div>
         </div>

@@ -1,0 +1,112 @@
+/* Profile.module.css */
+
+/* Page content inside main content */
+.pageContent {
+  margin-top: 1rem;
+}
+
+/* Profile Title */
+.profileTitle {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+/* Profile Section Card */
+.profileSection {
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Paragraph styling inside profile card */
+.profileSection p {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+  color: #555;
+}
+
+.profileSection strong {
+  color: #333;
+}
+
+/* Profile Table Styles */
+.profileTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.profileTable td {
+  padding: 0.75rem;
+  border: 1px solid #dcdcdc;
+  font-size: 1rem;
+  color: #555;
+}
+
+.profileTable td:first-child {
+  width: 40%;
+  font-weight: bold;
+  color: #ececec;
+  background-color: rgba(0, 0, 139, 0.8);
+}
+
+/* Loading message styling */
+.loading {
+  text-align: center;
+  font-size: 1.5rem;
+  color: #999;
+  margin-top: 4rem;
+}
+
+/* Responsive adjustments */
+
+/* For screens up to 1024px */
+@media (max-width: 1024px) {
+  .profileTitle {
+    font-size: 1.8rem;
+  }
+  .profileSection {
+    padding: 1.2rem;
+  }
+  .profileTable td {
+    padding: 0.65rem;
+    font-size: 0.95rem;
+  }
+}
+
+/* For screens up to 768px */
+@media (max-width: 768px) {
+  .profileTitle {
+    font-size: 1.6rem;
+  }
+  .profileSection {
+    padding: 1rem;
+  }
+  .profileTable td {
+    padding: 0.6rem;
+    font-size: 0.9rem;
+  }
+  .profileTable td:first-child {
+    width: 45%;
+  }
+}
+
+/* For screens up to 480px */
+@media (max-width: 480px) {
+  .profileTitle {
+    font-size: 1.4rem;
+  }
+  .profileSection {
+    padding: 0.8rem;
+  }
+  .profileTable td {
+    padding: 0.5rem;
+    font-size: 0.85rem;
+  }
+  .profileTable td:first-child {
+    width: 50%;
+  }
+}

@@ -1,6 +1,5 @@
 .formContainer {
-    max-width: 50%; /* Adjust container width as needed */
-    margin: 6rem auto;
+    max-width: 100%; /* Adjust container width as needed */
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 8px;

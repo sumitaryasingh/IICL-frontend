@@ -1,5 +1,5 @@
 import axios from "axios";
-
+// 
 interface ContactFormData {
     name: string;
     email: string;
@@ -39,3 +39,33 @@ export const submitContactForm = async (formData: ContactFormData): Promise<Cont
         }
     }
 };
+
+
+export interface ContactEnquiry {
+    id: number;
+    name: string;
+    email: string;
+    phone: string;
+    message: string;
+  }
+  
+  export const fetchContactEnquiries = async (): Promise<ContactEnquiry[]> => {
+    try {
+      // Replace with your actual API endpoint for contact enquiries
+      const response = await axios.get<ContactEnquiry[]>("/api/contact");
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching contact enquiries:", error);
+      // Fallback sample data if API call fails
+      const sampleData: ContactEnquiry[] = [
+        {
+          id: 1,
+          name: "Alice Johnson",
+          email: "alice@example.com",
+          phone: "9876543210",
+          message: "I would like to know more about your services.",
+        }
+      ];
+      return sampleData;
+    }
+  };

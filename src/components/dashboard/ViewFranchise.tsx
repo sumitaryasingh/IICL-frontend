@@ -4,14 +4,13 @@ import styles from "./styles/ViewFranchise.module.css";
 import { fetchFranchiseData, FranchiseData } from "../../services/viewFranchise";
 
 const ViewFranchise: React.FC = () => {
-
   // Franchise data state
   const [franchises, setFranchises] = useState<FranchiseData[]>([]);
   const [filterText, setFilterText] = useState("");
   const [sortField, setSortField] = useState<keyof FranchiseData | "">("");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 5;
+  const [pageSize, setPageSize] = useState(5);
 
   // Fetch franchise data on mount
   useEffect(() => {
@@ -51,14 +50,17 @@ const ViewFranchise: React.FC = () => {
     setCurrentPage(1);
   }, [filterText, sortField, sortOrder]);
 
-  // Pagination
+  // Pagination calculations
+  const totalPages = useMemo(
+    () => Math.ceil(filteredData.length / pageSize),
+    [filteredData, pageSize]
+  );
   const indexOfLast = currentPage * pageSize;
   const indexOfFirst = indexOfLast - pageSize;
   const currentItems = useMemo(
     () => filteredData.slice(indexOfFirst, indexOfLast),
     [filteredData, indexOfFirst, indexOfLast]
   );
-  const totalPages = Math.ceil(filteredData.length / pageSize);
 
   // Handlers
   const handleSort = useCallback(
@@ -77,6 +79,14 @@ const ViewFranchise: React.FC = () => {
     setCurrentPage(page);
   }, []);
 
+  const handlePageSizeChange = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setPageSize(Number(e.target.value));
+      setCurrentPage(1);
+    },
+    []
+  );
+
   const handleEdit = useCallback((data: FranchiseData) => {
     console.log("Edit clicked for:", data);
     // Implement your edit logic here
@@ -88,9 +98,7 @@ const ViewFranchise: React.FC = () => {
   }, []);
 
   return (
-    // Add "sidebar-closed" class when the sidebar is not open.
     <div>
-
       <div className={styles.mainContent}>
         <div className={styles.pageContent}>
           <h2>View Franchise</h2>
@@ -102,6 +110,22 @@ const ViewFranchise: React.FC = () => {
               onChange={(e) => setFilterText(e.target.value)}
             />
           </div>
+
+          {/* Entries Selector */}
+          <div className={styles.entries}>
+            <label htmlFor="entriesSelect">Show </label>
+            <select
+              id="entriesSelect"
+              value={pageSize}
+              onChange={handlePageSizeChange}
+            >
+              <option value={5}>5</option>
+              <option value={10}>10</option>
+              <option value={20}>20</option>
+            </select>
+            <span> entries</span>
+          </div>
+
           <div className={styles.tableContainer}>
             <table className={styles.table}>
               <thead>

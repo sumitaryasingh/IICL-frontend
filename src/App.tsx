@@ -34,6 +34,7 @@ import AddPhoto from "./components/dashboard/AddPhoto";
 import AdminFranchiseProfile from "./components/dashboard/Profile";
 import Certificate from "./components/dashboard/Certificate";
 import Marksheet from "./components/dashboard/Marksheet";
+import MarkEntryForm from "./components/dashboard/MarkEntryForm";
 const App: React.FC = () => {
   return (
     <div className="App">

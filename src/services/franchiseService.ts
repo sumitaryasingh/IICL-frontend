@@ -7,6 +7,8 @@ export interface FranchiseData {
   dob: string;
   directorName: string;
   instituteName: string;
+  city:string;
+  state:string;
   address: string;
   mobile: string;
   email: string;

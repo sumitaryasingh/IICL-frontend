@@ -1,145 +1,185 @@
-// components/DynamicMarkEntryForm.tsx
-import React, { useState } from "react";
-import { Subject } from "../../services/studentService";
-import styles from "./styles/ViewStudent.module.css";
+import React, { useState, useEffect, useMemo } from "react";
+import { Table, Modal, Button } from "antd";
+import styles from "./styles/MarkEntryForm.module.css";
+import { getAllStudents, StudentData } from "../../services/studentService";
+import AddMarksFormPopUp from "./AddMarksFormPopUp";
 
-interface DynamicMarkEntryFormProps {
-  onSubmit: (subjects: Subject[]) => void;
+interface StudentProps {
+  student: string;
+  setIsMarksModalVisible: any;
+  StudentMarks: Mark[];
+  onMarksUpdate: (updatedMarks: Mark[]) => void; // ✅ Pass function from parent
 }
 
-const MarkEntryForm: React.FC<DynamicMarkEntryFormProps> = ({ onSubmit }) => {
-  const [subjects, setSubjects] = useState<Subject[]>([]);
+interface Mark {
+  subject: string;
+  theoryMaxMarks: number;
+  theoryObtainedMarks: number;
+  practicalMaxMarks: number;
+  practicalObtainedMarks: number;
+}
 
-  const addSubject = () => {
-    const newSubject: Subject = {
-      subject: "",
-      theory: 60,
-      lab: 40,
-      totalMarks: 0,
-      obtainedTheory: 0,
-      obtainedLab: 0,
-      obtainedTotal: 0,
+interface Student {
+  name: string;
+  enrollmentId: string;
+  franchiseId: string | number;
+  course: string;
+  batch: string;
+  dob: string;
+  email: string;
+  fatherName: string;
+  motherName: string;
+  gender: string;
+  phone: string;
+  idProof: string;
+  idProofNumber: string;
+  qualification: string;
+  address: string;
+  registrationDate: string;
+  sessionFrom: string;
+  sessionTo: string;
+  id: string | number;
+  status: "Active" | "Completed";
+  marksheet: string;
+  image: any;
+  marks: Mark[];
+}
+
+const MarkEntryForm: React.FC = () => {
+  const [students, setStudents] = useState<Student[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [isMarksModalVisible, setIsMarksModalVisible] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+
+  useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        const data = await getAllStudents();
+        console.log("Fetched Students:", data);
+        console.log("Fetched Students marks:", data[0].marks);
+
+        const validData = (data || []).map((student: StudentData, index) => ({
+          ...student,
+          enrollmentId: student.enrollmentId || `temp-${index}`,
+          id: student.id || `fallback-id-${index}`,
+          franchiseId: student.franchiseId ? String(student.franchiseId) : "unknown",
+          marks: Array.isArray(student.marks) ? student.marks : [], // Ensure marks array exists
+        }));
+
+        console.log("Processed Students:", validData);
+        setStudents(validData);
+      } catch (error) {
+        console.error("Error fetching students:", error);
+      }
     };
-    setSubjects([...subjects, newSubject]);
+
+    fetchStudents();
+  }, []);
+
+
+  const handleMarksUpdate = (updatedMarks: Mark[], studentId: string) => {
+    setStudents((prevStudents) =>
+      prevStudents.map((student) =>
+        student.enrollmentId === studentId
+          ? { ...student, marks: updatedMarks } // ✅ Update only the selected student’s marks
+          : student
+      )
+    );
   };
 
-  const removeSubject = (index: number) => {
-    const updated = [...subjects];
-    updated.splice(index, 1);
-    setSubjects(updated);
+  // Group students by franchiseId
+  const groupedStudents = useMemo(() => {
+    return students.reduce<Record<string, Student[]>>((acc, student) => {
+      const franchiseKey = String(student.franchiseId);
+      if (!acc[franchiseKey]) {
+        acc[franchiseKey] = [];
+      }
+      acc[franchiseKey].push(student);
+      return acc;
+    }, {});
+  }, [students]);
+
+  // Handle opening modal and setting selected student
+  const handleAddMarksClick = (student: Student) => {
+    setSelectedStudent(student);
+    setIsMarksModalVisible(true);
   };
-
-  const handleChange = (index: number, field: keyof Subject, value: string) => {
-    const updated = [...subjects];
-    if (field === "subject") {
-      updated[index][field] = value;
-    } else {
-      let parsedValue = parseInt(value, 10);
-      if (isNaN(parsedValue)) parsedValue = 0;
-      updated[index][field] = parsedValue;
-    }
-
-    if (field === "theory" || field === "lab") {
-      updated[index].totalMarks = updated[index].theory + updated[index].lab;
-    }
-    if (field === "obtainedTheory" || field === "obtainedLab") {
-      updated[index].obtainedTotal = updated[index].obtainedTheory + updated[index].obtainedLab;
-    }
-
-    setSubjects(updated);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSubmit(subjects);
-  };
+  
 
   return (
-    <form onSubmit={handleSubmit} className={styles.dynamicMarkEntryForm}>
-      {subjects.map((subj, index) => (
-        <div key={index} className={styles.subjectEntry}>
-          <h4 className={styles.subjectTitle}>Subject {index + 1}</h4>
-          <div className={styles.inputGroup}>
-            <label>
-              Subject Name:
-              <input
-                type="text"
-                value={subj.subject}
-                onChange={(e) => handleChange(index, "subject", e.target.value)}
-                required
-                className={styles.inputField}
-              />
-            </label>
-          </div>
-          <div className={styles.inputGroup}>
-            <label>
-              Maximum Theory Marks:
-              <input
-                type="number"
-                min="0"
-                value={subj.theory}
-                onChange={(e) => handleChange(index, "theory", e.target.value)}
-                required
-                className={styles.inputField}
-              />
-            </label>
-          </div>
-          <div className={styles.inputGroup}>
-            <label>
-              Maximum Practical Marks:
-              <input
-                type="number"
-                min="0"
-                value={subj.lab}
-                onChange={(e) => handleChange(index, "lab", e.target.value)}
-                required
-                className={styles.inputField}
-              />
-            </label>
-          </div>
-          <div className={styles.inputGroup}>
-            <label>
-              Obtained Theory Marks:
-              <input
-                type="number"
-                min="0"
-                value={subj.obtainedTheory}
-                onChange={(e) => handleChange(index, "obtainedTheory", e.target.value)}
-                required
-                className={styles.inputField}
-              />
-            </label>
-          </div>
-          <div className={styles.inputGroup}>
-            <label>
-              Obtained Practical Marks:
-              <input
-                type="number"
-                min="0"
-                value={subj.obtainedLab}
-                onChange={(e) => handleChange(index, "obtainedLab", e.target.value)}
-                required
-                className={styles.inputField}
-              />
-            </label>
-          </div>
-          <div className={styles.totalMarksDisplay}>
-            <strong>
-              Total Maximum: {subj.totalMarks} | Total Obtained: {subj.obtainedTotal}
-            </strong>
-          </div>
-          <button type="button" onClick={() => removeSubject(index)} className={styles.removeButton}>
-            Remove Subject
-          </button>
-          <hr />
+    <div className={styles.container}>
+      {Object.keys(groupedStudents).map((franchiseId) => (
+        <div key={franchiseId} className={styles.franchiseSection}>
+          <h2 className={styles.heading}>Franchise {franchiseId}</h2>
+          <Table
+            dataSource={groupedStudents[franchiseId]}
+            pagination={{
+              current: currentPage,
+              pageSize: pageSize,
+              onChange: (page, size) => {
+                setCurrentPage(page);
+                setPageSize(size || 10);
+              },
+            }}
+            rowKey={(record) => record.enrollmentId || `student-${record.id}`}
+            className={styles.table}
+            columns={[
+              { title: "Name", dataIndex: "name", key: "name" },
+              { title: "Enrollment ID", dataIndex: "enrollmentId", key: "enrollmentId" },
+              { title: "Franchise ID", dataIndex: "franchiseId", key: "franchiseId" },
+              { title: "Course", dataIndex: "course", key: "course" },
+              { title: "Batch", dataIndex: "batch", key: "batch" },
+              { title: "DOB", dataIndex: "dob", key: "dob" },
+              { title: "Email", dataIndex: "email", key: "email" },
+              { title: "Father's Name", dataIndex: "fatherName", key: "fatherName" },
+              { title: "Mother's Name", dataIndex: "motherName", key: "motherName" },
+              { title: "Gender", dataIndex: "gender", key: "gender" },
+              { title: "Phone", dataIndex: "phone", key: "phone" },
+              { title: "ID Proof", dataIndex: "idProof", key: "idProof" },
+              { title: "ID Proof Number", dataIndex: "idProofNumber", key: "idProofNumber" },
+              { title: "Qualification", dataIndex: "qualification", key: "qualification" },
+              { title: "Address", dataIndex: "address", key: "address" },
+              { title: "Registration Date", dataIndex: "registrationDate", key: "registrationDate" },
+              { title: "Session From", dataIndex: "sessionFrom", key: "sessionFrom" },
+              { title: "Session To", dataIndex: "sessionTo", key: "sessionTo" },
+              {
+                title: "Action",
+                key: "actions",
+                render: (_, record: Student) => (
+                  <Button type="primary" onClick={() => handleAddMarksClick(record)}>
+                    Add Marks
+                  </Button>
+                ),
+              },
+            ]}
+          />
         </div>
       ))}
-      <button type="button" onClick={addSubject} className={styles.addButton}>
-        Add Subject
-      </button>
-      <br />
-      <button type="submit" className={styles.submitButton}>Submit Marks</button>
-    </form>
+
+     {/* Modal for Add Marks */}
+    <Modal
+  title={`Add Marks for ${selectedStudent?.name || "Student"}`}
+  open={isMarksModalVisible}
+  onCancel={() => setIsMarksModalVisible(false)}
+  footer={null}
+  width={1000}
+  className={styles.marksModal}
+  >
+  {selectedStudent && (
+    <AddMarksFormPopUp
+    student={selectedStudent} // ✅ Pass the full student object
+    setIsMarksModalVisible={setIsMarksModalVisible}
+    StudentMarks={selectedStudent.marks || []}
+    onMarksUpdate={(updatedMarks) =>
+      handleMarksUpdate(updatedMarks, selectedStudent.enrollmentId)
+    }
+  />
+  )}
+</Modal>
+
+
+    </div>
   );
 };
 

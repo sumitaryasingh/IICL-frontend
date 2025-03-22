@@ -1,120 +1,49 @@
 // services/studentService.ts
 import axios from "axios";
 
-/**
- * Interface for subject marks details (used in student data).
- */
-export interface Subject {
-  subject: string;
-  theory: number;
-  lab: number;
-  totalMarks: number;
-  obtainedTheory: number;
-  obtainedLab: number;
-  obtainedTotal: number;
-}
+// -------------------------------------------------
+// Interfaces
+// -------------------------------------------------
 
-
-
-
-/**
- * Interface for student data as returned from the GET API.
- */
 export interface StudentData {
+  _id:string;
+  __v:number;
+  imageBase64:string;
   id: number;
   name: string;
   email: string;
   phone: string;
   course: string;
-  fatherName:string;
-  motherName:string;
+  fatherName: string;
+  motherName: string;
+  batch: string;
+  dob: string;
+  gender: string;
+  idProof: string;
+  idProofNumber: string;
+  qualification: string;
+  address: string;
+  registrationDate: string;
+  sessionFrom: string;
+  sessionTo: string;
   enrollmentId: string;
+  registrationId:string;
+  franchiseId?: number | string;
   status: "Active" | "Completed";
-  marksheet: string;       // URL or identifier for the marksheet
-  certificate: string;     // URL or identifier for the certificate
-  institute: string;       // Institute name
-  location: string;        // Location
-  percentage:number;
-  marks: number;           // Overall marks obtained (e.g., out of 800)
-  grade: string;           // Grade achieved
-  date: string;            // Date (e.g., exam or certificate date)
-  rollNumber: string;      // Roll number
-  certificateNumber: string; // Certificate number
-  organization: string;    // Organization (e.g., IICL)
-  subjects: Subject[];     // Subjects and their marks details
-  image: any; // Array of image URLs or identifiers
+  marksheet: string;
+  certificate: string;
+  institute: string;
+  location: string;
+  percentage: number;
+  marks: number;
+  grade: string;
+  date: string;
+  rollNumber: string;
+  certificateNumber: string;
+  organization: string;
+  image: any;
 }
 
-/**
- * Fallback sample student data in case the GET API call fails.
- */
-const sampleStudents: StudentData[] = [
-  {
-    id: 1,
-    name: "John Doe",
-    email: "john@example.com",
-    phone: "1234567890",
-    course: "DCA (Diploma in Computer Application)",
-    fatherName:"John Pandey",
-    motherName:"Elizabeth Chaubey",
-    enrollmentId: "ENR001",
-    status: "Active",
-    marksheet: "/marksheet/john",
-    certificate: "/certificate/john",
-    institute: "ABC Institute",
-    location: "Cityville",
-    percentage:79,
-    marks: 680,
-    grade: "A",
-    date: "2023-07-15",
-    rollNumber: "R001",
-    certificateNumber: "CERT001",
-    organization: "IICL",
-    subjects: [
-      {
-        subject: "Mathematics",
-        theory: 70,
-        lab: 30,
-        totalMarks: 100,
-        obtainedTheory: 65,
-        obtainedLab: 28,
-        obtainedTotal: 93,
-      },
-      {
-        subject: "Physics",
-        theory: 70,
-        lab: 30,
-        totalMarks: 100,
-        obtainedTheory: 60,
-        obtainedLab: 27,
-        obtainedTotal: 87,
-      },
-    ],
-    image: ["/images/john1.jpg", "/images/john2.jpg"]
-  }
-  // Add more sample students as needed...
-];
-
-/**
- * GET API call to fetch student data.
- * If the call fails, the function returns fallback sample data.
- */
-export const fetchStudents = async (franchiseId: string): Promise<StudentData[]> => {
-  try {
-    // Replace with your actual API endpoint.
-    const response = await axios.get<StudentData[]>(`/api/student/get-studentsList/${franchiseId}`);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching students:", error);
-    // Ensure sampleStudents is defined and matches StudentData[]
-    return sampleStudents;
-  }
-};
-
-/**
- * Interface for new student data that is submitted via the POST API.
- * (This interface reflects the form fields required when adding a new student.)
- */
 export interface NewStudentData {
   name: string;
   email: string;
@@ -135,44 +64,86 @@ export interface NewStudentData {
   image: File;
   franchiseId: string;
   enrollmentId: string;
+  registrationId:string;
 }
 
-/**
- * POST API call to submit new student data.
- * The function creates a FormData object to handle file uploads (if an image is provided).
- */
+export interface Mark {
+  subject: string;
+  theoryMaxMarks: number;
+  theoryObtainedMarks: number;
+  practicalMaxMarks: number;
+  practicalObtainedMarks: number;
+}
 
+// -------------------------------------------------
+// Fallback Data
+// -------------------------------------------------
+
+const sampleStudents: StudentData[] = [
+  {
+    _id:"233jsnc",
+    __v:12234,
+    imageBase64:"hey",
+    id: 1,
+    name: "John Doe",
+    email: "john@example.com",
+    phone: "1234567890",
+    course: "DCA (Diploma in Computer Application)",
+    fatherName: "John Pandey",
+    motherName: "Elizabeth Chaubey",
+    batch: "unknown",
+    dob: "unknown",
+    gender: "unknown",
+    idProof: "unknown",
+    idProofNumber: "unknown",
+    qualification: "unknown",
+    address: "unknown",
+    registrationDate: "unknown",
+    sessionFrom: "unknown",
+    sessionTo: "unknown",
+    enrollmentId: "ENR001",
+    registrationId:"123456",
+    status: "Active",
+    marksheet: "/marksheet/john",
+    certificate: "/certificate/john",
+    institute: "ABC Institute",
+    location: "Cityville",
+    percentage: 79,
+    marks: 680,
+    grade: "A",
+    date: "2023-07-15",
+    rollNumber: "R001",
+    certificateNumber: "CERT001",
+    organization: "IICL",
+    image: ["/images/john1.jpg", "/images/john2.jpg"],
+  },
+];
+
+// -------------------------------------------------
+// Student Data API Calls
+// -------------------------------------------------
+
+// GET: Fetch students for a given franchise
+export const fetchStudents = async (franchiseId: string): Promise<StudentData[]> => {
+  try {
+    const response = await axios.get<StudentData[]>(`/api/student/get-studentsList/${franchiseId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching students:", error);
+    return sampleStudents;
+  }
+};
+
+// POST: Submit new student data with file upload
 export const submitStudentData = async (data: NewStudentData): Promise<any> => {
   try {
     const formData = new FormData();
-    // Append all the fields to the FormData
-    formData.append("name", data.name);
-    formData.append("email", data.email);
-    formData.append("fatherName", data.fatherName);
-    formData.append("motherName", data.motherName);
-    formData.append("phone", data.phone);
-    formData.append("registrationDate", data.registrationDate);
-    formData.append("sessionFrom", data.sessionFrom);
-    formData.append("sessionTo", data.sessionTo);
-    formData.append("dob", data.dob);
-    formData.append("gender", data.gender);
-    formData.append("address", data.address);
-    formData.append("course", data.course);
-    formData.append("batch", data.batch);
-    formData.append("qualification", data.qualification);
-    formData.append("idProof", data.idProof);
-    formData.append("idProofNumber", data.idProofNumber);
-    formData.append("franchiseId", data.franchiseId);
-    formData.append("enrollmentId", data.enrollmentId);
-    
-    // Append the file. The 'image' field must be a File object.
-    formData.append("image", data.image);
-
-    // Use axios to POST the FormData. Axios will automatically set the correct headers for multipart/form-data.
+    Object.entries(data).forEach(([key, value]) => {
+      formData.append(key, value as string | Blob);
+    });
+    // The image field must be a File object.
     const response = await axios.post("/api/student/add-student", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
+      headers: { "Content-Type": "multipart/form-data" },
     });
     return response.data;
   } catch (error) {
@@ -181,9 +152,8 @@ export const submitStudentData = async (data: NewStudentData): Promise<any> => {
   }
 };
 
-export const getStudentDataByEnrollmentId = async (
-  enrollmentId: string
-): Promise<NewStudentData> => {
+// GET: Fetch student data by enrollmentId
+export const getStudentDataByEnrollmentId = async (enrollmentId: string): Promise<NewStudentData> => {
   try {
     const response = await axios.get<NewStudentData>(`/api/student/get-studentData/${enrollmentId}`);
     return response.data;
@@ -193,51 +163,88 @@ export const getStudentDataByEnrollmentId = async (
   }
 };
 
-
-export const editStudentData = async (
-  enrollmentId: string,
-  data: NewStudentData
-): Promise<any> => {
+// PUT: Edit student data (with optional file upload)
+export const editStudentData = async (enrollmentId: string, data: NewStudentData): Promise<any> => {
   try {
     const formData = new FormData();
-    // Append all the fields to the FormData
-    formData.append("name", data.name);
-    formData.append("email", data.email);
-    formData.append("fatherName", data.fatherName);
-    formData.append("motherName", data.motherName);
-    formData.append("phone", data.phone);
-    formData.append("registrationDate", data.registrationDate);
-    formData.append("sessionFrom", data.sessionFrom);
-    formData.append("sessionTo", data.sessionTo);
-    formData.append("dob", data.dob);
-    formData.append("gender", data.gender);
-    formData.append("address", data.address);
-    formData.append("course", data.course);
-    formData.append("batch", data.batch);
-    formData.append("qualification", data.qualification);
-    formData.append("idProof", data.idProof);
-    formData.append("idProofNumber", data.idProofNumber);
-    formData.append("franchiseId", data.franchiseId);
-    formData.append("enrollmentId", data.enrollmentId);
-    
-    // Append the image file if it exists.
-    if (data.image) {
-      formData.append("image", data.image);
-    }
-    
-    // Use axios.put to update student data at the correct endpoint.
-    const response = await axios.put(
-      `/api/student/edit-studentData/${enrollmentId}`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+    Object.entries(data).forEach(([key, value]) => {
+      if (key === "image" && !value) return;
+      formData.append(key, value as string | Blob);
+    });
+    const response = await axios.put(`/api/student/edit-studentData/${enrollmentId}`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
     return response.data;
   } catch (error) {
     console.error("Error editing student data:", error);
+    throw error;
+  }
+};
+
+// GET: Fetch all students
+export const getAllStudents = async (): Promise<StudentData[]> => {
+  try {
+    const response = await axios.get<StudentData[]>("/api/student/get-all-students");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching all students:", error);
+    throw error;
+  }
+};
+
+// -------------------------------------------------
+// Student Marks API Calls
+// -------------------------------------------------
+
+// POST: Add or edit student marks by enrollmentId
+export const addEditStudentMarksByEnrollmentId = async (
+  enrollmentId: string,
+  marksData: any
+): Promise<{ status: boolean; message: string }> => {
+  try {
+    const response = await axios.post<{ status: boolean; message: string }>(
+      `/api/student/addEditStudentMarks/${enrollmentId}`,
+      marksData
+    );
+    return response.data;
+  } catch (error: any) {
+    console.error("Error saving student marks:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || "Failed to save marks.");
+  }
+};
+
+// GET: Fetch all marks for a student by enrollmentId
+export const getStudentMarksByEnrollmentId = async (enrollmentId: string): Promise<Mark[]> => {
+  try {
+    const response = await axios.get<Mark[]>(`/api/student/marks/${enrollmentId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching student marks:", error);
+    throw error;
+  }
+};
+
+// PUT: Update a student's mark for a given subject
+export const updateStudentMarkByEnrollmentId = async (student: any, mark: Mark): Promise<Mark> => {
+  try {
+    const response = await axios.put<Mark>(`/api/student/marks/${student.enrollmentId}`, mark);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating student mark:", error);
+    throw error;
+  }
+};
+
+// DELETE: Delete a student's mark for a given subject
+export const deleteStudentMarkByEnrollmentId = async (student:any, subject: string): Promise<any> => {
+  try {
+    console.log("Deleting mark for enrollmentId:", student.enrollmentId, "and subject:", subject);
+    const response = await axios.delete(`/api/student/marks/${student.enrollmentId}`, {
+      data: { subject },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting student mark:", error);
     throw error;
   }
 };

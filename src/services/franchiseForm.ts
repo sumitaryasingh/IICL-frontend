@@ -10,3 +10,5 @@ export const submitFranchiseForm = async (formData: any) => {
         throw new Error('Failed to submit the form');
     }
 };
+
+

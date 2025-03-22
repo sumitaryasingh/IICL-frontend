@@ -1,107 +1,137 @@
+// components/ProfileComponent.tsx
 import React, { useEffect, useState } from 'react';
-import { getProfileData } from '../../services/profileService';
-import styles from './styles/Profile.module.css'; // Using our new CSS module
+import { getProfileData, FranchiseData, AdminProfileData, ProfileData } from '../../services/profileService';
+import styles from './styles/Profile.module.css';
 
-const AdminFranchiseProfile: React.FC = () => {
-  const [profileData, setProfileData] = useState<any>(null);
-  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+const ProfileComponent: React.FC = () => {
+  const [profile, setProfile] = useState<ProfileData | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    getProfileData().then((data: any) => {
-      if (!data) {
-        // Fallback sample data if profile data is not available
-        data = {
-          role: 'franchise',
-          centreCode: '12345',
-          centreName: 'Sample Centre',
-          centreAddress: '123 Sample Street',
-          directorName: 'John Doe',
-          designation: 'Director',
-          mobileNo: '1234567890',
-          email: 'sample@example.com',
-          password: 'password123',
-          card: 'Sample Card',
-          authorizationCertificate: 'Sample Certificate'
-        };
-      }
-      setProfileData(data);
-      setIsAdmin(data.role === 'admin');
-    });
+    // Assume the user's role is saved in localStorage
+    const role = localStorage.getItem("role");
+    
+    if (role === "admin") {
+      // Fetch admin profile data
+      getProfileData('admin')
+        .then((data: ProfileData) => {
+          setProfile(data as AdminProfileData);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.error("Error fetching admin profile:", err);
+          setLoading(false);
+        });
+    } else {
+      // For franchise, get the franchiseId from localStorage and fetch its data
+      const franchiseId = localStorage.getItem("franchiseId") || '';
+      getProfileData('franchise', franchiseId)
+        .then((data: ProfileData) => {
+          setProfile(data as FranchiseData);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.error("Error fetching franchise profile:", err);
+          setLoading(false);
+        });
+    }
   }, []);
 
-  if (!profileData) {
+  if (loading || !profile) {
     return <div className={styles.loading}>Loading...</div>;
   }
 
-  return (
-    <div className={styles.dashboardContainer}>
-      <div className={styles.mainContent}>
-        <div className={styles.pageContent}>
-          <h1 className={styles.profileTitle}>
-            {isAdmin ? 'Admin Profile' : 'Franchise Profile'}
-          </h1>
-          {isAdmin ? (
+  // Render admin profile if the role is admin, otherwise render franchise profile.
+  if (localStorage.getItem("role") === "admin") {
+    const adminProfile = profile as AdminProfileData;
+    return (
+      <div className={styles.dashboardContainer}>
+        <div className={styles.mainContent}>
+          <div className={styles.pageContent}>
+            <h1 className={styles.profileTitle}>Admin Profile</h1>
             <div className={styles.profileSection}>
-              <p><strong>Name:</strong> {profileData.name}</p>
-              <p><strong>Franchise Name:</strong> {profileData.franchiseName}</p>
-              <p><strong>Contact Number:</strong> {profileData.contactNumber}</p>
-              <p><strong>Address:</strong> {profileData.address}</p>
-              <p><strong>Email:</strong> {profileData.email}</p>
-              <p><strong>Number of Franchises:</strong> {profileData.numberOfFranchises}</p>
-              <p><strong>Number of Students:</strong> {profileData.numberOfStudents}</p>
+              <p><strong>Name:</strong> {adminProfile.name}</p>
+              <p><strong>Franchise Name:</strong> {adminProfile.franchiseName}</p>
+              <p><strong>Contact Number:</strong> {adminProfile.contactNumber}</p>
+              <p><strong>Address:</strong> {adminProfile.address}</p>
+              <p><strong>Email:</strong> {adminProfile.email}</p>
+              <p><strong>Number of Franchises:</strong> {adminProfile.numberOfFranchises}</p>
+              <p><strong>Number of Students:</strong> {adminProfile.numberOfStudents}</p>
             </div>
-          ) : (
+          </div>
+        </div>
+      </div>
+    );
+  } else {
+    const franchiseProfile = profile as FranchiseData;
+    return (
+      <div className={styles.dashboardContainer}>
+        <div className={styles.mainContent}>
+          <div className={styles.pageContent}>
+            <h1 className={styles.profileTitle}>Centre Profile</h1>
             <div className={styles.profileSection}>
               <table className={styles.profileTable}>
                 <tbody>
                   <tr>
                     <td>Centre Code</td>
-                    <td>{profileData.centreCode}</td>
+                    <td>{franchiseProfile.franchiseId}</td>
                   </tr>
                   <tr>
                     <td>Centre Name</td>
-                    <td>{profileData.centreName}</td>
+                    <td>{franchiseProfile.instituteName}</td>
                   </tr>
                   <tr>
                     <td>Centre Address</td>
-                    <td>{profileData.centreAddress}</td>
+                    <td>{franchiseProfile.address}</td>
                   </tr>
                   <tr>
                     <td>Director's Name</td>
-                    <td>{profileData.directorName}</td>
+                    <td>{franchiseProfile.directorName}</td>
                   </tr>
                   <tr>
                     <td>Designation</td>
-                    <td>{profileData.designation}</td>
+                    <td>Director</td>
                   </tr>
                   <tr>
                     <td>Mobile No.</td>
-                    <td>{profileData.mobileNo}</td>
+                    <td>{franchiseProfile.mobile}</td>
                   </tr>
                   <tr>
                     <td>E-Mail</td>
-                    <td>{profileData.email}</td>
+                    <td>{franchiseProfile.email}</td>
                   </tr>
                   <tr>
                     <td>Password</td>
-                    <td>{profileData.password}</td>
+                    <td>
+                      <button>
+                        Change Passoword
+                      </button>
+                    </td>
                   </tr>
                   <tr>
                     <td>Card</td>
-                    <td>{profileData.card}</td>
+                    <td>
+                      <button>
+                        View Card
+                      </button>
+                    </td>
                   </tr>
                   <tr>
                     <td>Authorization Certificate</td>
-                    <td>{profileData.authorizationCertificate}</td>
+                    <td>
+                      <button>
+                        View Certificate
+                      </button>
+                    </td>
                   </tr>
                 </tbody>
               </table>
             </div>
-          )}
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
 };
 
-export default AdminFranchiseProfile;
+export default ProfileComponent;

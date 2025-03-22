@@ -143,6 +143,11 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
                     View Students
                   </Link>
                 </li>
+                <li>
+                  <Link to="/dashboard/students/add-marks" onClick={toggleSidebar}>
+                    Mark Entry Form
+                  </Link>
+                </li>
               </ul>
             )}
           </li>

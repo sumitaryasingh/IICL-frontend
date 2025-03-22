@@ -2,6 +2,7 @@
 import axios from "axios";
 
 export interface FranchiseData {
+  _id: string;
   firstName: string;
   lastName: string;
   dob: string;
@@ -11,9 +12,13 @@ export interface FranchiseData {
   mobile: string;
   email: string;
   aadharId: string;
+  franchiseId: number;
 }
+
+// Sample data for fallback
 const sampleData: FranchiseData[] = [
   {
+    _id: "1",
     firstName: "John",
     lastName: "Doe",
     dob: "1990-01-01",
@@ -23,16 +28,36 @@ const sampleData: FranchiseData[] = [
     mobile: "1234567890",
     email: "john.doe@example.com",
     aadharId: "123456789012",
+    franchiseId: 54321,
   }
-  // Add more sample items as needed...
 ];
+
+// Fetch all franchise data
 export const fetchFranchiseData = async (): Promise<FranchiseData[]> => {
   try {
-    const response = await axios.get<FranchiseData[]>("/api/view-franchise");
+    const response = await axios.get<FranchiseData[]>("/api/franchise/get-franchises");
     return response.data;
   } catch (error) {
     console.error("Error fetching franchise data:", error);
-    // sample data
-    return sampleData;
+    return sampleData; // Return sample data on failure
+  }
+};
+
+
+// Edit franchise data
+export const editFranchiseData = async (_id: string, data:FranchiseData): Promise<FranchiseData> => {
+  try {
+    const formData = new FormData();
+    Object.entries(data).forEach(([key, value]) => {
+      formData.append(key, value as string);
+    });
+
+    const response = await axios.put(`/api/franchise/edit-franchise/${_id}`, formData, {
+      headers: { "Content-Type": "application/json" },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error editing franchise data:", error);
+    throw error;
   }
 };

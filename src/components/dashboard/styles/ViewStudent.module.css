@@ -139,7 +139,17 @@
     margin-bottom: 0.3rem;
 
   }
-  
+  .marksBtn{
+    border: none;
+    color: #fff;
+    font-size: 0.9rem;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 0.3rem;
+    background-color:#c2c166;
+  }
   .viewImageBtn{
     background-color: rgb(181, 160, 0);
     width: 100%;

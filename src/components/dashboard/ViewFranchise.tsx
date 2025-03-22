@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import styles from "./styles/ViewFranchise.module.css";
 import { fetchFranchiseData, FranchiseData } from "../../services/viewFranchise";
+import { useNavigate } from "react-router-dom";
 
 const ViewFranchise: React.FC = () => {
   // Franchise data state
@@ -45,6 +46,7 @@ const ViewFranchise: React.FC = () => {
     return data;
   }, [franchises, filterText, sortField, sortOrder]);
 
+
   // Reset current page when filter or sort changes
   useEffect(() => {
     setCurrentPage(1);
@@ -87,8 +89,11 @@ const ViewFranchise: React.FC = () => {
     []
   );
 
+  
+  const navigate = useNavigate();
   const handleEdit = useCallback((data: FranchiseData) => {
     console.log("Edit clicked for:", data);
+  navigate(`/dashboard/franchise/add/${data._id}`)
     // Implement your edit logic here
   }, []);
 

@@ -1,20 +1,18 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import styles from "./styles/Marksheet.module.css";
 import { useLocation } from "react-router-dom";
 
-interface Subject {
+interface IMark {
   subject: string;
-  theory: number;
-  obtainedTheory: number;
-  lab: number;
-  obtainedLab: number;
-  totalMarks: number;
-  obtainedTotal: number;
+  theoryMaxMarks: number;
+  theoryObtainedMarks: number;
+  practicalMaxMarks: number;
+  practicalObtainedMarks: number;
 }
 
-export interface StudentData {
+export interface IStudent {
   name: string;
   enrollmentId: string;
   certificateNumber: string;
@@ -23,26 +21,49 @@ export interface StudentData {
   motherName: string;
   institute: string;
   location: string;
-  registrationNumber: string;
-  marks: number;       // Total marks obtained
-  percentage: number;
-  grade: string;
-  subjects: Subject[]; // Array of subject marks details
+  registrationId: string;
+  marks: IMark[];
 }
 
 interface LocationState {
-  student: StudentData;
+  student: IStudent;
+  instituteName: string;
+  address: string;
+  registrationId:string;
 }
+
+
 
 const Marksheet: React.FC = () => {
   const location = useLocation();
-  const { student } = location.state as LocationState;
+  const { student, instituteName, address} = location.state as LocationState;
+
+  // console.log("this is franchise data", franchiseData);
   const marksheetRef = useRef<HTMLDivElement>(null);
 
-  // Function to calculate total marks, percentage, and grade based on subjects marks
-  const calculateMarks = (subjects: Subject[]) => {
-    const totalObtained = subjects?.reduce((acc, sub) => acc + sub.obtainedTotal, 0);
-    const totalMax = subjects?.reduce((acc, sub) => acc + sub.totalMarks, 0);
+
+  const [certificateNumber, setCertificateNumber] = useState<string>("");
+
+  // Function to generate a unique certificate number.
+  const generateCertificateNumber = (): string => {
+    // Example: CERT-<timestamp>-<randomNumber>
+    return `CERT-${new Date().getFullYear()}-${Math.floor(Math.random() * 100000)}`;
+  };
+
+  useEffect(() => {
+    // Generate a new certificate number whenever the student data changes.
+    setCertificateNumber(generateCertificateNumber());
+  }, [student]);
+
+  const calculateMarks = (marks: IMark[]) => {
+    const totalObtained = marks.reduce(
+      (acc, mark) => acc + mark.theoryObtainedMarks + mark.practicalObtainedMarks,
+      0
+    );
+    const totalMax = marks.reduce(
+      (acc, mark) => acc + mark.theoryMaxMarks + mark.practicalMaxMarks,
+      0
+    );
     const percentage = (totalObtained / totalMax) * 100;
     let grade = "";
     if (percentage >= 90) grade = "A+";
@@ -54,8 +75,7 @@ const Marksheet: React.FC = () => {
     return { totalObtained, totalMax, percentage, grade };
   };
 
-  // Get computed marks from the subjects list
-  const computedMarks = calculateMarks(student.subjects);
+  const computedMarks = calculateMarks(student.marks);
 
   const handleDownload = async () => {
     if (!marksheetRef.current) return;
@@ -102,7 +122,7 @@ const Marksheet: React.FC = () => {
               </tr>
               <tr>
                 <td><strong>Certificate No:</strong></td>
-                <td>{student.certificateNumber}</td>
+                <td>{certificateNumber}</td>
               </tr>
               <tr>
                 <td><strong>Course:</strong></td>
@@ -118,11 +138,11 @@ const Marksheet: React.FC = () => {
               </tr>
               <tr>
                 <td><strong>Institute:</strong></td>
-                <td>{student.institute}, {student.location}</td>
+                <td>{instituteName}, {address}</td>
               </tr>
               <tr>
                 <td><strong>Registration No:</strong></td>
-                <td>{student.registrationNumber}</td>
+                <td>{student.registrationId}</td>
               </tr>
               <tr>
                 <td><strong>Total Marks:</strong></td>
@@ -155,15 +175,15 @@ const Marksheet: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {student.subjects?.map((sub, index) => (
+              {student.marks?.map((mark, index) => (
                 <tr key={index}>
-                  <td className={styles.subjects}>{sub.subject}</td>
-                  <td>{sub.theory}</td>
-                  <td>{sub.lab}</td>
-                  <td>{sub.totalMarks}</td>
-                  <td>{sub.obtainedTheory}</td>
-                  <td>{sub.obtainedLab}</td>
-                  <td>{sub.obtainedTotal}</td>
+                  <td>{mark.subject}</td>
+                  <td>{mark.theoryMaxMarks}</td>
+                  <td>{mark.practicalMaxMarks}</td>
+                  <td>{mark.theoryMaxMarks + mark.practicalMaxMarks}</td>
+                  <td>{mark.theoryObtainedMarks}</td>
+                  <td>{mark.practicalObtainedMarks}</td>
+                  <td>{mark.theoryObtainedMarks + mark.practicalObtainedMarks}</td>
                 </tr>
               ))}
             </tbody>

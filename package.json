@@ -13,6 +13,7 @@
     "@heroicons/react": "^2.2.0",
     "@types/jspdf": "^2.0.0",
     "@vitejs/plugin-react": "^4.3.4",
+    "antd": "^5.24.1",
     "axios": "^1.7.9",
     "dotenv": "^16.4.7",
     "file-saver": "^2.0.5",
@@ -31,6 +32,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
+    "@types/antd": "^1.0.4",
     "@types/file-saver": "^2.0.7",
     "@types/html2canvas": "^1.0.0",
     "@types/node": "^22.12.0",

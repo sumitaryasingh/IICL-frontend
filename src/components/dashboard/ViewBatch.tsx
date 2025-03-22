@@ -20,7 +20,8 @@ const ViewBatch: React.FC = () => {
   // Fetch data from backend (or fallback sample data) on mount
   useEffect(() => {
     const getBatches = async () => {
-      const data = await fetchBatchOptions();
+      const franchiseIdData = localStorage.getItem("franchiseId") || "";
+      const data = await fetchBatchOptions(franchiseIdData);
       setBatches(data);
       setFilteredData(data);
     };
@@ -28,31 +29,31 @@ const ViewBatch: React.FC = () => {
   }, []);
 
   // Update filtered data whenever dependencies change
-  useEffect(() => {
-    let data = [...batches];
+  // useEffect(() => {
+  //   let data = [...batches];
 
-    // Filtering by course or time
-    if (filterText) {
-      data = data.filter((item) =>
-        item.course.toLowerCase().includes(filterText.toLowerCase()) ||
-        item.time.toLowerCase().includes(filterText.toLowerCase())
-      );
-    }
+  //   // Filtering by course or time
+  //   if (filterText) {
+  //     data = data.filter((item) =>
+  //       item.course.toLowerCase().includes(filterText.toLowerCase()) ||
+  //       item.time.toLowerCase().includes(filterText.toLowerCase())
+  //     );
+  //   }
 
-    // Sorting if a sort field is selected
-    if (sortField) {
-      data.sort((a, b) => {
-        const aField = a[sortField];
-        const bField = b[sortField];
-        if (aField < bField) return sortOrder === "asc" ? -1 : 1;
-        if (aField > bField) return sortOrder === "asc" ? 1 : -1;
-        return 0;
-      });
-    }
+  //   // Sorting if a sort field is selected
+  //   if (sortField) {
+  //     data.sort((a, b) => {
+  //       const aField = a[sortField];
+  //       const bField = b[sortField];
+  //       if (aField < bField) return sortOrder === "asc" ? -1 : 1;
+  //       if (aField > bField) return sortOrder === "asc" ? 1 : -1;
+  //       return 0;
+  //     });
+  //   }
 
-    setFilteredData(data);
-    setCurrentPage(1); // Reset to first page when data changes
-  }, [filterText, batches, sortField, sortOrder]);
+  //   setFilteredData(data);
+  //   setCurrentPage(1); // Reset to first page when data changes
+  // }, [filterText, batches, sortField, sortOrder]);
 
   // Calculate pagination indices
   const indexOfLast = currentPage * pageSize;

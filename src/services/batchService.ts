@@ -5,6 +5,7 @@ import axioInstance from "../api/axiosInstance";
 export interface BatchData {
   course: string;
   time: string;
+  franchiseId?:string;
 }
 
 // Function to add a new batch
@@ -20,10 +21,10 @@ export const addBatch = async (data: BatchData): Promise<any> => {
 };
 
 // Function to get all batches
-export const fetchBatchOptions = async (): Promise<BatchData[]> => {
+export const fetchBatchOptions = async (franchiseId:string): Promise<BatchData[]> => {
   try {
     // Send a GET request using axioInstance
-    const response = await axioInstance.get<BatchData[]>(`/api/batch/get-batches`);
+    const response = await axioInstance.get<BatchData[]>(`/api/batch/get-batches/${franchiseId}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching batch options:", error);

@@ -1,33 +1,48 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, ChangeEvent } from "react";
 import styles from "./styles/AddBatchForm.module.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { addBatch, BatchData } from "../../services/batchService";
+import { addBatch } from "../../services/batchService";
+import { getCourses } from "../../services/dashboardHome";
 
 interface BatchFormData {
   course: string;
   time: string;
+  franchiseId?: string;
 }
 
 const AddBatchForm: React.FC = () => {
   const [formData, setFormData] = useState<BatchFormData>({
     course: "",
     time: "",
+    franchiseId: "",
   });
+  
+  // State for course options fetched from the database.
+  const [courseOptions, setCourseOptions] = useState<string[]>([]);
 
-  // Define course options for the dropdown
-  const courseOptions = [
-    "B.Sc Computer Science",
-    "BBA",
-    "MBA",
-    "MCA",
-    "B.Tech",
-    "Diploma in IT",
-  ];
+  // Set franchiseId from localStorage on mount.
+  useEffect(() => {
+    const storedFranchiseId = localStorage.getItem("franchiseId") || "";
+    setFormData((prev) => ({ ...prev, franchiseId: storedFranchiseId }));
+  }, []);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  // Fetch courses from the database on component mount.
+  useEffect(() => {
+    const fetchCourseData = async () => {
+      try {
+        const data = await getCourses();
+        const options = data.map((course: any) => course.course);
+        setCourseOptions(options);
+      } catch (error) {
+        console.error("Error fetching courses", error);
+        toast.error("Error fetching courses");
+      }
+    };
+    fetchCourseData();
+  }, []);
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -37,8 +52,6 @@ const AddBatchForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    // Basic validation
     if (!formData.course) {
       toast.error("Course is required");
       return;
@@ -47,22 +60,17 @@ const AddBatchForm: React.FC = () => {
       toast.error("Time is required");
       return;
     }
-
     try {
-      // Call the service to add the batch
-      await addBatch(formData);
+      // Always ensure the payload includes the franchiseId from localStorage.
+      const storedFranchiseId = localStorage.getItem("franchiseId") || "";
+      const payload = { ...formData, franchiseId: storedFranchiseId };
+      await addBatch(payload);
       toast.success("Batch added successfully!");
-      setFormData({ course: "", time: "" });
+      setFormData({ course: "", time: "", franchiseId: storedFranchiseId });
     } catch (error) {
       console.error("Error adding batch:", error);
       toast.error("Failed to add batch");
     }
-     // Optionally clear the form after submission
-     setFormData({
-       course: "",
-       time: "",
-     });
-     
   };
 
   return (

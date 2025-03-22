@@ -1,13 +1,13 @@
-// components/ViewStudent.tsx
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import styles from "./styles/ViewStudent.module.css";
-import Navbar from "./Navbar";
-import DashboardSidebar from "./DashboardSidebar";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { useNavigate } from "react-router-dom";
-import { fetchStudents, StudentData, getStudentDataByEnrollmentId } from "../../services/studentService";
+import { Modal, Button } from "antd";
 import { IoIosCloseCircle } from "react-icons/io";
+import { fetchStudents, StudentData } from "../../services/studentService";
+import { fetchFranchiseData, FranchiseData } from "../../services/viewFranchise";
+import AddMarksFormPopUp from "./AddMarksFormPopUp";
 
 const ViewStudent: React.FC = () => {
   // State variables
@@ -17,13 +17,12 @@ const ViewStudent: React.FC = () => {
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState<number>(5);
+  const [franchiseData, setFranchiseData] = useState<FranchiseData[]>([]);
+  const [isMarksModalVisible, setIsMarksModalVisible] = useState<boolean>(false);
+  const [selectedStudent, setSelectedStudent] = useState<StudentData | null>(null);
   const navigate = useNavigate();
 
-  // New state for image modal
-  const [showImageModal, setShowImageModal] = useState<boolean>(false);
-  const [selectedImage, setSelectedImage] = useState<string>("");
-
-  // Helper function to convert a buffer to base64
+  // Convert buffer to base64 string if needed.
   const convertBufferToBase64 = (buffer: ArrayBuffer): string => {
     let binary = "";
     const bytes = new Uint8Array(buffer);
@@ -33,11 +32,11 @@ const ViewStudent: React.FC = () => {
     return window.btoa(binary);
   };
 
-  // Fetch student data from the API on component mount.
+  // Fetch student data on component mount.
   useEffect(() => {
     const getStudents = async () => {
       try {
-        const franchiseIdData = localStorage.getItem("franchiseId") || ''; 
+        const franchiseIdData = localStorage.getItem("franchiseId") || "";
         const data = await fetchStudents(franchiseIdData);
         setStudents(data);
       } catch (error) {
@@ -47,11 +46,27 @@ const ViewStudent: React.FC = () => {
     getStudents();
   }, []);
 
-  // Memoized filtered and sorted data
+  // Fetch franchise data once.
+  useEffect(() => {
+    const getFranchiseData = async () => {
+      try {
+        const data = await fetchFranchiseData();
+        if (data && data.length > 0) {
+          setFranchiseData(data);
+        } else {
+          console.warn("No franchise data found, retrying...");
+          setTimeout(getFranchiseData, 5000);
+        }
+      } catch (error) {
+        console.error("Error fetching franchise data:", error);
+      }
+    };
+    getFranchiseData();
+  }, []);
+
+  // Filter and sort the students.
   const filteredData = useMemo(() => {
     let data = [...students];
-
-    // Filter by name or email (case-insensitive)
     if (filterText) {
       data = data.filter(
         (item) =>
@@ -59,8 +74,6 @@ const ViewStudent: React.FC = () => {
           item.email.toLowerCase().includes(filterText.toLowerCase())
       );
     }
-
-    // Sort data if a sort field is selected
     if (sortField) {
       data.sort((a, b) => {
         const aField = a[sortField];
@@ -70,36 +83,27 @@ const ViewStudent: React.FC = () => {
         return 0;
       });
     }
-
     return data;
   }, [students, filterText, sortField, sortOrder]);
 
-  // Reset current page when filter or sort changes
   useEffect(() => {
     setCurrentPage(1);
   }, [filterText, sortField, sortOrder]);
 
-  // Pagination calculation
+  // Pagination calculation.
   const indexOfLast = currentPage * pageSize;
   const indexOfFirst = indexOfLast - pageSize;
-  const currentItems = useMemo(
-    () => filteredData.slice(indexOfFirst, indexOfLast),
-    [filteredData, indexOfFirst, indexOfLast]
-  );
+  const currentItems = useMemo(() => filteredData.slice(indexOfFirst, indexOfLast), [filteredData, indexOfFirst, indexOfLast]);
   const totalPages = Math.ceil(filteredData.length / pageSize);
 
-  // Event handlers wrapped in useCallback for performance optimization.
-  const handleSort = useCallback(
-    (field: keyof StudentData) => {
-      if (sortField === field) {
-        setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
-      } else {
-        setSortField(field);
-        setSortOrder("asc");
-      }
-    },
-    [sortField]
-  );
+  const handleSort = useCallback((field: keyof StudentData) => {
+    if (sortField === field) {
+      setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+    } else {
+      setSortField(field);
+      setSortOrder("asc");
+    }
+  }, [sortField]);
 
   const handlePageChange = useCallback((page: number) => {
     setCurrentPage(page);
@@ -115,40 +119,49 @@ const ViewStudent: React.FC = () => {
     // Implement delete functionality here
   }, []);
 
-  const handleViewMarksheet = useCallback(
-    (student: StudentData) => {
-      navigate(`/dashboard/students/view/marksheet/${student.enrollmentId}`, { state: { student } });
-      console.log("Viewing marksheet for:", student);
-    },
-    [navigate]
-  );
-
-  const handleViewCertificate = useCallback(
-    (student: StudentData) => {
-      navigate(`/dashboard/students/view/certificate/${student.enrollmentId}`, { state: { student } });
-      console.log("Viewing certificate for:", student);
-    },
-    [navigate]
-  );
-
-  // New handler to show the image modal and convert buffer to image URL
-  const handleViewImage = useCallback((student: StudentData) => {
-    if (student.image && student.image.data) {
-      const { data, contentType } = student.image;
-      // Create a data URL for the image
-      setSelectedImage(`data:${contentType};base64,${data}`);
-      setShowImageModal(true);
-      console.log("Converted image to data URL");
-      console.log(setSelectedImage(`data:${contentType};base64,${data}`));
-    } else {
-      console.error("No image available for student", student);
+  const handleViewMarksheet = useCallback((student: StudentData) => {
+    if (!franchiseData || franchiseData.length === 0) {
+      alert("Franchise data is not available. Please try again later.");
+      return;
     }
-  }, []);
-  
+    const matchingFranchise = franchiseData.find(
+      (franchise) => Number(franchise.franchiseId) === Number(student.franchiseId)
+    );
+    if (!matchingFranchise) {
+      alert("No matching franchise data found.");
+      return;
+    }
+    const { instituteName, address } = matchingFranchise;
+    navigate(`/dashboard/students/view/marksheet/${student.enrollmentId}`, {
+      state: { student, instituteName, address },
+    });
+  }, [navigate, franchiseData
+
+  ]);
+
+  const handleViewCertificate = useCallback((student: StudentData) => {
+    if (!franchiseData || franchiseData.length === 0) {
+      alert("Franchise data is not available. Please try again later.");
+      return;
+    }
+    const matchingFranchise = franchiseData.find(
+      (franchise) => Number(franchise.franchiseId) === Number(student.franchiseId)
+    );
+    if (!matchingFranchise) {
+      alert("No matching franchise data found.");
+      return;
+    }
+    const { instituteName, address } = matchingFranchise;
+    navigate(`/dashboard/students/view/certificate/${student.enrollmentId}`, {
+      state: { student, instituteName, address },
+    });
+  }, [navigate, franchiseData
+    
+
+  ]);
 
   const exportToExcel = useCallback(() => {
-    // Exclude certificate and marksheet from export
-    const dataToExport = filteredData.map(({ certificate, marksheet, ...rest }) => rest);
+    const dataToExport = filteredData.map(({ _id,__v, imageBase64,marks,certificate, marksheet,image, ...rest }) => rest);
     const worksheet = XLSX.utils.json_to_sheet(dataToExport);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Students");
@@ -158,36 +171,50 @@ const ViewStudent: React.FC = () => {
     });
     saveAs(dataBlob, "iicl_students.xlsx");
   }, [filteredData]);
+  
+  // Render student image inline.
+  const renderStudentImage = (student: StudentData) => {
+    if (student.image && student.image.data) {
+      const base64Image = typeof student.image.data === "string"
+        ? student.image.data
+        : convertBufferToBase64(student.image.data);
+      return (
+        <img
+          src={`data:${student.image.contentType};base64,${base64Image}`}
+          alt={student.name}
+          className={styles.student_ImgTable}
+        />
+      );
+    }
+    return "No Image";
+  };
+
+  // Open Add Marks Modal.
+  const handleAddMarks = useCallback((student: StudentData) => {
+    setSelectedStudent(student);
+    setIsMarksModalVisible(true);
+  }, []);
+
 
   return (
     <div className={styles.dashboardContainer}>
       <div className={styles.mainContent}>
         <div className={styles.pageContent}>
           <h2>View Students</h2>
-
-          {/* Export Button */}
           <div className={styles.exportContainer}>
             <button className={styles.exportBtn} onClick={exportToExcel}>
               Export to Excel
             </button>
           </div>
-
-          {/* Show Entries Selector */}
           <div className={styles.entriesSelector}>
             <label htmlFor="entries">Show </label>
-            <select
-              id="entries"
-              value={pageSize}
-              onChange={(e) => setPageSize(Number(e.target.value))}
-            >
+            <select id="entries" value={pageSize} onChange={(e) => setPageSize(Number(e.target.value))}>
               <option value={5}>5</option>
               <option value={10}>10</option>
               <option value={20}>20</option>
             </select>
             <span> entries</span>
           </div>
-
-          {/* Filter Input */}
           <div className={styles.filterContainer}>
             <input
               type="text"
@@ -196,13 +223,12 @@ const ViewStudent: React.FC = () => {
               onChange={(e) => setFilterText(e.target.value)}
             />
           </div>
-
-          {/* Table Container */}
           <div className={styles.tableContainer}>
             <table className={styles.table}>
               <thead>
                 <tr>
                   <th>S.No.</th>
+                  <th>Image</th>
                   <th onClick={() => handleSort("name")}>Name</th>
                   <th onClick={() => handleSort("email")}>Email</th>
                   <th onClick={() => handleSort("phone")}>Phone</th>
@@ -219,6 +245,7 @@ const ViewStudent: React.FC = () => {
                   currentItems.map((student, index) => (
                     <tr key={student.id}>
                       <td>{index + 1 + indexOfFirst}</td>
+                      <td>{renderStudentImage(student)}</td>
                       <td>{student.name}</td>
                       <td>{student.email}</td>
                       <td>{student.phone}</td>
@@ -246,22 +273,20 @@ const ViewStudent: React.FC = () => {
                         <button className={styles.deleteBtn} onClick={() => handleDelete(student)}>
                           Delete
                         </button>
-                        <button className={styles.viewImageBtn} onClick={() => handleViewImage(student)}>
-                          View Image
+                        <button className={styles.marksBtn} onClick={() => handleAddMarks(student)}>
+                          Add Marks
                         </button>
                       </td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={10}>No records found</td>
+                    <td colSpan={11}>No records found</td>
                   </tr>
                 )}
               </tbody>
             </table>
           </div>
-
-          {/* Pagination Controls */}
           <div className={styles.pagination}>
             <button disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)}>
               Prev
@@ -269,28 +294,24 @@ const ViewStudent: React.FC = () => {
             <span>
               Page {currentPage} of {totalPages}
             </span>
-            <button
-              disabled={currentPage === totalPages || totalPages === 0}
-              onClick={() => handlePageChange(currentPage + 1)}
-            >
+            <button disabled={currentPage === totalPages || totalPages === 0} onClick={() => handlePageChange(currentPage + 1)}>
               Next
             </button>
           </div>
         </div>
       </div>
-
-      {/* View Image Modal */}
-      {showImageModal && (
-        <div className={styles.imageModal}>
-          <div className={styles.modalBody}>
-            <img src={selectedImage} alt="Student" className={styles.studentImage}/>
-          </div>
-            <button
-              className={styles.modalCloseBtn}
-              onClick={() => setShowImageModal(false)}>
-              <IoIosCloseCircle className={styles.closeIcon} />
-            </button>
-        </div>
+      {/* Add Marks Modal */}
+      {isMarksModalVisible && selectedStudent && (
+        <Modal
+          title={`Add Marks for ${selectedStudent.name}`}
+          open={isMarksModalVisible}
+          onCancel={() => setIsMarksModalVisible(false)}
+          footer={null}
+          width={1000}
+          className={styles.marksModal}
+        >
+         
+        </Modal>
       )}
     </div>
   );

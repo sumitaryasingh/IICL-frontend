@@ -1,12 +1,15 @@
 .student-details-container {
-    max-width: 600px;
     margin: 50px auto;
     padding: 20px;
     background: white;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
-
+.studentdetails{
+    max-width: 100vw;
+    display: flex;
+    justify-content: center;
+}
 .student-info {
     margin-bottom: 15px;
     padding: 10px;

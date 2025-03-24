@@ -55,6 +55,8 @@ const StudentDetails: React.FC = () => {
     }
 
     return (
+        <>
+        <div className="studentdetails">
         <div className="student-details-container">
             <h2>🎓 Student Profile</h2>
 
@@ -76,9 +78,10 @@ const StudentDetails: React.FC = () => {
                 <p><strong>🗓️ Registration Date:</strong> {studentData.registrationDate}</p>
                 <p><strong>📅 Session:</strong> {studentData.session}</p>
             </div>
-
-            <button className="print-btn" onClick={handlePrint}>🖨️ Print Details</button>
+            </div>
         </div>
+            <button className="print-btn" onClick={handlePrint}>🖨️ Print Details</button>
+            </>
     );
 };
 

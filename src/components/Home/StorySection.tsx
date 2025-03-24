@@ -22,7 +22,7 @@ const WelcomeSection: React.FC = () => {
             ventured into diverse training sectors ranging from IT hardware &
             software training...
           </p>
-          <a href="#" className="btn">
+          <a href="/about-us" className="btn">
             About More
           </a>
         </div>

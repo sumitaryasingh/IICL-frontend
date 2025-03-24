@@ -2,7 +2,8 @@
 .gallery {
   padding: 50px 20px;
   text-align: center;
-  background: #ffe5ec;
+  background-image: url("../../public/images/gallery-bg.jpg");
+  background-size: 100% 100%;
 }
 
 .gallery-title {

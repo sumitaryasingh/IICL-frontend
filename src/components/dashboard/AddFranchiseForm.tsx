@@ -6,6 +6,7 @@ import { submitFranchiseData } from "../../services/franchiseService";
 import { editFranchiseData } from "../../services/viewFranchise";
 
 interface FranchiseFormData {
+  _id:string;
   firstName: string;
   lastName: string;
   dob: string;
@@ -28,6 +29,7 @@ interface AddFranchiseFormProps {
 
 const AddFranchiseForm: React.FC<AddFranchiseFormProps> = ({ editData }) => {
   const [formData, setFormData] = useState<FranchiseFormData>({
+    _id:"",
     firstName: "",
     lastName: "",
     dob: "",
@@ -130,6 +132,7 @@ const AddFranchiseForm: React.FC<AddFranchiseFormProps> = ({ editData }) => {
 
       // Reset the form after successful submission
       setFormData({
+        _id:"",
         firstName: "",
         lastName: "",
         dob: "",

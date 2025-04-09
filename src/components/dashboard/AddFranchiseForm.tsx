@@ -4,10 +4,8 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { submitFranchiseData } from "../../services/franchiseService";
 import { editFranchiseData } from "../../services/viewFranchise";
-import { useParams } from "react-router-dom";
 
 interface FranchiseFormData {
-  _id?:string;
   firstName: string;
   lastName: string;
   dob: string;
@@ -21,10 +19,11 @@ interface FranchiseFormData {
   aadharId: string;
   password: string;
   franchiseId: number;
+  role:string;
 }
 
 interface AddFranchiseFormProps {
-  editData?: FranchiseFormData | null;  // New prop for edit functionality
+  editData?: FranchiseFormData | null;
 }
 
 const AddFranchiseForm: React.FC<AddFranchiseFormProps> = ({ editData }) => {
@@ -42,20 +41,34 @@ const AddFranchiseForm: React.FC<AddFranchiseFormProps> = ({ editData }) => {
     aadharId: "",
     password: "",
     franchiseId: 0,
+    role:"franchise"
   });
 
+  // State to control whether the password field is editable
   const [isPasswordEditable, setIsPasswordEditable] = useState(false);
-  const { _id: _id } = useParams<{ _id?: string }>();
 
-
+  // On mount or when editData changes, initialize form data
   useEffect(() => {
     if (editData) {
       setFormData(editData);
+      // When editing, assume the password is already set by the user
+      setIsPasswordEditable(true);
     } else {
-      const franchiseId = Math.floor(100000 + Math.random() * 900000);
+      // Generate a random 5-digit franchiseId for new entries
+      const franchiseId = Math.floor(10000 + Math.random() * 90000);
       setFormData((prevData) => ({ ...prevData, franchiseId }));
     }
   }, [editData]);
+
+  // When mobile number changes and password hasn't been manually edited, update password to mobile
+  useEffect(() => {
+    if (!isPasswordEditable) {
+      setFormData((prevData) => ({
+        ...prevData,
+        password: prevData.mobile,
+      }));
+    }
+  }, [formData.mobile, isPasswordEditable]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -70,21 +83,17 @@ const AddFranchiseForm: React.FC<AddFranchiseFormProps> = ({ editData }) => {
   const handlePasswordEdit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsPasswordEditable(true);
-    if (!formData.password) {
-      setFormData((prevData) => ({
-        ...prevData,
-        password: prevData.mobile,
-      }));
-    }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // Regex patterns for validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const mobileRegex = /^[0-9]{10}$/;
     const aadharRegex = /^[0-9]{12}$/;
 
+    // Array of validations with conditions and messages
     const validations = [
       { condition: !formData.firstName.trim(), message: "First name is required" },
       { condition: !formData.lastName.trim(), message: "Last name is required" },
@@ -102,6 +111,7 @@ const AddFranchiseForm: React.FC<AddFranchiseFormProps> = ({ editData }) => {
       { condition: !aadharRegex.test(formData.aadharId), message: "Invalid Aadhar ID. It should be 12 digits." },
     ];
 
+    // Run validations and display error if any fail
     for (let validation of validations) {
       if (validation.condition) {
         toast.error(validation.message);
@@ -111,17 +121,14 @@ const AddFranchiseForm: React.FC<AddFranchiseFormProps> = ({ editData }) => {
 
     try {
       if (editData) {
-        if (_id) {
-          await editFranchiseData(_id, { ...formData, _id }); // Call update API if editing
-        } else {
-          toast.error("Franchise ID is missing.");
-        }
+        await editFranchiseData(formData.franchiseId.toString(), formData);
         toast.success("Franchise updated successfully!");
       } else {
-        await submitFranchiseData(formData); // Call add API if new
+        await submitFranchiseData(formData);
         toast.success("Franchise added successfully!");
       }
 
+      // Reset the form after successful submission
       setFormData({
         firstName: "",
         lastName: "",
@@ -135,7 +142,8 @@ const AddFranchiseForm: React.FC<AddFranchiseFormProps> = ({ editData }) => {
         email: "",
         aadharId: "",
         password: "",
-        franchiseId: 0,
+        franchiseId: Math.floor(10000 + Math.random() * 90000),
+        role:"franchise"
       });
       setIsPasswordEditable(false);
     } catch (error) {
@@ -200,8 +208,71 @@ const AddFranchiseForm: React.FC<AddFranchiseFormProps> = ({ editData }) => {
           </div>
         </div>
 
-        {/* Email & Aadhar */}
+        {/* Third Row: Institute Name & Address */}
         <div className={styles.formRow}>
+          <div className={styles.formGroup}>
+            <label htmlFor="instituteName">Institute Name *</label>
+            <input
+              type="text"
+              id="instituteName"
+              name="instituteName"
+              value={formData.instituteName}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className={styles.formGroup}>
+            <label htmlFor="address">Address *</label>
+            <input
+              type="text"
+              id="address"
+              name="address"
+              value={formData.address}
+              onChange={handleChange}
+              required
+            />
+          </div>
+        </div>
+
+        {/* Fourth Row: City & State */}
+        <div className={styles.formRow}>
+          <div className={styles.formGroup}>
+            <label htmlFor="city">City *</label>
+            <input
+              type="text"
+              id="city"
+              name="city"
+              value={formData.city}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className={styles.formGroup}>
+            <label htmlFor="state">State *</label>
+            <input
+              type="text"
+              id="state"
+              name="state"
+              value={formData.state}
+              onChange={handleChange}
+              required
+            />
+          </div>
+        </div>
+
+        {/* Fifth Row: Mobile, Email & Aadhar */}
+        <div className={styles.formRow}>
+          <div className={styles.formGroup}>
+            <label htmlFor="mobile">Mobile *</label>
+            <input
+              type="text"
+              id="mobile"
+              name="mobile"
+              value={formData.mobile}
+              onChange={handleChange}
+              required
+            />
+          </div>
           <div className={styles.formGroup}>
             <label htmlFor="email">Email *</label>
             <input
@@ -224,6 +295,27 @@ const AddFranchiseForm: React.FC<AddFranchiseFormProps> = ({ editData }) => {
               required
             />
           </div>
+        </div>
+
+        {/* Sixth Row: Password and Edit Button */}
+        <div className={styles.formRow}>
+          <div className={styles.formGroup}>
+            <label htmlFor="password">Password *</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              disabled={!isPasswordEditable}
+            />
+          </div>
+          {!isPasswordEditable && (
+            <div className={styles.formGroup}>
+              <button onClick={handlePasswordEdit}>Edit Password</button>
+            </div>
+          )}
         </div>
 
         <button type="submit" className={styles.submitBtn}>

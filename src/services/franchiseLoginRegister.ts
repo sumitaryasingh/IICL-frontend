@@ -14,22 +14,25 @@ interface ErrorResponseData {
 }
 
 
-export const loginUser = async (data: { email: string; password: string }) => {
-    try {
-        const apiUrl = `/api/franchise/franchise-login`; // FIXED: Ensured correct URL
-        console.log("API Request URL:", apiUrl); // Debugging
-        console.log("Login Data:", data);
+// export const loginUser = async (data: { email: string; password: string, franchiseId:number }) => {
+//     try {
+//         const apiUrl = `/api/auth/login`; // FIXED: Ensured correct URL
+//         console.log("API Request URL:", apiUrl); // Debugging
+//         console.log("Login Data:", data);
 
-        const response = await axios.post<ResponseData>(apiUrl, data);
-        toast.success(response.data.message);
-        return response.data;
-    } catch (error) {
-        const axiosError = error as AxiosError<ErrorResponseData>;
-        console.error("Axios error:", axiosError); // Log full error
-        toast.error(axiosError?.response?.data?.message || "Login failed");
-        throw error;
-    }
-};
+//         const response = await axios.post<ResponseData>(apiUrl, data);
+//         const franchiseId = response.data
+//         console.log("this is the response data",franchiseId);
+//         toast.success(response.data.message);
+
+//         return response.data;
+//     } catch (error) {
+//         const axiosError = error as AxiosError<ErrorResponseData>;
+//         console.error("Axios error:", axiosError); // Log full error
+//         toast.error(axiosError?.response?.data?.message || "Login failed");
+//         throw error;
+//     }
+// };
 
 
 export const registerUser = async (data: { name?: string; email: string; password: string }) => {

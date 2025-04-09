@@ -124,15 +124,25 @@ const sampleStudents: StudentData[] = [
 // -------------------------------------------------
 
 // GET: Fetch students for a given franchise
+
 export const fetchStudents = async (franchiseId: string): Promise<StudentData[]> => {
   try {
-    const response = await axios.get<StudentData[]>(`/api/student/get-studentsList/${franchiseId}`);
+    const endpoint = franchiseId
+      ? `/api/student/get-studentsList/${franchiseId}`
+      : "/api/student/get-all-students";
+
+    const response = await axios.get<StudentData[]>(endpoint, {
+      withCredentials: true, // ✅ Important to include this
+    });
+
     return response.data;
   } catch (error) {
     console.error("Error fetching students:", error);
     return sampleStudents;
   }
 };
+
+
 
 // POST: Submit new student data with file upload
 export const submitStudentData = async (data: NewStudentData): Promise<any> => {

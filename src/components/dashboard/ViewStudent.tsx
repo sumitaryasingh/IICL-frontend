@@ -36,15 +36,19 @@ const ViewStudent: React.FC = () => {
   useEffect(() => {
     const getStudents = async () => {
       try {
-        const franchiseIdData = localStorage.getItem("franchiseId") || "";
-        const data = await fetchStudents(franchiseIdData);
+        const adminId = localStorage.getItem("adminId");
+        const franchiseId = localStorage.getItem("franchiseId") || "";
+  
+        const data = await fetchStudents(adminId ? "" : franchiseId); // Pass empty string if admin
         setStudents(data);
       } catch (error) {
         console.error("Error fetching student data:", error);
       }
     };
+  
     getStudents();
   }, []);
+  
 
   // Fetch franchise data once.
   useEffect(() => {

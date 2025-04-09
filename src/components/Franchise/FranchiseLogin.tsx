@@ -2,13 +2,16 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import "./styles/franchiseAuth.css";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
-import { loginUser, registerUser } from "../../services/franchiseLoginRegister";
+import { registerUser } from "../../services/franchiseLoginRegister";
 import { useNavigate } from "react-router-dom";
+import { loginUser } from "../../services/authService";
 
 type FormData = {
   name?: string;
   email: string;
   password: string;
+  franchiseId:number;
+  adminId:number;
 };
 
 const FranchiseLogin = () => {
@@ -18,6 +21,8 @@ const FranchiseLogin = () => {
   const [formData, setFormData] = useState<FormData>({
     email: "",
     password: "",
+    franchiseId:0,
+    adminId:0,
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,22 +42,37 @@ const FranchiseLogin = () => {
     e.preventDefault();
     if (validateForm()) {
       if (isSignUp) {
-        // For sign-up, you can call registerUser (update as needed if it returns franchiseId)
         await registerUser(formData);
       } else {
-        // For sign-in, we get the response from loginUser
         const response = await loginUser(formData);
-        // Assuming loginUser returns an object with franchiseId
-        if (response && response.franchiseId) {
-          saveFranchiseIdToLocalStorage(response.franchiseId);
-          toast.success("FranchiseId Recieved");
-          navigate('/dashboard')
+  
+        if (response) {
+          const { adminId, franchiseId, user } = response;
+  
+          // Save common data
+          if (user?.role) localStorage.setItem("role", user.role);
+  
+          // Save franchiseId only for franchise
+          if (user?.role === "franchise" && franchiseId) {
+            localStorage.setItem("franchiseId", franchiseId.toString());
+            toast.success("Franchise login successful");
+          }
+  
+          // Show different toast for admin
+          if (user?.role === "admin" && adminId) {
+            localStorage.setItem("AdminId",adminId.toString());
+            toast.success("Admin login successful");
+          }
+  
+          // Redirect to dashboard (you can also conditionally redirect if needed)
+          navigate("/dashboard");
         } else {
-          toast.error("Login failed: No franchise ID returned.");
+          toast.error("Login failed: No response received.");
         }
       }
     }
   };
+  
 
   const validateForm = (): boolean => {
     const { email, password } = formData;

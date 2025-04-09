@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import "./styles/studentDetails.css";
+import "./styles/StudentDetails.css";
 import { fetchStudentDetails } from "../../services/studentZone";
 
 interface StudentData {

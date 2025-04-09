@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import programmeData from "../../src/api/programmeData.json";
+import {programData} from "../api/programmeData";
 import "./Navbar.css";
 
 interface NavItem {
@@ -14,7 +14,7 @@ const navItems: NavItem[] = [
   {label:"Gallery",href:"/gallery"},
   { label: "About Us", href: "/about-us" },
   {
-    label: "Programs", href: "#",  subItems: programmeData.map((category) => ({
+    label: "Programs", href: "#",  subItems: programData.map((category: any) => ({
       label: category.type,
       href: `/programs/${encodeURIComponent(category.type)}`, // Dynamically link to each course type
     }))

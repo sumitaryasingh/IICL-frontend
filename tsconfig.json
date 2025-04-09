@@ -8,7 +8,9 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "composite": true,                     // 👈 necessary for `tsc -b`
+    "outDir": "./build"                    // 👈 optional: where TS files go
   },
-  "include":["src"]
+  "include": ["src"]
 }

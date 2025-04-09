@@ -1,11 +1,11 @@
 import { Link, useParams } from "react-router-dom";
 import React, { useState, useEffect } from "react";
-import programmeData from "../../api/programmeData.json";
+
 import Navbar from "../../common-components/Navbar";
 import Footer from "../../common-components/Footer";
 import { IoMdArrowDropdownCircle } from "react-icons/io";
 import styles from "./styles/Programs.module.css";
-
+import { programData } from "../../api/programmeData";
 // Define the types for the programme data
 interface Programme {
   id: string;
@@ -20,13 +20,13 @@ export default function Programme() {
 
   // Get the selected category data
   const [courseCategory, setCourseCategory] = useState(() =>
-    programmeData.find((category) => category.type === selectedType)
+    programData.find((category: any) => category.type === selectedType)
   );
   const [showProgram, setShowProgram] = useState<string | null>(null);
 
   // Update the category when route changes
   useEffect(() => {
-    setCourseCategory(programmeData.find((category) => category.type === selectedType));
+    setCourseCategory(programData.find((category: any) => category.type === selectedType));
     setShowProgram(null);
   }, [selectedType]);
 
@@ -36,7 +36,7 @@ export default function Programme() {
 
       {/* Links to all course types */}
       <div className={styles["course-links"]}>
-        {programmeData.map((category) => (
+        {programData.map((category: any) => (
           <Link key={category.type} to={`/programs/${encodeURIComponent(category.type)}`} className={styles["course-link"]}>
             {category.type}
           </Link>

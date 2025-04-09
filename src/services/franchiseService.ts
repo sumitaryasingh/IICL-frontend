@@ -13,7 +13,9 @@ export interface FranchiseData {
   mobile: string;
   email: string;
   aadharId: string;
+  password:string;
   franchiseId?:number;
+  role?:string;
 }
 
 // Define your API base URL (set an environment variable if needed)
@@ -26,6 +28,7 @@ export const submitFranchiseData = async (data: FranchiseData): Promise<any> => 
     return response.data;
   } catch (error) {
     // You can further process or log the error here before rethrowing
+    console.log("error in creating franchise")
     throw  error;
   }
 };

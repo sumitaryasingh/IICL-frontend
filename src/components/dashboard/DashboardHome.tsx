@@ -101,7 +101,7 @@ const DashboardHome: React.FC = () => {
       <div className={styles.mainContentHome}>
         <div className={styles.pageContentHome}>
           <h1>Welcome to the Dashboard</h1>
-          {role === "franchise" && (
+          {role === "admin" && (
             <div className={styles.card}>
               <h2>Add Course</h2>
               <div className={styles.cardBtns}>

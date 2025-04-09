@@ -35,6 +35,11 @@ import AdminFranchiseProfile from "./components/dashboard/Profile";
 import Certificate from "./components/dashboard/Certificate";
 import Marksheet from "./components/dashboard/Marksheet";
 import MarkEntryForm from "./components/dashboard/MarkEntryForm";
+import ProtectedRoute from "./components/dashboard/protectedRoutes";
+import ViewFranchiseEnquiry from "./components/dashboard/ViewFranchiseEnquiry";
+import ViewContactEnquiry from "./components/dashboard/ViewContactEnquiry";
+import DashboardHome from "./components/dashboard/DashboardHome";
+import RoleProtectedRoute from "./components/dashboard/roleProtectedRoutes";
 const App: React.FC = () => {
   return (
     <div className="App">
@@ -58,19 +63,37 @@ const App: React.FC = () => {
           <Route path="testimonials" element={<FranchiseTestimonials />} />
         </Route>
         {/* Dashboard Route */}
-        <Route path="/dashboard/*" element={<DashboardIndex />} >
-          <Route path="profile" element={<AdminFranchiseProfile/>}/>
-            <Route path="franchise/add" element={<AddFranchiseForm />}/>
-            <Route path="franchise/view" element={<ViewFranchise/>}/>
-            <Route path="batches/add" element={<AddBatchForm/>}/>
-            <Route path="batches/view" element={<ViewBatch/>}/>
-            <Route path="students/add" element={<AddStudentForm/>} />
-            <Route path="students/view" element={<ViewStudent/>} />
-            <Route path="students/view/certificate/:enrollmentId" element={<Certificate/>}/>
-            <Route path="students/view/marksheet/:enrollmentId" element={<Marksheet/>}/>
-            <Route path="gallery-photo/add" element={<AddPhoto/>} />
+        <Route path="/dashboard" element={<ProtectedRoute />}>
+          <Route path="" element={<DashboardIndex />}>
+            <Route index element={<DashboardHome />} />
 
+            {/* Common: Both admin and franchise can access */}
+            <Route path="profile" element={<AdminFranchiseProfile />} />
+            <Route path="students/view/certificate/:studentId" element={<Certificate />} />
+            <Route path="students/view/marksheet/:studentId" element={<Marksheet />} />
+
+            {/* Admin-only routes */}
+            <Route element={<RoleProtectedRoute allowedRoles={["admin"]} />}>
+              <Route path="franchise/add" element={<AddFranchiseForm />} />
+              <Route path="franchise/view" element={<ViewFranchise />} />
+              <Route path="enquiry/view-franchise" element={<ViewFranchiseEnquiry />} />
+              <Route path="students/add-marks" element={<MarkEntryForm />} />
+              <Route path="gallery-photo/add" element={<AddPhoto />} />
+              <Route path="enquiry/view-contacts" element={<ViewContactEnquiry />} />
+            </Route>
+
+            {/* Franchise-only routes */}
+            <Route element={<RoleProtectedRoute allowedRoles={["franchise", "admin"]} />}>
+              <Route path="batches/add" element={<AddBatchForm />} />
+              <Route path="batches/view" element={<ViewBatch />} />
+              <Route path="students/view" element={<ViewStudent />} />
+              <Route path="student/add-student/:enrollmentId?" element={<AddStudentForm />} />
+            </Route>
+          </Route>
         </Route>
+
+
+
 
         {/* Student Zone Parent Route */}
         <Route path="/student" element={<Student />}>

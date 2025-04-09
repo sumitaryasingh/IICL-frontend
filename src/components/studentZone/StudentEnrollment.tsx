@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import "./styles/studentEnrollment.css";
+import "./styles/StudentEnrollment.css";
 import { fetchStudentDetails } from "../../services/studentZone";
 
 const StudentEnrollment: React.FC = () => {

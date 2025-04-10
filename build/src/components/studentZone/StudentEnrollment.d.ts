@@ -1,4 +1,4 @@
 import React from "react";
-import "./styles/studentEnrollment.css";
+import "./styles/StudentEnrollment.css";
 declare const StudentEnrollment: React.FC;
 export default StudentEnrollment;

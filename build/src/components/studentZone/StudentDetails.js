@@ -1,7 +1,7 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import "./styles/studentDetails.css";
+import "./styles/StudentDetails.css";
 import { fetchStudentDetails } from "../../services/studentZone";
 const StudentDetails = () => {
     const { encodedEnrollment } = useParams();

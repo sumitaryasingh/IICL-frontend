@@ -2,7 +2,7 @@ import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import "./styles/studentEnrollment.css";
+import "./styles/StudentEnrollment.css";
 import { fetchStudentDetails } from "../../services/studentZone";
 const StudentEnrollment = () => {
     const [enrollmentId, setEnrollmentId] = useState("");

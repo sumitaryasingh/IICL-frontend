@@ -11,12 +11,14 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        target: 'http://localhost:4000',
+        target: process.env.NODE_ENV === 'production' 
+          ? 'https://iicleducation.in' 
+          : 'http://localhost:4000',  // Backend API target
         changeOrigin: true,
         secure: false,
         configure: (proxy) => {
           proxy.on('proxyReq', (proxyReq) => {
-            console.log('Proxying request to:', proxyReq.path);
+            console.log('Proxying request to:', proxyReq.path);  // Useful for debugging
           });
         },
       },

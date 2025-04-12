@@ -22,6 +22,10 @@
     max-width: 300px;
   }
   
+  .footer-section h2{
+    font-weight: 500;
+    color: white;
+  }
   /* Keep Sections Aligned */
   @media (min-width: 768px) {
     .footer-container {

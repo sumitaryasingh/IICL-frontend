@@ -1,56 +1,55 @@
-/* Profile.module.css */
-
 /* Page content inside main content */
 .pageContent {
-  margin-top: 1rem;
+  margin-top: 2rem;
+  padding: 0 1rem;
 }
 
 /* Profile Title */
 .profileTitle {
   text-align: center;
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-  color: #333;
+  font-size: 2.2rem;
+  margin-bottom: 2rem;
+  color: #2c3e50;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 /* Profile Section Card */
 .profileSection {
   background-color: #ffffff;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Paragraph styling inside profile card */
-.profileSection p {
-  margin: 0.5rem 0;
-  font-size: 1rem;
-  color: #555;
-}
-
-.profileSection strong {
-  color: #333;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  max-width: 800px;
+  margin: 0 auto;
+  overflow-x: auto;
 }
 
 /* Profile Table Styles */
 .profileTable {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 1rem;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.profileTable tr:nth-child(even) {
+  background-color: #f9f9f9;
 }
 
 .profileTable td {
-  padding: 0.75rem;
-  border: 1px solid #dcdcdc;
+  padding: 1rem 1.2rem;
+  border-bottom: 1px solid #e5e5e5;
   font-size: 1rem;
-  color: #555;
+  color: #444;
 }
 
 .profileTable td:first-child {
   width: 40%;
-  font-weight: bold;
-  color: #ececec;
-  background-color: rgba(0, 0, 139, 0.8);
+  font-weight: 600;
+  color: #ffffff;
+  background-color: #1e3a8a;
+  border-right: 1px solid #dcdcdc;
 }
 
 /* Loading message styling */
@@ -61,50 +60,131 @@
   margin-top: 4rem;
 }
 
-/* Responsive adjustments */
+/* Buttons */
+.button {
+  display: inline-block;
+  padding: 0.6rem 1.4rem;
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: center;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-decoration: none;
+  user-select: none;
+}
 
-/* For screens up to 1024px */
+.passwordInputs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.passwordInputs input {
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.passwordInputs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.passwordField {
+  position: relative;
+}
+
+.passwordField input {
+  width: 100%;
+  padding-right: 30px;
+}
+
+.eyeIcon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+/* Primary Button */
+.buttonPrimary {
+  background-color: #2563eb; /* Blue-600 */
+  color: #ffffff;
+}
+
+.buttonPrimary:hover {
+  background-color: #1d4ed8; /* Blue-700 */
+}
+
+/* Secondary Button */
+.buttonSecondary {
+  background-color: #e5e7eb; /* Gray-200 */
+  color: #374151; /* Gray-700 */
+}
+
+.buttonSecondary:hover {
+  background-color: #d1d5db; /* Gray-300 */
+}
+
+/* Danger Button */
+.buttonDanger {
+  background-color: #940000; /* Red-500 */
+  color: #fff;
+}
+
+.buttonDanger:hover {
+  background-color: #dc2626; /* Red-600 */
+}
+
+/* Responsive Button */
+@media (max-width: 480px) {
+  .button {
+    font-size: 0.9rem;
+    padding: 0.5rem 1.1rem;
+  }
+}
+
+
+/* Responsive adjustments */
 @media (max-width: 1024px) {
   .profileTitle {
-    font-size: 1.8rem;
+    font-size: 1.9rem;
+  }
+  .profileSection {
+    padding: 1.5rem;
+  }
+  .profileTable td {
+    font-size: 0.95rem;
+    padding: 0.9rem 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .profileTitle {
+    font-size: 1.7rem;
   }
   .profileSection {
     padding: 1.2rem;
   }
   .profileTable td {
-    padding: 0.65rem;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
+    padding: 0.75rem;
   }
 }
 
-/* For screens up to 768px */
-@media (max-width: 768px) {
+@media (max-width: 480px) {
   .profileTitle {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
   }
   .profileSection {
     padding: 1rem;
   }
   .profileTable td {
-    padding: 0.6rem;
-    font-size: 0.9rem;
-  }
-  .profileTable td:first-child {
-    width: 45%;
-  }
-}
-
-/* For screens up to 480px */
-@media (max-width: 480px) {
-  .profileTitle {
-    font-size: 1.4rem;
-  }
-  .profileSection {
-    padding: 0.8rem;
-  }
-  .profileTable td {
-    padding: 0.5rem;
     font-size: 0.85rem;
+    padding: 0.6rem;
   }
   .profileTable td:first-child {
     width: 50%;

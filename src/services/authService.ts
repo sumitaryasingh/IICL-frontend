@@ -1,5 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { toast } from "react-toastify";
+import axioInstance from "../api/axiosInstance";
 
 // Error response interface
 interface ErrorResponseData {
@@ -35,7 +36,7 @@ interface RoleCheckResponse {
 // ✅ Check user role before showing respective form fields
 export const checkUserRole = async (email: string): Promise<RoleCheckResponse> => {
   try {
-    const response = await axios.post<RoleCheckResponse>("/api/auth/check-role", { email });
+    const response = await axioInstance.post<RoleCheckResponse>("/api/auth/check-role", { email });
     return response.data;
   } catch (error) {
     console.error("❌ Role check error:", error);
@@ -48,8 +49,7 @@ export const loginUser = async (data: LoginData): Promise<ResponseData> => {
   try {
     const apiUrl = "/api/auth/login";
 
-    const response = await axios.post<ResponseData>(apiUrl, data, {
-      withCredentials: true,
+    const response = await axioInstance.post<ResponseData>(apiUrl, data, {
     });
 
     const { user, franchiseId, adminId } = response.data;
@@ -83,7 +83,7 @@ export const logoutService = async (): Promise<{ message: string }> => {
   try {
     const apiUrl = "/api/auth/logout";
 
-    const response = await axios.post(apiUrl, {}, { withCredentials: true });
+    const response = await axioInstance.post(apiUrl, {}, { withCredentials: true });
 
     if (response.data.clearLocalStorage) {
       localStorage.removeItem("franchiseId");
@@ -97,6 +97,35 @@ export const logoutService = async (): Promise<{ message: string }> => {
   } catch (error) {
     console.error("❌ Logout Error:", error);
     toast.error("Logout failed");
+    throw error;
+  }
+};
+
+export const changePassword = async (
+  email: string,
+  newPassword: string,
+  currentPassword: string
+): Promise<any> => {
+  try {
+    const apiUrl = "/api/auth/change-password";
+
+    const response = await axioInstance.post(apiUrl, {
+      email,
+      newPassword,
+      currentPassword,
+    });
+
+    if (response.data.success) {
+      toast.success(response.data.message);
+    } else {
+      toast.error(response.data.message || "Password change failed");
+    }
+
+    return response.data;
+  } catch (error) {
+    const axiosError = error as AxiosError<ErrorResponseData>;
+    console.error("❌ Change Password Error:", axiosError);
+    toast.error(axiosError?.response?.data?.message || "Password change failed");
     throw error;
   }
 };

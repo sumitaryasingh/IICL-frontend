@@ -17,7 +17,7 @@ const jsonData = {
     }
 }
 // const API_URL = import.meta.env.VITE_APP_API_BASE_URL;
-export const fetchStudentDetails = async (enrollmentId: string) => {
+export const    fetchStudentDetails = async (enrollmentId: string) => {
     try {
         const response = await axios.post(`/api/student-details`, { enrollmentId });
         return jsonData;

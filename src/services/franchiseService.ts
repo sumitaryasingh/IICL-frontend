@@ -1,4 +1,5 @@
 import axios from "axios";
+import axioInstance from "../api/axiosInstance";
 
 // Define an interface for the franchise data based on your form fields
 export interface FranchiseData {
@@ -24,11 +25,22 @@ export interface FranchiseData {
 // Function to submit franchise data
 export const submitFranchiseData = async (data: FranchiseData): Promise<any> => {
   try {
-    const response = await axios.post(`/api/franchise/add-franchise`, data);
+    const response = await axioInstance.post(`/api/franchise/add-franchise`, data);
     return response.data;
   } catch (error) {
     // You can further process or log the error here before rethrowing
     console.log("error in creating franchise")
     throw  error;
+  }
+};
+
+// Function to fetch franchise data
+export const fetchFranchiseById = async (franchiseId:string): Promise<FranchiseData[]> => {
+  try {
+    const response = await axioInstance.get<FranchiseData[]>(`/api/franchise/get-franchise/${franchiseId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching franchise data:", error);
+    throw error; // Rethrow the error for further handling if needed
   }
 };

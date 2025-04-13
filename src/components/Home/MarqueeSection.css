@@ -1,0 +1,33 @@
+.marquee-card {
+    border-radius: 12px;
+    padding: 16px;
+    margin: 0 12px;
+    width: 250px;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    text-align: left;
+    color: #333;
+  }
+  
+  .marquee-card:hover {
+    transform: scale(1.05);
+  }
+  
+  .card-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  
+  .card-description {
+    font-size: 14px;
+    color: #555;
+  }
+  
+
+  .bg-light-1 { background-color: #fff9e6; }
+.bg-light-2 { background-color: #e6f9f5; }
+.bg-light-3 { background-color: #f0e6ff; }
+.bg-light-4 { background-color: #e6f0ff; }
+.bg-light-5 { background-color: #f9e6ec; }
+.bg-light-6 { background-color: #e6fff5; }

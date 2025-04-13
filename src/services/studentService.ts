@@ -1,9 +1,6 @@
 // services/studentService.ts
-import axios from "axios";
+import axioInstance from "../api/axiosInstance";
 
-// -------------------------------------------------
-// Interfaces
-// -------------------------------------------------
 
 export interface StudentData {
   _id:string;
@@ -131,7 +128,7 @@ export const fetchStudents = async (franchiseId: string): Promise<StudentData[]>
       ? `/api/student/get-studentsList/${franchiseId}`
       : "/api/student/get-all-students";
 
-    const response = await axios.get<StudentData[]>(endpoint, {
+    const response = await axioInstance.get<StudentData[]>(endpoint, {
       withCredentials: true, // ✅ Important to include this
     });
 
@@ -152,7 +149,7 @@ export const submitStudentData = async (data: NewStudentData): Promise<any> => {
       formData.append(key, value as string | Blob);
     });
     // The image field must be a File object.
-    const response = await axios.post("/api/student/add-student", formData, {
+    const response = await axioInstance.post("/api/student/add-student", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
     return response.data;
@@ -165,7 +162,7 @@ export const submitStudentData = async (data: NewStudentData): Promise<any> => {
 // GET: Fetch student data by enrollmentId
 export const getStudentDataByEnrollmentId = async (enrollmentId: string): Promise<NewStudentData> => {
   try {
-    const response = await axios.get<NewStudentData>(`/api/student/get-studentData/${enrollmentId}`);
+    const response = await axioInstance.get<NewStudentData>(`/api/student/get-studentData/${enrollmentId}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching student data by enrollmentId:", error);
@@ -181,7 +178,7 @@ export const editStudentData = async (enrollmentId: string, data: NewStudentData
       if (key === "image" && !value) return;
       formData.append(key, value as string | Blob);
     });
-    const response = await axios.put(`/api/student/edit-studentData/${enrollmentId}`, formData, {
+    const response = await axioInstance.put(`/api/student/edit-studentData/${enrollmentId}`, formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
     return response.data;
@@ -194,7 +191,7 @@ export const editStudentData = async (enrollmentId: string, data: NewStudentData
 // GET: Fetch all students
 export const getAllStudents = async (): Promise<StudentData[]> => {
   try {
-    const response = await axios.get<StudentData[]>("/api/student/get-all-students");
+    const response = await axioInstance.get<StudentData[]>("/api/student/get-all-students");
     return response.data;
   } catch (error) {
     console.error("Error fetching all students:", error);
@@ -212,7 +209,7 @@ export const addEditStudentMarksByEnrollmentId = async (
   marksData: any
 ): Promise<{ status: boolean; message: string }> => {
   try {
-    const response = await axios.post<{ status: boolean; message: string }>(
+    const response = await axioInstance.post<{ status: boolean; message: string }>(
       `/api/student/addEditStudentMarks/${enrollmentId}`,
       marksData
     );
@@ -226,7 +223,7 @@ export const addEditStudentMarksByEnrollmentId = async (
 // GET: Fetch all marks for a student by enrollmentId
 export const getStudentMarksByEnrollmentId = async (enrollmentId: string): Promise<Mark[]> => {
   try {
-    const response = await axios.get<Mark[]>(`/api/student/marks/${enrollmentId}`);
+    const response = await axioInstance.get<Mark[]>(`/api/student/marks/${enrollmentId}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching student marks:", error);
@@ -237,7 +234,7 @@ export const getStudentMarksByEnrollmentId = async (enrollmentId: string): Promi
 // PUT: Update a student's mark for a given subject
 export const updateStudentMarkByEnrollmentId = async (student: any, mark: Mark): Promise<Mark> => {
   try {
-    const response = await axios.put<Mark>(`/api/student/marks/${student.enrollmentId}`, mark);
+    const response = await axioInstance.put<Mark>(`/api/student/marks/${student.enrollmentId}`, mark);
     return response.data;
   } catch (error) {
     console.error("Error updating student mark:", error);
@@ -249,7 +246,7 @@ export const updateStudentMarkByEnrollmentId = async (student: any, mark: Mark):
 export const deleteStudentMarkByEnrollmentId = async (student:any, subject: string): Promise<any> => {
   try {
     console.log("Deleting mark for enrollmentId:", student.enrollmentId, "and subject:", subject);
-    const response = await axios.delete(`/api/student/marks/${student.enrollmentId}`, {
+    const response = await axioInstance.delete(`/api/student/marks/${student.enrollmentId}`, {
       data: { subject },
     });
     return response.data;

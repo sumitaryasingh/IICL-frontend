@@ -89,14 +89,15 @@ const AddFranchiseForm = ({ editData }) => {
             }
         }
         try {
-            if (editData) {
-                await editFranchiseData(formData.franchiseId.toString(), formData);
+            if (isEditMode) {
+                await editFranchiseData(formData._id, formData);
                 toast.success("Franchise updated successfully!");
-            }
-            else {
+              } else {
                 await submitFranchiseData(formData);
                 toast.success("Franchise added successfully!");
-            }
+              }              
+              
+              
             // Reset the form after successful submission
             setFormData({
                 _id: "",

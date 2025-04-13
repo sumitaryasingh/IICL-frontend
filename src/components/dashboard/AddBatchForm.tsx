@@ -1,8 +1,9 @@
 import React, { useState, useEffect, ChangeEvent } from "react";
+import { useParams } from "react-router-dom";
 import styles from "./styles/AddBatchForm.module.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { addBatch } from "../../services/batchService";
+import { addBatch, getBatchById, updateBatch } from "../../services/batchService";
 import { getCourses } from "../../services/dashboardHome";
 
 interface BatchFormData {
@@ -12,23 +13,18 @@ interface BatchFormData {
 }
 
 const AddBatchForm: React.FC = () => {
+  const { id } = useParams<{ id?: string }>();
   const [formData, setFormData] = useState<BatchFormData>({
     course: "",
     time: "",
     franchiseId: "",
   });
-  
-  // State for course options fetched from the database.
   const [courseOptions, setCourseOptions] = useState<string[]>([]);
 
-  // Set franchiseId from localStorage on mount.
   useEffect(() => {
     const storedFranchiseId = localStorage.getItem("franchiseId") || "";
     setFormData((prev) => ({ ...prev, franchiseId: storedFranchiseId }));
-  }, []);
 
-  // Fetch courses from the database on component mount.
-  useEffect(() => {
     const fetchCourseData = async () => {
       try {
         const data = await getCourses();
@@ -39,8 +35,25 @@ const AddBatchForm: React.FC = () => {
         toast.error("Error fetching courses");
       }
     };
+
+    const fetchBatchToEdit = async () => {
+      if (!id) return;
+      try {
+        const batch = await getBatchById(id);
+        setFormData({
+          course: batch.course,
+          time: batch.time,
+          franchiseId: batch.franchiseId || storedFranchiseId,
+        });
+      } catch (error) {
+        console.error("Error fetching batch", error);
+        toast.error("Failed to load batch data");
+      }
+    };
+
     fetchCourseData();
-  }, []);
+    fetchBatchToEdit();
+  }, [id]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -52,31 +65,37 @@ const AddBatchForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!formData.course) {
-      toast.error("Course is required");
+
+    if (!formData.course || !formData.time.trim()) {
+      toast.error("Course and Time are required");
       return;
     }
-    if (!formData.time.trim()) {
-      toast.error("Time is required");
-      return;
-    }
+
     try {
-      // Always ensure the payload includes the franchiseId from localStorage.
-      const storedFranchiseId = localStorage.getItem("franchiseId") || "";
-      const payload = { ...formData, franchiseId: storedFranchiseId };
-      await addBatch(payload);
-      toast.success("Batch added successfully!");
-      setFormData({ course: "", time: "", franchiseId: storedFranchiseId });
+      const payload: any = {
+        ...formData,
+        franchiseId: localStorage.getItem("franchiseId") || "",
+      };
+
+      if (id) {
+        await updateBatch(id, payload);
+        toast.success("Batch updated successfully!");
+      } else {
+        await addBatch(payload);
+        toast.success("Batch added successfully!");
+      }
+
+      setFormData({ course: "", time: "", franchiseId: payload.franchiseId });
     } catch (error) {
-      console.error("Error adding batch:", error);
-      toast.error("Failed to add batch");
+      console.error("Error submitting batch:", error);
+      toast.error("Failed to submit batch");
     }
   };
 
   return (
     <>
       <div className={styles.formContainer}>
-        <h2>Add Batch</h2>
+        <h2>{id ? "Edit Batch" : "Add Batch"}</h2>
         <form onSubmit={handleSubmit} noValidate className={styles.form}>
           <div className={styles.formRow}>
             <div className={styles.formGroup}>
@@ -109,7 +128,7 @@ const AddBatchForm: React.FC = () => {
             </div>
           </div>
           <button type="submit" className={styles.submitBtn}>
-            Submit
+            {id ? "Update" : "Submit"}
           </button>
         </form>
       </div>

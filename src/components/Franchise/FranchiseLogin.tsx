@@ -24,6 +24,11 @@ const FranchiseLogin = () => {
     franchiseId:0,
     adminId:0,
   });
+  
+    const handleClickEnquire = () => {
+      navigate("/franchise/form");
+    };
+  
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -96,32 +101,11 @@ const FranchiseLogin = () => {
       <div className={`container ${isSignUp ? "right-panel-active" : ""}`}>
         <div className="form-container sign-up-container">
           <form onSubmit={handleSubmit}>
-            <h1>Create Account</h1>
-            <span>or use your email for registration</span>
-            {isSignUp && (
-              <input
-                type="text"
-                name="name"
-                placeholder="Name"
-                value={formData.name || ""}
-                onChange={handleInputChange}
-              />
-            )}
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              value={formData.email}
-              onChange={handleInputChange}
-            />
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={formData.password}
-              onChange={handleInputChange}
-            />
-            <button type="submit">Sign Up</button>
+            <h1>Enquire for Franchise</h1>
+            <span style={{fontSize:"18px"}}>Fill the Franchise Form for registration</span>
+            
+            
+            <button onClick={handleClickEnquire} style={{marginTop:"30px"}} type="submit">Enquire Now</button>
           </form>
         </div>
         <div className="form-container sign-in-container">
@@ -176,7 +160,7 @@ const FranchiseLogin = () => {
               <h1>Hello, Friend!</h1>
               <p>Enter your personal details and start your journey with us</p>
               <button className="ghost" onClick={() => setIsSignUp(true)}>
-                Sign Up
+                New Franchise
               </button>
             </div>
           </div>

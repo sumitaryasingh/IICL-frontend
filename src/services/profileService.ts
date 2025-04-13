@@ -1,5 +1,6 @@
 // services/profileService.ts
 import axios from 'axios';
+import axioInstance from '../api/axiosInstance';
 
 export interface FranchiseData {
   firstName: string;
@@ -64,7 +65,7 @@ export const getProfileData = async (
 ): Promise<ProfileData> => {
   if (role === 'admin') {
     try {
-      const response = await axios.get<AdminProfileData[]>('/api/admin/profile');
+      const response = await axioInstance.get<AdminProfileData[]>('/api/admin/profile');
       // Assuming the API returns an array and we want the first admin profile.
       if (response.data && response.data.length > 0) {
         return response.data[0];
@@ -82,7 +83,7 @@ export const getProfileData = async (
       return franchiseSampleData;
     }
     try {
-      const response = await axios.get<FranchiseData[]>(`/api/profile/franchise-profile/${franchiseId}`);
+      const response = await axioInstance.get<FranchiseData[]>(`/api/profile/franchise-profile/${franchiseId}`);
       // Assuming the API returns an array and we want the first item.
       if (response.data && response.data.length > 0) {
         return response.data[0];

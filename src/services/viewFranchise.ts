@@ -1,5 +1,4 @@
 // services/viewFranchise.ts
-import axios from "axios";
 import axioInstance from "../api/axiosInstance";
 
 export interface FranchiseData {
@@ -53,12 +52,22 @@ export const editFranchiseData = async (_id: string, data:FranchiseData): Promis
       formData.append(key, value as string);
     });
 
-    const response = await axios.put(`/api/franchise/edit-franchise/${_id}`, formData, {
+    const response = await axioInstance.put(`/api/franchise/edit-franchise/${_id}`, formData, {
       headers: { "Content-Type": "application/json" },
     });
     return response.data;
   } catch (error) {
     console.error("Error editing franchise data:", error);
+    throw error;
+  }
+};
+
+// Delete franchise data
+export const deleteFranchiseData = async (franchiseId: string): Promise<void> => {
+  try {
+    await axioInstance.delete(`/api/franchise/delete-franchise/${franchiseId}`);
+  } catch (error) {
+    console.error("Error deleting franchise data:", error);
     throw error;
   }
 };

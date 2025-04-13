@@ -1,5 +1,6 @@
 // services/franchiseEnquiryService.ts
 import axios from "axios";
+import axioInstance from "../api/axiosInstance";
 
 export interface FranchiseEnquiry {
   id: number;
@@ -22,7 +23,7 @@ export interface FranchiseEnquiry {
 export const fetchFranchiseEnquiries = async (): Promise<FranchiseEnquiry[]> => {
   try {
     // Replace with your actual API endpoint:
-    const response = await axios.get<FranchiseEnquiry[]>("/api/franchise-enquiries");
+    const response = await axioInstance.get<FranchiseEnquiry[]>("/api/franchise-enquiries");
     return response.data;
   } catch (error) {
     console.error("Error fetching franchise enquiries:", error);

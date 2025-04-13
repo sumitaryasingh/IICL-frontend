@@ -1,67 +1,86 @@
 .about-us {
-    background-color: #f9f9f9;
+    background-color: #f4f8fb;
     color: #333;
-    /* min-height: 100vh; */
     display: flex;
     flex-direction: column;
-}
-
-.about-content{
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.041);
-    backdrop-filter: blur(10px);
-    /* color: #fff; */
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .about-hero {
+    background: linear-gradient(135deg, #002c78, #19a3ff);
+    color: white;
+    padding: 60px 20px 40px;
     text-align: center;
-}
-
-.about-head {
-    font-size: 2em;
-    color:rgb(0, 0, 139);
-    margin-bottom: 10px;
-}
-
-p {
-    font-size: 1.1em;
-    line-height: 1.6;
-}
-
-.info-sections {
+  }
+  
+  .about-head {
+    font-size: 3rem;
+    margin: 0;
+  }
+  
+  .about-sub {
+    font-size: 1.2rem;
+    margin-top: 10px;
+    opacity: 0.9;
+  }
+  
+  .about-content {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  }
+  
+  .about-intro {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  
+  .info-sections {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
     gap: 20px;
-    margin-top: 20px;
-}
-
-.info-box {
-    background: #fff;
-    padding: 15px;
+    justify-content: space-between;
+  }
+  
+  .info-box {
+    background: #f9f9f9;
+    flex: 1 1 45%;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.06);
+    transition: transform 0.3s ease;
+  }
+  
+  .info-box:hover {
+    transform: translateY(-5px);
+  }
+  
+  .info-box h2 {
+    background-color: #ffe082;
+    color: #1a237e;
+    padding: 10px 15px;
+    border-left: 5px solid #ffab00;
     border-radius: 6px;
-    box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.1);
-    width: 45%;
-    text-align: left;
-}
-
-.info-box h2 {
-    font-size: 1.5em;
-    color: #ffffff;
+    font-size: 1.3rem;
     margin-bottom: 10px;
-    padding: 0.3rem 0.6rem;
-    border-left: 5px solid rgb(0, 0, 139);
-    background-color: #a98700af;
-}
-
-.about-content p ,.info-box p{
-    background-color: rgb(255, 255, 255);
-    padding: 1rem 1rem;
-} 
-
-@media (max-width: 768px) {
+  }
+  
+  .info-box p {
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+  
+  @media (max-width: 768px) {
     .info-box {
-        width: 100%;
+      flex: 1 1 100%;
     }
-}
+  
+    .about-head {
+      font-size: 2.2rem;
+    }
+  }
+  

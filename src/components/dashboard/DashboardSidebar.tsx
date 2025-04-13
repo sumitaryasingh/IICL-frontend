@@ -95,9 +95,11 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
               {dropdowns.batch && (
                 <ul className={styles.dropdownMenu}>
                   <li>
-                    <Link to="/dashboard/batches/add" onClick={toggleSidebar}>
-                      Add Batch
-                    </Link>
+                  <Link to="/dashboard/batches/edit" onClick={toggleSidebar}>
+  Add Batch
+</Link>
+
+
                   </li>
                   <li>
                     <Link to="/dashboard/batches/view" onClick={toggleSidebar}>

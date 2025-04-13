@@ -1,4 +1,5 @@
 import axios from "axios";
+import axioInstance from "../api/axiosInstance";
 // 
 interface ContactFormData {
     name: string;
@@ -14,10 +15,9 @@ interface ContactFormResponse {
 
 export const submitContactForm = async (formData: ContactFormData): Promise<ContactFormResponse> => {
     try {
-        console.log("This is formData:", formData);
 
         // Make sure to replace with the actual backend endpoint.
-        const response = await axios.post(`/api/contact/contactUs`, formData);
+        const response = await axioInstance.post(`/api/contact/contactUs`, formData);
 
         return response.data; // Assuming the backend responds with a data object that includes `success`
     } catch (error: any) {
@@ -52,7 +52,7 @@ export interface ContactEnquiry {
   export const fetchContactEnquiries = async (): Promise<ContactEnquiry[]> => {
     try {
       // Replace with your actual API endpoint for contact enquiries
-      const response = await axios.get<ContactEnquiry[]>("/api/contact");
+      const response = await axioInstance.get<ContactEnquiry[]>("/api/contact");
       return response.data;
     } catch (error) {
       console.error("Error fetching contact enquiries:", error);

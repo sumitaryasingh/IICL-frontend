@@ -1,7 +1,18 @@
 import React from "react";
 import "./Hero.css";
+import { useNavigate } from "react-router-dom";
 
-const Hero: React.FC = () => {
+type HeroProps = {
+  scrollToStory: () => void;
+};
+
+const Hero: React.FC<HeroProps> = ({ scrollToStory }) => {
+  const navigate = useNavigate();
+
+  const handleClickEnquire = () => {
+    navigate("/franchise/form");
+  };
+
   return (
     <section className="hero-container">
       <div className="overlays"></div>
@@ -14,19 +25,18 @@ const Hero: React.FC = () => {
         <p className="hero-description">
           "At <span className="highligh">IICL Education</span>, we provide
           cutting-edge computer education to help you build a successful career
-          in technology. Our expert-led courses in programming, web development,
-          and IT solutions are designed to equip you with the skills needed to
-          thrive in today’s digital world. Join us and unlock your full
-          potential."
+          in technology..."
         </p>
 
         <div className="hero-buttons">
-          <button className="explore-button">Explore Now</button>
-          <button className="enroll-button">Enquire Now</button>
+          <button onClick={scrollToStory} className="explore-button">
+            Explore Now
+          </button>
+          <button onClick={handleClickEnquire} className="enroll-button">
+            Enquire Now
+          </button>
         </div>
       </div>
-
-     
     </section>
   );
 };

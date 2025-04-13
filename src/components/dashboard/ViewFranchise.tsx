@@ -1,8 +1,9 @@
 // components/ViewFranchise.tsx
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import styles from "./styles/ViewFranchise.module.css";
-import { fetchFranchiseData, FranchiseData } from "../../services/viewFranchise";
+import { fetchFranchiseData, FranchiseData, deleteFranchiseData } from "../../services/viewFranchise";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const ViewFranchise: React.FC = () => {
   // Franchise data state
@@ -91,16 +92,31 @@ const ViewFranchise: React.FC = () => {
 
   
   const navigate = useNavigate();
+
   const handleEdit = useCallback((data: FranchiseData) => {
     console.log("Edit clicked for:", data);
-  navigate(`/dashboard/franchise/add/${data._id}`)
-    // Implement your edit logic here
-  }, []);
+    navigate(`/dashboard/franchise/add/${data._id}`);
+  }, [navigate]);
+  
 
-  const handleDelete = useCallback((data: FranchiseData) => {
+  const handleDelete = useCallback(async (data: FranchiseData) => {
     console.log("Delete clicked for:", data);
-    // Implement your delete logic here
+    // Ask for confirmation
+    const confirmDelete = window.confirm(`Are you sure you want to delete franchise for ${data.firstName} ${data.lastName}?`);
+    if (confirmDelete) {
+      try {
+        await deleteFranchiseData(data._id);
+        const refreshedData = await fetchFranchiseData();
+        setFranchises(refreshedData);
+        toast.success("Franchise deleted successfully!");
+      } catch (error) {
+        console.error("Error deleting franchise:", error);
+        toast.error("Failed to delete. Please try again.");
+      }
+    }
   }, []);
+  
+  
 
   return (
     <div>

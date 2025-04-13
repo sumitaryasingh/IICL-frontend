@@ -24,7 +24,6 @@ const DashboardHome: React.FC = () => {
   };
 
   useEffect(() => {
-    // Always fetch courses on mount so that the table will show in the modal.
     fetchCourseData();
   }, []);
 
@@ -34,13 +33,11 @@ const DashboardHome: React.FC = () => {
   };
 
   const handleViewCoursesClick = () => {
-    // Refresh the courses list when viewing courses.
     fetchCourseData();
     setIsViewCoursesVisible(true);
   };
 
   const onFinishCourseForm = async (values: any) => {
-    // Check for duplicate course names (case-insensitive)
     if (editingCourse) {
       if (courses.some(c => c.course.toLowerCase() === values.course.toLowerCase() && c.id !== editingCourse.id)) {
         toast.error("Course already exists");
@@ -87,34 +84,30 @@ const DashboardHome: React.FC = () => {
       key: "action",
       render: (_: any, record: any) => (
         <>
-          <Button onClick={() => handleEditCourse(record)}>Edit</Button>
-          <Button danger onClick={() => handleDeleteCourse(record.id)}>
-            Delete
-          </Button>
+          <Button className={styles.editBtn} onClick={() => handleEditCourse(record)}>Edit</Button>
+          <Button className={styles.deleteBtn} danger onClick={() => handleDeleteCourse(record.id)}>Delete</Button>
         </>
       ),
     },
   ];
 
   return (
-    <div className={styles.dashboardContainerHome}>
-      <div className={styles.mainContentHome}>
-        <div className={styles.pageContentHome}>
-          <h1>Welcome to the Dashboard</h1>
-          {role === "admin" && (
-            <div className={styles.card}>
-              <h2>Add Course</h2>
-              <div className={styles.cardBtns}>
+    <div className={styles.dashboardContainer}>
+      <div className={styles.pageContent}>
+        <h1 className={styles.pageTitle}>Welcome to the Dashboard</h1>
+        {role === "admin" && (
+          <div className={styles.card}>
+            <h2>Add Course</h2>
+            <div className={styles.cardBtns}>
               <Button type="primary" className={styles.addCourseBtn} onClick={handleAddCourseClick}>
                 Add New Course
               </Button>
               <Button type="default" className={styles.viewCoursesBtn} onClick={handleViewCoursesClick}>
                 View Courses
               </Button>
-              </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
 
       {/* Modal for Add/Edit Course */}
@@ -124,6 +117,7 @@ const DashboardHome: React.FC = () => {
         onCancel={() => setIsAddModalVisible(false)}
         footer={null}
         width={600}
+        className={styles.modal}
       >
         <Form layout="vertical" initialValues={editingCourse || {}} onFinish={onFinishCourseForm}>
           <Form.Item
@@ -148,6 +142,7 @@ const DashboardHome: React.FC = () => {
         onCancel={() => setIsViewCoursesVisible(false)}
         footer={null}
         width={800}
+        className={styles.modal}
       >
         <Table dataSource={courses} columns={columns} rowKey="id" />
       </Modal>

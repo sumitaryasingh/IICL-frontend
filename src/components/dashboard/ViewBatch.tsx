@@ -1,15 +1,16 @@
-// components/ViewBatch.tsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import styles from "./styles/ViewBatch.module.css";
 import Navbar from "./Navbar";
 import DashboardSidebar from "./DashboardSidebar";
-import { fetchBatchOptions, BatchData } from "../../services/batchService";
+import { fetchBatchOptions, BatchData, deleteBatchData } from "../../services/batchService";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const ViewBatch: React.FC = () => {
   // State for batch data
   const [batches, setBatches] = useState<BatchData[]>([]);
   const [filteredData, setFilteredData] = useState<BatchData[]>([]);
-
+  
   // States for filtering, sorting, and pagination
   const [filterText, setFilterText] = useState("");
   const [sortField, setSortField] = useState<keyof BatchData | "">("");
@@ -17,7 +18,9 @@ const ViewBatch: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState<number>(5);
 
-  // Fetch data from backend (or fallback sample data) on mount
+  const navigate = useNavigate();
+
+  // Fetch data from backend on mount
   useEffect(() => {
     const getBatches = async () => {
       const franchiseIdData = localStorage.getItem("franchiseId") || "";
@@ -28,19 +31,18 @@ const ViewBatch: React.FC = () => {
     getBatches();
   }, []);
 
-  // Update filtered data whenever dependencies change
+  // (Optional) Filtering and sorting can be updated if needed.
+  // For now, we assume filteredData is already set.
+  // You may uncomment and adjust this effect if you need to re-filter on filterText change.
   // useEffect(() => {
   //   let data = [...batches];
-
-  //   // Filtering by course or time
   //   if (filterText) {
+  //     const lowerFilter = filterText.toLowerCase();
   //     data = data.filter((item) =>
-  //       item.course.toLowerCase().includes(filterText.toLowerCase()) ||
-  //       item.time.toLowerCase().includes(filterText.toLowerCase())
+  //       item.course.toLowerCase().includes(lowerFilter) ||
+  //       item.time.toLowerCase().includes(lowerFilter)
   //     );
   //   }
-
-  //   // Sorting if a sort field is selected
   //   if (sortField) {
   //     data.sort((a, b) => {
   //       const aField = a[sortField];
@@ -50,9 +52,8 @@ const ViewBatch: React.FC = () => {
   //       return 0;
   //     });
   //   }
-
   //   setFilteredData(data);
-  //   setCurrentPage(1); // Reset to first page when data changes
+  //   setCurrentPage(1);
   // }, [filterText, batches, sortField, sortOrder]);
 
   // Calculate pagination indices
@@ -76,16 +77,27 @@ const ViewBatch: React.FC = () => {
     setCurrentPage(page);
   };
 
-  // Dummy event handlers for edit and delete actions
-  const handleEdit = (batch: BatchData) => {
-    console.log("Editing batch:", batch);
-    // Implement your edit functionality here.
-  };
+  // Edit handler: navigate to edit route
+  const handleEdit = useCallback((batch: BatchData) => {
+    navigate(`/dashboard/batches/edit/${batch._id}`);
+  }, [navigate]);
 
-  const handleDelete = (batch: BatchData) => {
-    console.log("Deleting batch:", batch);
-    // Implement your delete functionality here.
-  };
+  const handleDelete = useCallback(async (batch: BatchData) => {
+    const confirmDelete = window.confirm(
+      `Are you sure you want to delete the batch for course "${batch.course}"?`
+    );
+    if (confirmDelete) {
+      try {
+        await deleteBatchData(batch._id);
+        setBatches((prev) => prev.filter((item) => item._id !== batch._id));
+        setFilteredData((prev) => prev.filter((item) => item._id !== batch._id));
+        toast.success("Batch deleted successfully!");
+      } catch (error) {
+        console.error("Error deleting batch:", error);
+        toast.error("Failed to delete batch. Please try again.");
+      }
+    }
+  }, []);
 
   return (
     <div className={styles.dashboardContainer}>
@@ -93,7 +105,7 @@ const ViewBatch: React.FC = () => {
         <Navbar />
         <div className={styles.pageContent}>
           <h2>View Batch</h2>
-          {/* Show Entries Selector */}
+          {/* Entries Selector */}
           <div className={styles.entriesSelector}>
             <label htmlFor="entries">Show </label>
             <select

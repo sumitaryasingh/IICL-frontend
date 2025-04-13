@@ -1,7 +1,13 @@
-import React from "react";
-import "./Home.css"; // Import CSS
+import React, { useState } from "react";
+import "./Home.css";
 
 const WelcomeSection: React.FC = () => {
+  const [expanded, setExpanded] = useState(false);
+
+  const handleExpand = () => {
+    setExpanded(true);
+  };
+
   return (
     <section className="welcome-section">
       <div className="container">
@@ -19,12 +25,24 @@ const WelcomeSection: React.FC = () => {
           </p>
           <p>
             IICL Educational and Technologies Foundation has effectively
-            ventured into diverse training sectors ranging from IT hardware &
+            ventured into diverse training sectors ranging from IT hardware &amp;
             software training...
           </p>
-          <a href="#" className="btn">
-            About More
-          </a>
+          {expanded && (
+            <p>
+              We also offer courses in management, vocational skills, and
+              personality development. Our mission is to empower youth by
+              creating job-ready individuals equipped with the latest technical
+              know-how and interpersonal expertise. Our foundation partners with
+              reputed organizations and government bodies to ensure quality and
+              credibility.
+            </p>
+          )}
+          {!expanded && (
+            <button className="btn" onClick={handleExpand}>
+              About More
+            </button>
+          )}
         </div>
 
         {/* Right Image */}

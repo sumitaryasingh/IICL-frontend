@@ -1,5 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
+import axioInstance from '../api/axiosInstance';
 
 // const API_URL = import.meta.env.VITE_APP_API_BASE_URL; // Replace with your actual API base URL
 
@@ -38,7 +39,7 @@ interface ErrorResponseData {
 export const registerUser = async (data: { name?: string; email: string; password: string }) => {
     try {
         console.log("this is registerUser ::", data);
-        const response = await axios.post<ResponseData>(`api/register`, data);
+        const response = await axioInstance.post<ResponseData>(`api/register`, data);
         toast.success(response.data.message); // Display success message
     } catch (error) {
         const axiosError = error as AxiosError<ErrorResponseData>; // Typecast the error to AxiosError

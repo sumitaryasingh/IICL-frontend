@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import styles from "./styles/AddFranchiseForm.module.css";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { submitFranchiseData } from "../../services/franchiseService";
-import { editFranchiseData } from "../../services/viewFranchise";
+import { submitFranchiseData, fetchFranchiseById } from "../../services/franchiseService";
+import { editFranchiseData } from "../../services/viewFranchise"; // Ensure fetchFranchiseById is available
+import { useParams } from "react-router-dom";
 
 interface FranchiseFormData {
-  _id:string;
+  _id: string;
   firstName: string;
   lastName: string;
   dob: string;
@@ -20,16 +21,15 @@ interface FranchiseFormData {
   aadharId: string;
   password: string;
   franchiseId: number;
-  role:string;
+  role: string;
 }
 
-interface AddFranchiseFormProps {
-  editData?: FranchiseFormData | null;
-}
-
-const AddFranchiseForm: React.FC<AddFranchiseFormProps> = ({ editData }) => {
+const AddFranchiseForm: React.FC = () => {
+  const { id } = useParams<{ id: string }>();  
+  const isEditMode = Boolean(id);
+  
   const [formData, setFormData] = useState<FranchiseFormData>({
-    _id:"",
+    _id: "",
     firstName: "",
     lastName: "",
     dob: "",
@@ -42,25 +42,32 @@ const AddFranchiseForm: React.FC<AddFranchiseFormProps> = ({ editData }) => {
     email: "",
     aadharId: "",
     password: "",
-    franchiseId: 0,
-    role:"franchise"
+    franchiseId: Math.floor(10000 + Math.random() * 90000),
+    role: "franchise",
   });
 
   // State to control whether the password field is editable
   const [isPasswordEditable, setIsPasswordEditable] = useState(false);
 
-  // On mount or when editData changes, initialize form data
+  // When in edit mode, fetch the franchise data by ID and pre-fill the form.
   useEffect(() => {
-    if (editData) {
-      setFormData(editData);
-      // When editing, assume the password is already set by the user
-      setIsPasswordEditable(true);
-    } else {
-      // Generate a random 5-digit franchiseId for new entries
-      const franchiseId = Math.floor(10000 + Math.random() * 90000);
-      setFormData((prevData) => ({ ...prevData, franchiseId }));
+    if (isEditMode && id) {
+      const fetchData = async () => {
+        try {
+          const data = await fetchFranchiseById(id);
+          if (data) {
+            //@ts-ignore
+            setFormData(data);
+            setIsPasswordEditable(true);
+          }
+        } catch (error) {
+          console.error("Error fetching franchise data:", error);
+          toast.error("Failed to load franchise data.");
+        }
+      };
+      fetchData();
     }
-  }, [editData]);
+  }, [id, isEditMode]);
 
   // When mobile number changes and password hasn't been manually edited, update password to mobile
   useEffect(() => {
@@ -122,33 +129,35 @@ const AddFranchiseForm: React.FC<AddFranchiseFormProps> = ({ editData }) => {
     }
 
     try {
-      if (editData) {
-        await editFranchiseData(formData.franchiseId.toString(), formData);
+      if (isEditMode) {
+        await editFranchiseData(formData._id, formData);
         toast.success("Franchise updated successfully!");
       } else {
         await submitFranchiseData(formData);
         toast.success("Franchise added successfully!");
-      }
+      }     
 
-      // Reset the form after successful submission
-      setFormData({
-        _id:"",
-        firstName: "",
-        lastName: "",
-        dob: "",
-        directorName: "",
-        instituteName: "",
-        city: "",
-        state: "",
-        address: "",
-        mobile: "",
-        email: "",
-        aadharId: "",
-        password: "",
-        franchiseId: Math.floor(10000 + Math.random() * 90000),
-        role:"franchise"
-      });
-      setIsPasswordEditable(false);
+      // Reset the form after successful submission (if needed)
+      if (!isEditMode) {
+        setFormData({
+          _id: "",
+          firstName: "",
+          lastName: "",
+          dob: "",
+          directorName: "",
+          instituteName: "",
+          city: "",
+          state: "",
+          address: "",
+          mobile: "",
+          email: "",
+          aadharId: "",
+          password: "",
+          franchiseId: Math.floor(10000 + Math.random() * 90000),
+          role: "franchise",
+        });
+        setIsPasswordEditable(false);
+      }
     } catch (error) {
       console.error("Error submitting franchise data:", error);
       toast.error("Submission failed. Please try again.");
@@ -157,7 +166,7 @@ const AddFranchiseForm: React.FC<AddFranchiseFormProps> = ({ editData }) => {
 
   return (
     <div className={styles.formContainer}>
-      <h2>{editData ? "Edit Franchise" : "Add Franchise"}</h2>
+      <h2>{isEditMode ? "Edit Franchise" : "Add Franchise"}</h2>
       <form onSubmit={handleSubmit} noValidate className={styles.form}>
         {/* First Row: First Name & Last Name */}
         <div className={styles.formRow}>
@@ -322,7 +331,7 @@ const AddFranchiseForm: React.FC<AddFranchiseFormProps> = ({ editData }) => {
         </div>
 
         <button type="submit" className={styles.submitBtn}>
-          {editData ? "Update" : "Submit"}
+          {isEditMode ? "Update" : "Submit"}
         </button>
       </form>
     </div>

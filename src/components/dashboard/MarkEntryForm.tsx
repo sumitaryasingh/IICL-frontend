@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { Table, Modal, Button } from "antd";
+import { Table, Modal, Button, Input } from "antd";
 import styles from "./styles/MarkEntryForm.module.css";
 import { getAllStudents, StudentData } from "../../services/studentService";
 import AddMarksFormPopUp from "./AddMarksFormPopUp";
@@ -8,7 +8,7 @@ interface StudentProps {
   student: string;
   setIsMarksModalVisible: any;
   StudentMarks: Mark[];
-  onMarksUpdate: (updatedMarks: Mark[]) => void; // ✅ Pass function from parent
+  onMarksUpdate: (updatedMarks: Mark[]) => void;
 }
 
 interface Mark {
@@ -47,6 +47,8 @@ interface Student {
 
 const MarkEntryForm: React.FC = () => {
   const [students, setStudents] = useState<Student[]>([]);
+  const [filteredStudents, setFilteredStudents] = useState<Student[]>([]);
+  const [searchFranchise, setSearchFranchise] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [isMarksModalVisible, setIsMarksModalVisible] = useState(false);
@@ -56,19 +58,15 @@ const MarkEntryForm: React.FC = () => {
     const fetchStudents = async () => {
       try {
         const data = await getAllStudents();
-        console.log("Fetched Students:", data);
-        console.log("Fetched Students marks:", data[0].marks);
-
         const validData = (data || []).map((student: StudentData, index) => ({
           ...student,
           enrollmentId: student.enrollmentId || `temp-${index}`,
           id: student.id || `fallback-id-${index}`,
           franchiseId: student.franchiseId ? String(student.franchiseId) : "unknown",
-          marks: Array.isArray(student.marks) ? student.marks : [], // Ensure marks array exists
+          marks: Array.isArray(student.marks) ? student.marks : [],
         }));
-
-        console.log("Processed Students:", validData);
         setStudents(validData);
+        setFilteredStudents(validData);
       } catch (error) {
         console.error("Error fetching students:", error);
       }
@@ -77,41 +75,76 @@ const MarkEntryForm: React.FC = () => {
     fetchStudents();
   }, []);
 
-
   const handleMarksUpdate = (updatedMarks: Mark[], studentId: string) => {
-    setStudents((prevStudents) =>
-      prevStudents.map((student) =>
-        student.enrollmentId === studentId
-          ? { ...student, marks: updatedMarks } // ✅ Update only the selected student’s marks
-          : student
+    setStudents((prev) =>
+      prev.map((student) =>
+        student.enrollmentId === studentId ? { ...student, marks: updatedMarks } : student
+      )
+    );
+    setFilteredStudents((prev) =>
+      prev.map((student) =>
+        student.enrollmentId === studentId ? { ...student, marks: updatedMarks } : student
       )
     );
   };
 
-  // Group students by franchiseId
   const groupedStudents = useMemo(() => {
-    return students.reduce<Record<string, Student[]>>((acc, student) => {
-      const franchiseKey = String(student.franchiseId);
-      if (!acc[franchiseKey]) {
-        acc[franchiseKey] = [];
-      }
-      acc[franchiseKey].push(student);
+    return filteredStudents.reduce<Record<string, Student[]>>((acc, student) => {
+      const key = String(student.franchiseId);
+      if (!acc[key]) acc[key] = [];
+      acc[key].push(student);
       return acc;
     }, {});
-  }, [students]);
+  }, [filteredStudents]);
 
-  // Handle opening modal and setting selected student
   const handleAddMarksClick = (student: Student) => {
     setSelectedStudent(student);
     setIsMarksModalVisible(true);
+  };
+
+  const handleSearch = () => {
+    const keyword = searchFranchise.trim().toLowerCase();
+  
+    const filtered = students.filter((student) => {
+      return (
+        student.franchiseId?.toString().toLowerCase().includes(keyword) ||
+        student.enrollmentId?.toString().toLowerCase().includes(keyword) ||
+        student.name?.toLowerCase().includes(keyword)
+      );
+    });
+  
+    setFilteredStudents(filtered);
+    setCurrentPage(1);
   };
   
 
   return (
     <div className={styles.container}>
+      <div style={{ marginBottom: "20px", display: "flex", gap: "10px" }}>
+        <Input
+          placeholder="Search by Franchise ID, Enrollment ID, or Name"
+          value={searchFranchise}
+          onChange={(e) => setSearchFranchise(e.target.value)}
+          style={{ width: "350px" }}
+        />
+        <Button type="primary" onClick={handleSearch}>
+          Search
+        </Button>
+        <Button
+          onClick={() => {
+            setFilteredStudents(students);
+            setSearchFranchise("");
+          }}
+        >
+          Reset
+        </Button>
+      </div>
       {Object.keys(groupedStudents).map((franchiseId) => (
         <div key={franchiseId} className={styles.franchiseSection}>
-          <h2 className={styles.heading}>Franchise {franchiseId}</h2>
+          <h2 className={styles.heading}>
+            Franchise {franchiseId} — Students: {groupedStudents[franchiseId].length}
+          </h2>
+
           <Table
             dataSource={groupedStudents[franchiseId]}
             pagination={{
@@ -157,28 +190,25 @@ const MarkEntryForm: React.FC = () => {
         </div>
       ))}
 
-     {/* Modal for Add Marks */}
-    <Modal
-  title={`Add Marks for ${selectedStudent?.name || "Student"}`}
-  open={isMarksModalVisible}
-  onCancel={() => setIsMarksModalVisible(false)}
-  footer={null}
-  width={1000}
-  className={styles.marksModal}
-  >
-  {selectedStudent && (
-    <AddMarksFormPopUp
-    student={selectedStudent} // ✅ Pass the full student object
-    setIsMarksModalVisible={setIsMarksModalVisible}
-    StudentMarks={selectedStudent.marks || []}
-    onMarksUpdate={(updatedMarks) =>
-      handleMarksUpdate(updatedMarks, selectedStudent.enrollmentId)
-    }
-  />
-  )}
-</Modal>
-
-
+      <Modal
+        title={`Add Marks for ${selectedStudent?.name || "Student"}`}
+        open={isMarksModalVisible}
+        onCancel={() => setIsMarksModalVisible(false)}
+        footer={null}
+        width={1000}
+        className={styles.marksModal}
+      >
+        {selectedStudent && (
+          <AddMarksFormPopUp
+            student={selectedStudent}
+            setIsMarksModalVisible={setIsMarksModalVisible}
+            StudentMarks={selectedStudent.marks || []}
+            onMarksUpdate={(updatedMarks) =>
+              handleMarksUpdate(updatedMarks, selectedStudent.enrollmentId)
+            }
+          />
+        )}
+      </Modal>
     </div>
   );
 };

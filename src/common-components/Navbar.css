@@ -5,7 +5,7 @@
 /* src/Navbar.css */
 .navbar {
   width: 100%;
-  background:rgba(255, 255, 255, 0.71);
+  background:rgba(224, 224, 224, 0.71);
   backdrop-filter: blur(10px);
   color: rgb(0, 0, 139);
   padding: 0.3rem 2.5rem;
@@ -45,7 +45,7 @@
 .menu-toggle .bar {
   width: 25px;
   height: 3px;
-  background: white;
+  background: rgb(0, 0, 139);
   transition: 0.3s;
 }
 
@@ -149,15 +149,17 @@
   .menu-toggle {
     display: flex;
     width: min-content;
+    color: rgb(0, 0, 139);
   }
 
   .nav-links {
     display: none;
     flex-direction: column;
     position: absolute;
-    top: 70px;
+    overflow-y: auto;
+    top:94px;
     left: 0;
-    background: #222;
+    background: #cfcfcffb;
     width: 100%;
     padding: 10px 0;
   }

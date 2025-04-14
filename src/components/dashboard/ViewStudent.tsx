@@ -5,9 +5,11 @@ import { saveAs } from "file-saver";
 import { useNavigate } from "react-router-dom";
 import { Modal, Button } from "antd";
 import { IoIosCloseCircle } from "react-icons/io";
-import { fetchStudents, StudentData } from "../../services/studentService";
+import { deleteStudentData, fetchStudents, StudentData } from "../../services/studentService";
 import { fetchFranchiseData, FranchiseData } from "../../services/viewFranchise";
 import AddMarksFormPopUp from "./AddMarksFormPopUp";
+import Franchise from "../Franchise/Franchise";
+import { toast } from "react-toastify";
 
 const ViewStudent: React.FC = () => {
   // State variables
@@ -119,10 +121,24 @@ const ViewStudent: React.FC = () => {
     navigate(`/dashboard/student/add-student/${student.enrollmentId}`);
   }, [navigate]);
 
-  const handleDelete = useCallback((student: StudentData) => {
+  const handleDelete = useCallback(async (student: StudentData) => {
     console.log("Deleting student:", student);
-    // Implement delete functionality here
+    const confirmDelete = window.confirm(`Are you sure you want to delete student ${student.name}?`);
+    if (confirmDelete) {
+      try {
+        await deleteStudentData(student._id); // Make sure this function is imported
+        const adminId = localStorage.getItem("adminId");
+        const franchiseId = localStorage.getItem("franchiseId") || "";
+        const refreshedData = await fetchStudents(adminId ? "" : franchiseId);
+        setStudents(refreshedData);
+        toast.success("Student deleted successfully!");
+      } catch (error) {
+        console.error("Error deleting student:", error);
+        toast.error("Failed to delete student. Please try again.");
+      }
+    }
   }, []);
+  
 
   const handleViewMarksheet = useCallback((student: StudentData) => {
     if (!franchiseData || franchiseData.length === 0) {

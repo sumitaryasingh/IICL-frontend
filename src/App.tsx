@@ -74,7 +74,7 @@ const App: React.FC = () => {
 
             {/* Admin-only routes */}
             <Route element={<RoleProtectedRoute allowedRoles={["admin"]} />}>
-            <Route path="franchise/add/:id" element={<AddFranchiseForm />} />
+            <Route path="franchise/add/:id?" element={<AddFranchiseForm />} />
             <Route path="franchise/view" element={<ViewFranchise />} />
               <Route path="enquiry/view-franchise" element={<ViewFranchiseEnquiry />} />
               <Route path="students/add-marks" element={<MarkEntryForm />} />

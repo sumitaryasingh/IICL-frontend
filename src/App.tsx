@@ -74,8 +74,8 @@ const App: React.FC = () => {
 
             {/* Admin-only routes */}
             <Route element={<RoleProtectedRoute allowedRoles={["admin"]} />}>
-            <Route path="franchise/add/:id?" element={<AddFranchiseForm />} />
-            <Route path="franchise/view" element={<ViewFranchise />} />
+              <Route path="franchise/add/:id?" element={<AddFranchiseForm />} />
+              <Route path="franchise/view" element={<ViewFranchise />} />
               <Route path="enquiry/view-franchise" element={<ViewFranchiseEnquiry />} />
               <Route path="students/add-marks" element={<MarkEntryForm />} />
               <Route path="gallery-photo/add" element={<AddPhoto />} />
@@ -83,14 +83,17 @@ const App: React.FC = () => {
             </Route>
 
             {/* Franchise-only routes */}
-            <Route element={<RoleProtectedRoute allowedRoles={["franchise", "admin"]} />}>
-            <Route path="batches/edit" element={<AddBatchForm />} />
-            <Route path="batches/edit/:id" element={<AddBatchForm />} />
-
+            <Route element={<RoleProtectedRoute allowedRoles={["franchise"]} />}>
+              <Route path="batches/edit" element={<AddBatchForm />} />
+              <Route path="batches/edit/:id" element={<AddBatchForm />} />
               <Route path="batches/view" element={<ViewBatch />} />
-              <Route path="students/view" element={<ViewStudent />} />
               <Route path="student/add-student/:enrollmentId?" element={<AddStudentForm />} />
             </Route>
+
+            <Route element={<RoleProtectedRoute allowedRoles={["franchise", "admin"]} />}>
+              <Route path="students/view" element={<ViewStudent />} />
+            </Route>
+
           </Route>
         </Route>
 

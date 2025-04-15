@@ -4,6 +4,7 @@ import html2canvas from "html2canvas";
 import styles from "./styles/Certificate.module.css";
 import { useLocation } from "react-router-dom";
 import { StudentData } from "../../services/studentService";
+import { QRCodeCanvas } from "qrcode.react";
 
 interface IMark {
   subject: string;
@@ -136,6 +137,12 @@ const Certificate: React.FC = () => {
   const certificateIssueDate = `${todayDate}/${currentMonth}/${currentYear}`;
 
   const computedMarks = calculateMarks(student.marks);
+  const qrCodeValue = JSON.stringify({
+    certificateNumber,
+    name: student.name,
+    enrollmentId: student.enrollmentId,
+    course: student.course,
+  });
 
   return (
     <div className={styles.container}>
@@ -149,15 +156,17 @@ const Certificate: React.FC = () => {
             </p>
           </div>
           <div className={styles.institue_box}>
-            <div>
-              <img src="/images/iicl-iconT.png" className={styles.institute_icon} alt="IICL Logo" />
+            <div className={styles.iconBox}>
+              <img src="/images/iicl-cert-icon.jpg" className={styles.institute_icon} alt="IICL Logo" />
+              <p>Indian Institute of<br /> Computer Literacy</p>
             </div>
             <div className={styles.certifications}>
-              Incorporated Under Section 8, Ministry of Corporate Affairs &amp; Ministry of Labour, Govt. of India  
-              Registered Under The Ordinance of Govt. of India  
-              Registered Under NITI Aayog, Govt. of India  
+              <p>A Unit of WMR Educational and Social Welfare Trust</p>
+              Registered under MSME Govt. of India
+              <br /> 
+              Registered under NITI Ayog Govt. of India 
               <br />
-              ISO 9001 : 2015 Certified.
+               ( An ISO 9001 : 2015 Certified )
             </div>
           </div>
           <div className={styles.qr_code_box}>
@@ -192,7 +201,7 @@ const Certificate: React.FC = () => {
           on <strong>{certificateIssueDate}</strong>
         </p>
         <span className={styles.qrCode}>
-          <img src="/images/dummy_qr.png" alt="QR" />
+          <QRCodeCanvas value={qrCodeValue} size={80} />
         </span>
         <p className={styles.certificationsLogos}>
           <img src="/images/iafLogo.svg" alt="IAF Logo" />

@@ -48,6 +48,8 @@ const AddFranchiseForm: React.FC = () => {
 
   // State to control whether the password field is editable
   const [isPasswordEditable, setIsPasswordEditable] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
 
   // When in edit mode, fetch the franchise data by ID and pre-fill the form.
   useEffect(() => {
@@ -311,17 +313,37 @@ const AddFranchiseForm: React.FC = () => {
 
         {/* Sixth Row: Password and Edit Button */}
         <div className={styles.formRow}>
-          <div className={styles.formGroup}>
+          <div className={styles.formGroup} style={{ position: "relative" }}>
             <label htmlFor="password">Password *</label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               id="password"
               name="password"
               value={formData.password}
               onChange={handleChange}
               required
               disabled={!isPasswordEditable}
+              style={{ paddingRight: "40px" }}
             />
+            {isPasswordEditable && (
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                style={{
+                  position: "absolute",
+                  right: "10px",
+                  top: "70%",
+                  transform: "translateY(-50%)",
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  fontSize: "1.2rem",
+                }}
+                title={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? "🙈" : "👁️"}
+              </button>
+            )}
           </div>
           {!isPasswordEditable && (
             <div className={styles.formGroup}>
@@ -329,6 +351,7 @@ const AddFranchiseForm: React.FC = () => {
             </div>
           )}
         </div>
+
 
         <button type="submit" className={styles.submitBtn}>
           {isEditMode ? "Update" : "Submit"}

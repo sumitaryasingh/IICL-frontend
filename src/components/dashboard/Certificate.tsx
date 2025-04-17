@@ -80,17 +80,6 @@ const Certificate: React.FC = () => {
   const CourseImageSrc =
     student.course && courseAbbr ? courseImages[courseAbbr] : "/images/adca.png";
 
-  const [certificateNumber, setCertificateNumber] = useState<string>("");
-
-  // Generate a unique certificate number.
-  const generateCertificateNumber = (): string => {
-    return `CERT-${new Date().getFullYear()}-${Math.floor(Math.random() * 100000)}`;
-  };
-
-  useEffect(() => {
-    setCertificateNumber(generateCertificateNumber());
-  }, [student]);
-
   const convertBufferToBase64 = (buffer: ArrayBuffer): string => {
     let binary = "";
     const bytes = new Uint8Array(buffer);
@@ -138,7 +127,7 @@ const Certificate: React.FC = () => {
 
   const computedMarks = calculateMarks(student.marks);
   const qrCodeValue = JSON.stringify({
-    certificateNumber,
+    // certificateNumber,
     name: student.name,
     enrollmentId: student.enrollmentId,
     course: student.course,
@@ -172,7 +161,15 @@ const Certificate: React.FC = () => {
           <div className={styles.qr_code_box}>
             <img src={CourseImageSrc} alt="Course Logo" className={styles.certificate_qr} />
             <p className={styles.certificate_no}>
-              Certificate No. : <strong>{certificateNumber}</strong>
+              Certificate No. :{" "}
+              <strong>
+                {(() => {
+                  const parts = student.enrollmentId.split("-");
+                  return parts.length === 4
+                    ? `${parts[0]}-${parts[2]}-${parts[3]}`
+                    : student.enrollmentId;
+                })()}
+              </strong>
             </p>
           </div>
           <div className={styles.title_box}>

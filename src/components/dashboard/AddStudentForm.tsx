@@ -188,7 +188,7 @@ const AddStudentForm: React.FC = () => {
       const cityName = formData.address.trim();
       const threeLettersFromCity = cityName.substring(0, 3).toUpperCase();
       const registrationYear = formData.registrationDate.split("-")[0];
-      const randomTwoDigit = Math.floor(10 + Math.random() * 90).toString();
+      const randomTwoDigit = Math.floor(10 + Math.random() * 9000).toString();
       const generatedEnrollmentId = `IICL-${threeLettersFromCity}-${registrationYear}-${randomTwoDigit}`;
       const generatedRegistrationId = `IICL-${registrationYear}-${randomTwoDigit}`;
       setFormData(prev => ({

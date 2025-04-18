@@ -5,9 +5,11 @@ import { saveAs } from "file-saver";
 import { useNavigate } from "react-router-dom";
 import { Modal, Button } from "antd";
 import { IoIosCloseCircle } from "react-icons/io";
-import { fetchStudents, StudentData } from "../../services/studentService";
+import { deleteStudentData, fetchStudents, StudentData } from "../../services/studentService";
 import { fetchFranchiseData, FranchiseData } from "../../services/viewFranchise";
 import AddMarksFormPopUp from "./AddMarksFormPopUp";
+import Franchise from "../Franchise/Franchise";
+import { toast } from "react-toastify";
 
 const ViewStudent: React.FC = () => {
   // State variables
@@ -21,6 +23,7 @@ const ViewStudent: React.FC = () => {
   const [isMarksModalVisible, setIsMarksModalVisible] = useState<boolean>(false);
   const [selectedStudent, setSelectedStudent] = useState<StudentData | null>(null);
   const navigate = useNavigate();
+  const isFranchise = !localStorage.getItem("adminId"); // Determine user role
 
   // Convert buffer to base64 string if needed.
   const convertBufferToBase64 = (buffer: ArrayBuffer): string => {
@@ -39,7 +42,7 @@ const ViewStudent: React.FC = () => {
         const adminId = localStorage.getItem("adminId");
         const franchiseId = localStorage.getItem("franchiseId") || "";
   
-        const data = await fetchStudents(adminId ? "" : franchiseId); // Pass empty string if admin
+        const data = await fetchStudents(adminId ? "" : franchiseId);
         setStudents(data);
       } catch (error) {
         console.error("Error fetching student data:", error);
@@ -118,10 +121,24 @@ const ViewStudent: React.FC = () => {
     navigate(`/dashboard/student/add-student/${student.enrollmentId}`);
   }, [navigate]);
 
-  const handleDelete = useCallback((student: StudentData) => {
+  const handleDelete = useCallback(async (student: StudentData) => {
     console.log("Deleting student:", student);
-    // Implement delete functionality here
+    const confirmDelete = window.confirm(`Are you sure you want to delete student ${student.name}?`);
+    if (confirmDelete) {
+      try {
+        await deleteStudentData(student._id); // Make sure this function is imported
+        const adminId = localStorage.getItem("adminId");
+        const franchiseId = localStorage.getItem("franchiseId") || "";
+        const refreshedData = await fetchStudents(adminId ? "" : franchiseId);
+        setStudents(refreshedData);
+        toast.success("Student deleted successfully!");
+      } catch (error) {
+        console.error("Error deleting student:", error);
+        toast.error("Failed to delete student. Please try again.");
+      }
+    }
   }, []);
+  
 
   const handleViewMarksheet = useCallback((student: StudentData) => {
     if (!franchiseData || franchiseData.length === 0) {
@@ -139,9 +156,7 @@ const ViewStudent: React.FC = () => {
     navigate(`/dashboard/students/view/marksheet/${student.enrollmentId}`, {
       state: { student, instituteName, address },
     });
-  }, [navigate, franchiseData
-
-  ]);
+  }, [navigate, franchiseData]);
 
   const handleViewCertificate = useCallback((student: StudentData) => {
     if (!franchiseData || franchiseData.length === 0) {
@@ -159,10 +174,7 @@ const ViewStudent: React.FC = () => {
     navigate(`/dashboard/students/view/certificate/${student.enrollmentId}`, {
       state: { student, instituteName, address },
     });
-  }, [navigate, franchiseData
-    
-
-  ]);
+  }, [navigate, franchiseData]);
 
   const exportToExcel = useCallback(() => {
     const dataToExport = filteredData.map(({ _id,__v, imageBase64,marks,certificate, marksheet,image, ...rest }) => rest);
@@ -198,7 +210,6 @@ const ViewStudent: React.FC = () => {
     setSelectedStudent(student);
     setIsMarksModalVisible(true);
   }, []);
-
 
   return (
     <div className={styles.dashboardContainer}>
@@ -271,7 +282,11 @@ const ViewStudent: React.FC = () => {
                         </button>
                       </td>
                       <td className={styles.btns}>
-                        <button className={styles.editBtn} onClick={() => handleEdit(student)}>
+                        <button 
+                          className={styles.editBtn} 
+                          onClick={() => handleEdit(student)}
+                          disabled={isFranchise}
+                        >
                           Edit
                         </button>
                         <button className={styles.deleteBtn} onClick={() => handleDelete(student)}>
@@ -314,7 +329,6 @@ const ViewStudent: React.FC = () => {
           width={1000}
           className={styles.marksModal}
         >
-         
         </Modal>
       )}
     </div>

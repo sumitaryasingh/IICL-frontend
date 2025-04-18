@@ -4,6 +4,7 @@ import html2canvas from "html2canvas";
 import styles from "./styles/Certificate.module.css";
 import { useLocation } from "react-router-dom";
 import { StudentData } from "../../services/studentService";
+import { QRCodeCanvas } from "qrcode.react";
 
 interface IMark {
   subject: string;
@@ -79,17 +80,6 @@ const Certificate: React.FC = () => {
   const CourseImageSrc =
     student.course && courseAbbr ? courseImages[courseAbbr] : "/images/adca.png";
 
-  const [certificateNumber, setCertificateNumber] = useState<string>("");
-
-  // Generate a unique certificate number.
-  const generateCertificateNumber = (): string => {
-    return `CERT-${new Date().getFullYear()}-${Math.floor(Math.random() * 100000)}`;
-  };
-
-  useEffect(() => {
-    setCertificateNumber(generateCertificateNumber());
-  }, [student]);
-
   const convertBufferToBase64 = (buffer: ArrayBuffer): string => {
     let binary = "";
     const bytes = new Uint8Array(buffer);
@@ -136,6 +126,12 @@ const Certificate: React.FC = () => {
   const certificateIssueDate = `${todayDate}/${currentMonth}/${currentYear}`;
 
   const computedMarks = calculateMarks(student.marks);
+  const qrCodeValue = JSON.stringify({
+    // certificateNumber,
+    name: student.name,
+    enrollmentId: student.enrollmentId,
+    course: student.course,
+  });
 
   return (
     <div className={styles.container}>
@@ -149,21 +145,31 @@ const Certificate: React.FC = () => {
             </p>
           </div>
           <div className={styles.institue_box}>
-            <div>
-              <img src="/images/iicl-iconT.png" className={styles.institute_icon} alt="IICL Logo" />
+            <div className={styles.iconBox}>
+              <img src="/images/iicl-cert-icon.jpg" className={styles.institute_icon} alt="IICL Logo" />
+              <p>Indian Institute of<br /> Computer Literacy</p>
             </div>
             <div className={styles.certifications}>
-              Incorporated Under Section 8, Ministry of Corporate Affairs &amp; Ministry of Labour, Govt. of India  
-              Registered Under The Ordinance of Govt. of India  
-              Registered Under NITI Aayog, Govt. of India  
+              <p>A Unit of WMR Educational and Social Welfare Trust</p>
+              Registered under MSME Govt. of India
+              <br /> 
+              Registered under NITI Ayog Govt. of India 
               <br />
-              ISO 9001 : 2015 Certified.
+               ( An ISO 9001 : 2015 Certified )
             </div>
           </div>
           <div className={styles.qr_code_box}>
             <img src={CourseImageSrc} alt="Course Logo" className={styles.certificate_qr} />
             <p className={styles.certificate_no}>
-              Certificate No. : <strong>{certificateNumber}</strong>
+              Certificate No. :{" "}
+              <strong>
+                {(() => {
+                  const parts = student.enrollmentId.split("-");
+                  return parts.length === 4
+                    ? `${parts[0]}-${parts[2]}-${parts[3]}`
+                    : student.enrollmentId;
+                })()}
+              </strong>
             </p>
           </div>
           <div className={styles.title_box}>
@@ -192,7 +198,7 @@ const Certificate: React.FC = () => {
           on <strong>{certificateIssueDate}</strong>
         </p>
         <span className={styles.qrCode}>
-          <img src="/images/dummy_qr.png" alt="QR" />
+          <QRCodeCanvas value={qrCodeValue} size={80} />
         </span>
         <p className={styles.certificationsLogos}>
           <img src="/images/iafLogo.svg" alt="IAF Logo" />

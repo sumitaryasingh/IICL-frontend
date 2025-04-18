@@ -1,5 +1,4 @@
 // services/viewFranchise.ts
-
 import axioInstance from "../api/axiosInstance";
 
 export interface FranchiseData {

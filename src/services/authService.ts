@@ -50,7 +50,6 @@ export const loginUser = async (data: LoginData): Promise<ResponseData> => {
     const apiUrl = "/api/auth/login";
 
     const response = await axioInstance.post<ResponseData>(apiUrl, data, {
-      withCredentials: true,
     });
 
     const { user, franchiseId, adminId } = response.data;
@@ -98,6 +97,35 @@ export const logoutService = async (): Promise<{ message: string }> => {
   } catch (error) {
     console.error("❌ Logout Error:", error);
     toast.error("Logout failed");
+    throw error;
+  }
+};
+
+export const changePassword = async (
+  email: string,
+  newPassword: string,
+  currentPassword: string
+): Promise<any> => {
+  try {
+    const apiUrl = "/api/auth/change-password";
+
+    const response = await axioInstance.post(apiUrl, {
+      email,
+      newPassword,
+      currentPassword,
+    });
+
+    if (response.data.success) {
+      toast.success(response.data.message);
+    } else {
+      toast.error(response.data.message || "Password change failed");
+    }
+
+    return response.data;
+  } catch (error) {
+    const axiosError = error as AxiosError<ErrorResponseData>;
+    console.error("❌ Change Password Error:", axiosError);
+    toast.error(axiosError?.response?.data?.message || "Password change failed");
     throw error;
   }
 };

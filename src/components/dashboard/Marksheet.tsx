@@ -41,20 +41,6 @@ const Marksheet: React.FC = () => {
   // console.log("this is franchise data", franchiseData);
   const marksheetRef = useRef<HTMLDivElement>(null);
 
-
-  const [certificateNumber, setCertificateNumber] = useState<string>("");
-
-  // Function to generate a unique certificate number.
-  const generateCertificateNumber = (): string => {
-    // Example: CERT-<timestamp>-<randomNumber>
-    return `CERT-${new Date().getFullYear()}-${Math.floor(Math.random() * 100000)}`;
-  };
-
-  useEffect(() => {
-    // Generate a new certificate number whenever the student data changes.
-    setCertificateNumber(generateCertificateNumber());
-  }, [student]);
-
   const calculateMarks = (marks: IMark[]) => {
     const totalObtained = marks.reduce(
       (acc, mark) => acc + mark.theoryObtainedMarks + mark.practicalObtainedMarks,
@@ -122,7 +108,14 @@ const Marksheet: React.FC = () => {
               </tr>
               <tr>
                 <td><strong>Certificate No:</strong></td>
-                <td>{certificateNumber}</td>
+                <td>
+                  {(() => {
+                    const parts = student.enrollmentId.split("-");
+                    return parts.length === 4
+                      ? `${parts[0]}-${parts[2]}-${parts[3]}`
+                      : student.enrollmentId;
+                  })()}
+                </td>
               </tr>
               <tr>
                 <td><strong>Course:</strong></td>

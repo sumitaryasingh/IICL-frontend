@@ -83,7 +83,7 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
             </li>
           )}
 
-          {["admin", "franchise"].includes(role || "") && (
+          {[ "franchise"].includes(role || "") && (
             <li>
               <div className={styles.menuItem} onClick={() => toggleDropdown("batch")}>
                 <FaUsers className={styles.icon} />

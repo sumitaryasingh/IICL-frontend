@@ -255,3 +255,16 @@ export const deleteStudentMarkByEnrollmentId = async (student:any, subject: stri
     throw error;
   }
 };
+
+
+export const deleteStudentData = async (studentId: string): Promise<void> => {
+  try {
+    const response = await axioInstance.delete(`api/student/delete-student/${studentId}`);
+    if (response.status !== 200) {
+      throw new Error("Failed to delete student");
+    }
+  } catch (error) {
+    console.error("Error deleting student:", error);
+    throw error;
+  }
+};

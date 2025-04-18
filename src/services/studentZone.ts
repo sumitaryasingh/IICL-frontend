@@ -16,14 +16,22 @@ const jsonData = {
         "session": "12-05-2022 TO 12-05-2023"
     }
 }
-// const API_URL = import.meta.env.VITE_APP_API_BASE_URL;
-export const    fetchStudentDetails = async (enrollmentId: string) => {
+export const fetchStudentDetails = async (enrollmentId: string) => {
     try {
-        const response = await axioInstance.post(`/api/student-details`, { enrollmentId });
-        return jsonData;
-        // return response.data;
+      const response = await axioInstance.get(`/api/studentDetails/student-details/${enrollmentId}`);
+      return response.data;
     } catch (error) {
-        console.error("Error fetching student details:", error);
+      console.error("Error fetching student details:", error);
+      throw error;
+    }
+  };
+  
+export const checkStudentExistsOrNot = async (enrollmentId: string) => {
+    try {
+        const response = await axioInstance.post(`/api/studentDetails/check-student-exists`, { enrollmentId });
+        return response.data.exists;
+    } catch (error) {
+        console.error("Error checking student existence:", error);
         throw error;
     }
 };

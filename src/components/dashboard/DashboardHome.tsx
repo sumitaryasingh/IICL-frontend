@@ -84,8 +84,8 @@ const DashboardHome: React.FC = () => {
       key: "action",
       render: (_: any, record: any) => (
         <>
-          <Button className={styles.editBtn} onClick={() => handleEditCourse(record)}>Edit</Button>
-          <Button className={styles.deleteBtn} danger onClick={() => handleDeleteCourse(record.id)}>Delete</Button>
+          {/* <Button className={styles.editBtn} onClick={() => handleEditCourse(record)}>Edit</Button> */}
+          <Button className={styles.deleteBtn} danger onClick={() => handleDeleteCourse(record?._id)}>Delete</Button>
         </>
       ),
     },

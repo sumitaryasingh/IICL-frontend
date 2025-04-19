@@ -103,7 +103,7 @@ const App: React.FC = () => {
         {/* Student Zone Parent Route */}
         <Route path="/student" element={<Student />}>
           <Route path="enrollment" element={<StudentEnrollment />} />
-          <Route path="/student/details/:encodedEnrollment" element={<StudentDetails />} />
+          <Route path="details/:enrollmentId" element={<StudentDetails />} />
           <Route path="icard" element={<FranchiseTestimonials />} />
         </Route>
 

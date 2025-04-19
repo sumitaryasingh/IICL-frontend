@@ -206,6 +206,8 @@ const Certificate: React.FC = () => {
           <img src="/images/msmeLogo.jpg" alt="MSME Logo" />
         </p>
         <span className={styles.authSignature}>Auth. Sign</span>
+        <span className={styles.authStamp}> <img src="/images/authStamp.png" alt="" /> </span>
+        <span className={styles.authSign}> <img src="/images/authSign.png" alt="" /> </span>
         <span className={styles.centreSignature}>Centre Director Sign</span>
       </div>
       {/* Download Button */}

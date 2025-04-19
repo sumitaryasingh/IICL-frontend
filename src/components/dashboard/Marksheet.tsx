@@ -78,19 +78,17 @@ const Marksheet: React.FC = () => {
 
         {/* Header */}
         <div className={styles.header}>
-          <img src="/images/iicl-iconT.png" alt="iicl icon" className={styles.iiclLogo} />
+          <img src="/images/iicl-cert-icon.jpg" className={styles.institute_icon} alt="IICL Logo" />
+          <p>Indian Institute of<br /> Computer Literacy</p>
         </div>
 
         <div className={styles.certifications}>
-          भारत सरकार के अधिनियम 2013 द्वारा पंजीकृत
-          <p>
-            Incorporated Under Section 8,Ministry of Corporate Affairs & Ministry of Labour, Govt. of India
-            <br />
-            Registered Under The Ordinance of Govt. of India
-            <br />
-            Registered Under NITI Aayog, Govt. of India
-          </p>
-          ISO 9001 : 2015 Certified.
+        <p className={styles.welfareLine}>A Unit of WMR Educational and Social Welfare Trust</p>
+              Registered under MSME Govt. of India
+              <br /> 
+              Registered under NITI Ayog Govt. of India 
+              <br />
+               ( An ISO 9001 : 2015 Certified )
         </div>
         <p className={styles.title}>Marksheet</p>
 

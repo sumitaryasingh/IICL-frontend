@@ -33,3 +33,69 @@
 .print-btn:hover {
     background: #2980b9;
 }
+
+Add the following to StudentDetails.css */
+
+/* Container for page */
+.student-details-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+}
+
+/* Card styling */
+.student-card {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 100%;
+}
+
+/* Logo */
+.school-logo {
+  display: block;
+  margin: 0 auto 1rem;
+  width: 120px;
+}
+
+/* Header: photo + basic info */
+.student-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.student-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1.5rem;
+}
+
+.student-basic-info h2 {
+  margin: 0 0 0.5rem;
+}
+
+/* Sections */
+.student-info-section,
+.student-course-section {
+  margin-top: 1.5rem;
+}
+
+.download-btn {
+  margin-top: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  background: #007bff;
+  color: #fff;
+}
+.download-btn:hover {
+  background: #0069d9;
+}

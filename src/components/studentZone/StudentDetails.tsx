@@ -19,6 +19,7 @@ interface StudentData {
   sessionFrom: string;
   sessionTo: string;
   imageBase64?: string;
+  franchiseId: string;
 }
 
 const StudentDetails: React.FC = () => {
@@ -87,7 +88,7 @@ const StudentDetails: React.FC = () => {
 
         <div className="student-course-section">
           <h3>📚 Course Information</h3>
-          <p><strong>📖 Course:</strong> {studentData.course}</p>
+          <p><strong>📖 Course:</strong> {studentData.courseName}</p>
           <p><strong>🗓️ Registered On:</strong> {studentData.registrationDate}</p>
           <p><strong>📅 Session:</strong> {studentData.sessionFrom} - {studentData.sessionTo}</p>
         </div>

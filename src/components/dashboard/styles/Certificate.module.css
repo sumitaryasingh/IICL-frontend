@@ -284,14 +284,15 @@
   
 
   .authStamp img {
-    height:8rem;
+    height: 8rem;
     position: absolute;
     left: 13rem;
-    bottom:5rem;
-    z-index: 200;
-    filter: opacity(30%);
-    rotate: 46deg;
+    bottom: 5rem;
+    z-index: 200;  
+    opacity: 0.3; 
+    transform: rotate(46deg); /* ✅ This is the correct CSS property */
   }
+  
 
   .authSign img{
     height: 4rem;

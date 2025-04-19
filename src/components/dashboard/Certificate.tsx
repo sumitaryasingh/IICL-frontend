@@ -4,7 +4,7 @@ import html2canvas from "html2canvas";
 import styles from "./styles/Certificate.module.css";
 import { useLocation } from "react-router-dom";
 import { StudentData } from "../../services/studentService";
-import { QRCodeCanvas } from "qrcode.react";
+import {QRCodeCanvas}  from "qrcode.react";
 
 interface IMark {
   subject: string;

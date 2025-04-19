@@ -13,6 +13,10 @@ export interface FranchiseData {
   email: string;
   aadharId: string;
   franchiseId: number;
+  city?:string;
+  state?:string;
+  password?:string;
+  
 }
 
 // Sample data for fallback
@@ -29,6 +33,7 @@ const sampleData: FranchiseData[] = [
     email: "john.doe@example.com",
     aadharId: "123456789012",
     franchiseId: 54321,
+    
   }
 ];
 

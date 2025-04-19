@@ -4,7 +4,7 @@ import html2canvas from "html2canvas";
 import styles from "./styles/Certificate.module.css";
 import { useLocation } from "react-router-dom";
 import { StudentData } from "../../services/studentService";
-import { QRCodeCanvas } from "qrcode.react";
+import {QRCodeCanvas}  from "qrcode.react";
 
 interface IMark {
   subject: string;
@@ -206,6 +206,8 @@ const Certificate: React.FC = () => {
           <img src="/images/msmeLogo.jpg" alt="MSME Logo" />
         </p>
         <span className={styles.authSignature}>Auth. Sign</span>
+        <span className={styles.authStamp}> <img src="/images/authStamp.png" alt="" /> </span>
+        <span className={styles.authSign}> <img src="/images/authSign.png" alt="" /> </span>
         <span className={styles.centreSignature}>Centre Director Sign</span>
       </div>
       {/* Download Button */}

@@ -282,3 +282,21 @@
     background-color: #002244;
   }
   
+
+  .authStamp img {
+    height: 8rem;
+    position: absolute;
+    left: 13rem;
+    bottom: 5rem;
+    z-index: 200;  
+    opacity: 0.3; 
+    transform: rotate(46deg); /* ✅ This is the correct CSS property */
+  }
+  
+
+  .authSign img{
+    height: 4rem;
+    position: absolute;
+    left: 11rem;
+    bottom: 7.5rem;
+  }

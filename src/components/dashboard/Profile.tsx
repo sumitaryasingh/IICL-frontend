@@ -128,7 +128,7 @@ const ProfileComponent: React.FC = () => {
     } else {
       const p = profile as FranchiseData;
       return [
-        <tr key="franchiseId"><td>Centre Code</td><td>{p.franchiseId}</td></tr>,
+        <tr key="franchiseId"><td>Centre Code</td><td>{p.centerId}</td></tr>,
         <tr key="instituteName"><td>Centre Name</td><td>{p.instituteName}</td></tr>,
         <tr key="address"><td>Centre Address</td><td>{p.address}</td></tr>,
         <tr key="directorName"><td>Director's Name</td><td>{p.directorName}</td></tr>,

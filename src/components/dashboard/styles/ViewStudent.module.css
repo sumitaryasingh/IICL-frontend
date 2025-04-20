@@ -1,276 +1,307 @@
+/* General Layout */
+.pageContent {
+  padding: 2rem;
+  background-color: #f4f6f8;
+  flex: 1;
+  overflow-x: hidden;
+  transition: padding 0.3s ease;
+}
+
+/* Export Button Container */
+.exportContainer {
+  text-align: right;
+  margin-bottom: 1rem;
+}
+
+.exportBtn {
+  background-color: #28a745;
+  border: none;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.exportBtn:hover {
+  background-color: #218838;
+  transform: scale(1.03);
+}
+
+/* Show Entries Selector */
+.entriesSelector {
+  margin-bottom: 1rem;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.entriesSelector select {
+  width: 5rem;
+  padding: 4px 8px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+/* Filter Input Styles */
+.filterContainer {
+  margin-bottom: 1rem;
+}
+
+.filterContainer input {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s ease;
+}
+
+.filterContainer input:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+/* Responsive Table Container */
+.tableContainer {
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* Table Styles */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+
+.table th,
+.table td {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
+  text-align: left;
+  transition: background-color 0.3s ease;
+}
+
+.table th {
+  background-color: #003366;
+  color: #fff;
+}
+
+.table td {
+  background-color: #fff;
+}
+
+.student_ImgTable {
+  height: 8rem;
+  width: 8rem;
+  object-fit: contain;
+}
+
+/* Status Badges */
+.active {
+  color: #2e7d32;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background-color: #c8e6c9;
+}
+
+.completed {
+  color: #c62828;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background-color: #ffcdd2;
+}
+
+/* Action Buttons */
+.viewBtn,
+.editBtn,
+.deleteBtn,
+.marksBtn,
+.viewImageBtn {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+  width: 100%;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.viewBtn {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.editBtn {
+  background-color: #4caf50;
+  color: #fff;
+}
+
+.deleteBtn {
+  background-color: #f44336;
+  color: #fff;
+}
+
+.marksBtn {
+  background-color: #c2c166;
+  color: #fff;
+}
+
+.viewImageBtn {
+  background-color: rgb(181, 160, 0);
+  color: #fff;
+}
+
+/* Button hover effect */
+.viewBtn:hover,
+.editBtn:hover,
+.deleteBtn:hover,
+.marksBtn:hover,
+.viewImageBtn:hover {
+  transform: scale(1.03);
+}
+
+/* Image Modal */
+.imageModal {
+  background-color: rgba(0, 0, 73, 0.313);
+  backdrop-filter: blur(8px);
+  width: 20rem;
+  height: 20rem;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  translate: -50% -40%;
+  border-radius: 1rem;
+  box-shadow: 0 0 10px rgb(38, 38, 38);
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+.modalBody {
+  height: 100%;
+  position: relative;
+  top: 50%;
+  translate: 0 -50%;
+}
+
+.modalCloseBtn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: rgba(255, 0, 0, 0.92);
+  color: white;
+  border: none;
+  border-top-right-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+  padding: 0.5rem 1rem;
+  transition: all 0.3s;
+}
+
+.modalCloseBtn:hover {
+  box-shadow: 0 0 10px rgb(255, 0, 0);
+}
+
+.closeIcon {
+  font-size: 1.5rem;
+}
+
+.studentImage {
+  height: 13rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  padding: 1rem;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.pagination button {
+  padding: 5px 10px;
+  border: none;
+  background-color: rgb(0, 0, 139);
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.pagination button:hover {
+  background-color: #0000aa;
+}
+
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+  .pageContent {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .mainContent {
+    margin-left: 0;
+  }
+
+  .dashboardContainer {
+    flex-direction: column;
+  }
 
   .pageContent {
-    padding: 2rem;
-    background-color: #f4f6f8;
-    flex: 1;
-    overflow-x: hidden;
-  }
-  
-  /* Export Button Container */
-  .exportContainer {
-    text-align: right;
-    margin-bottom: 1rem;
-  }
-  
-  .exportBtn {
-    background-color: #28a745;
-    border: none;
-    color: #fff;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .exportBtn:hover {
-    background-color: #218838;
-  }
-  
-  /* Show Entries Selector */
-  .entriesSelector {
-    margin-bottom: 1rem;
-    font-size: 16px;
-  }
-  
-  .entriesSelector select {
-    padding: 4px 8px;
-    margin: 0 5px;
-    font-size: 16px;
-  }
-  
-  /* Filter Input Styles */
-  .filterContainer {
-    margin-bottom: 1rem;
-  }
-  
-  .filterContainer input {
-    width: 100%;
-    padding: 8px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 1rem;
   }
 
-  
-  
-  /* Responsive Table Container */
-  .tableContainer {
-    width: 100%;
-    overflow-x: auto;
-  }
-  
-  /* Table Styles */
-  .table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 1rem;
-  }
-  
   .table th,
   .table td {
-    padding:0.5rem 1rem;
-    border: 1px solid #ddd;
-    text-align: left;
-    cursor: pointer;
+    padding: 8px;
+    font-size: 14px;
   }
-  
-  .table th {
-    background-color:#003366;
-    color: #fff;
+}
+
+@media (max-width: 480px) {
+  .pageContent {
+    padding: 0.5rem;
   }
-  
+
+  .table th,
   .table td {
-    background-color: #fff;
-    cursor: default;
-  }
-  .student_ImgTable{
-    height:8rem;
-    width: 8rem;
-    object-fit:contain;
-  }
-  /* Status Badge Styles */
-  .active {
-    color: #2e7d32;
-    font-weight: bold;
-    padding: 4px 8px;
-    border-radius: 4px;
-    background-color: #c8e6c9;
-  }
-  
-  .completed {
-    color: #c62828;
-    font-weight: bold;
-    padding: 4px 8px;
-    border-radius: 4px;
-    background-color: #ffcdd2;
-  }
-  
-  /* Action Button Styles */
-  .viewBtn {
-    background-color: #007bff;
-    border: none;
-    color: #fff;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    margin: 0 2px;
-  }
-  
-  .editBtn {
-    background-color: #4caf50;
-    border: none;
-    color: #fff;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    margin-right: 5px;
-    margin-bottom: 0.3rem;
-    width: 100%;
-
-  }
-  
-  .deleteBtn {
-    background-color: #f44336;
-    border: none;
-    color: #fff;
-    font-size: 0.9rem;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    width: 100%;
-    margin-bottom: 0.3rem;
-
-  }
-  .marksBtn{
-    border: none;
-    color: #fff;
-    font-size: 0.9rem;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    width: 100%;
-    margin-bottom: 0.3rem;
-    background-color:#c2c166;
-  }
-  .viewImageBtn{
-    background-color: rgb(181, 160, 0);
-    width: 100%;
-    font-size: 0.9rem;
-    border: none;
-    color: #fff;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .imageModal{
-    background-color: rgba(0, 0, 73, 0.313);
-    backdrop-filter: blur(8px);
-    width:20rem;
-    height: 20rem;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    translate:-50% -40%;
-    border-radius: 1rem;
-    box-shadow: 0 0 10px rgb(38, 38, 38);
+    padding: 6px;
+    font-size: 12px;
   }
 
-  .modalBody{
-    height: 100%;
-    position: relative;
-    top: 50%;
-    translate: 0 -50%;
-    
-  }
-  .modalCloseBtn{
-    position: absolute;
-    top: 0;
-    right: 0;
-    background-color: rgba(255, 0, 0, 0.92);
-    /* backdrop-filter: blur(10px); */
-    border-radius: 0;
-    color: white;
-    border-top-right-radius: 1rem;
-    border-bottom-left-radius: 1rem;
-    padding: 0.5rem 1rem;
-    transition:all 0.3s;
-  }
-  .modalCloseBtn:hover{
-    box-shadow: 0 0 10px rgb(255, 0, 0);
-  }
-  .closeIcon{
-    font-size: 1.5rem;
-  }
-  .studentImage{
-    height: 13rem;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    translate:-50% -50%;
-    padding: 1rem;
-
-  }
-  /* Pagination Styles */
-  .pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-  }
-  
   .pagination button {
-    padding: 5px 10px;
-    border: none;
-    background-color: rgb(0, 0, 139);
-    color: #fff;
-    border-radius: 4px;
-    cursor: pointer;
+    padding: 4px 8px;
+    font-size: 12px;
   }
-  
-  .pagination button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
-  
-  /* Responsive adjustments */
-  @media (max-width: 1024px) {
-    .pageContent {
-      padding: 1.5rem;
-    }
-  }
-  
-  @media (max-width: 768px) {
-    .mainContent {
-      margin-left: 0;
-    }
-    .dashboardContainer {
-      flex-direction: column;
-    }
-    .pageContent {
-      padding: 1rem;
-    }
-    .table th,
-    .table td {
-      padding: 8px;
-      font-size: 14px;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .pageContent {
-      padding: 0.5rem;
-    }
-    .table th,
-    .table td {
-      padding: 6px;
-      font-size: 12px;
-    }
-    .pagination button {
-      padding: 4px 8px;
-      font-size: 12px;
-    }
-  }
-  
+}

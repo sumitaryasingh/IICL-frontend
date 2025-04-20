@@ -39,8 +39,8 @@ const ViewFranchise: React.FC = () => {
       data.sort((a, b) => {
         const aField = a[sortField];
         const bField = b[sortField];
-        if (aField < bField) return sortOrder === "asc" ? -1 : 1;
-        if (aField > bField) return sortOrder === "asc" ? 1 : -1;
+        if ((aField ?? "") < (bField ?? "")) return sortOrder === "asc" ? -1 : 1;
+        if ((aField ?? "") > (bField ?? "")) return sortOrder === "asc" ? 1 : -1;
         return 0;
       });
     }

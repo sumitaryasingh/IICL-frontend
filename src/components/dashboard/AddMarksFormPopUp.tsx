@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './styles/MarkEntryForm.module.css';
 import { 
   addEditStudentMarksByEnrollmentId,
@@ -23,9 +23,9 @@ export interface Mark {
 }
 
 interface StudentProps {
-  student: any; // Replace with your proper student type if available
+  student: any;
   setIsMarksModalVisible: (visible: boolean) => void;
-  StudentMarks: Mark[]; // Marks loaded from the database
+  StudentMarks: Mark[];
   onMarksUpdate: (updatedMarks: Mark[]) => void;
 }
 
@@ -34,14 +34,8 @@ const courses: Course[] = [
     id: "1",
     course: "ADCA",
     subjects: [
-      "Fundamentals",
-      "MS Excel",
-      "MS Word",
-      "MS PowerPoint",
-      "Tally",
-      "Pagemaker",
-      "MS Access",
-      "MS Outlook & Internet"
+      "Fundamentals", "MS Excel", "MS Word", "MS PowerPoint",
+      "Tally", "Pagemaker", "MS Access", "MS Outlook & Internet"
     ],
   },
   {
@@ -57,79 +51,43 @@ const AddMarksFormPopUp: React.FC<StudentProps> = ({
   StudentMarks,
   onMarksUpdate,
 }) => {
-  // Form fields state
+  const [marksList, setMarksList] = useState<Mark[]>([]);
   const [selectedCourseId, setSelectedCourseId] = useState<string>('');
   const [selectedSubject, setSelectedSubject] = useState<string>('');
   const [theoryMaxMarks, setTheoryMaxMarks] = useState<number | ''>(60);
   const [theoryObtainedMarks, setTheoryObtainedMarks] = useState<number | ''>('');
   const [practicalMaxMarks, setPracticalMaxMarks] = useState<number | ''>(40);
   const [practicalObtainedMarks, setPracticalObtainedMarks] = useState<number | ''>('');
-  
-  // Editing state variables
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
 
+  useEffect(() => {
+    setMarksList(StudentMarks);
+  }, [StudentMarks]);
+
   const selectedCourse = courses.find(course => course.id === selectedCourseId);
 
-  // Reset form fields
   const resetForm = () => {
     setSelectedSubject('');
-    setTheoryMaxMarks('');
+    setTheoryMaxMarks(60);
     setTheoryObtainedMarks('');
-    setPracticalMaxMarks('');
+    setPracticalMaxMarks(40);
     setPracticalObtainedMarks('');
   };
+  
 
-  // Handle form submission for adding or updating a mark
-  const handleAddSubject = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    // Validation
+  const handleAddSubject = async (): Promise<boolean> => {
     if (!selectedCourseId) {
       toast.error("Please select a course.");
-      return;
+      return false;
     }
     if (!selectedSubject) {
       toast.error("Please select a subject.");
-      return;
+      return false;
     }
     if (theoryMaxMarks === '' || theoryObtainedMarks === '' || practicalMaxMarks === '' || practicalObtainedMarks === '') {
       toast.error("Please enter all marks.");
-      return;
-    }
-
-    // If in editing mode, update the mark in the database
-    if (isEditing && editingIndex !== null) {
-      const updatedMark: Mark = {
-        subject: selectedSubject,
-        theoryMaxMarks: Number(theoryMaxMarks),
-        theoryObtainedMarks: Number(theoryObtainedMarks),
-        practicalMaxMarks: Number(practicalMaxMarks),
-        practicalObtainedMarks: Number(practicalObtainedMarks),
-      };
-      try {
-        await updateStudentMarkByEnrollmentId(student, updatedMark);
-        const updatedMarks = [...StudentMarks];
-        updatedMarks[editingIndex] = updatedMark;
-        onMarksUpdate(updatedMarks);
-        toast.success("Mark updated successfully!");
-      } catch (error) {
-        toast.error("Failed to update mark. Please try again.");
-        console.error("Update error:", error);
-      }
-      setIsEditing(false);
-      setEditingIndex(null);
-      resetForm();
-      return;
-    }
-
-    // For adding new mark, check if subject already exists (case-insensitive)
-    const duplicate = StudentMarks.some(
-      (mark) => mark.subject.toLowerCase() === selectedSubject.toLowerCase()
-    );
-    if (duplicate) {
-      toast.error("This subject already exists in the database. Duplicate entries are not allowed.");
-      return;
+      return false;
     }
 
     const newSubjectMark: Mark = {
@@ -140,18 +98,48 @@ const AddMarksFormPopUp: React.FC<StudentProps> = ({
       practicalObtainedMarks: Number(practicalObtainedMarks),
     };
 
+    if (isEditing && editingIndex !== null) {
+      try {
+        await updateStudentMarkByEnrollmentId(student, newSubjectMark);
+        const updatedMarks = [...marksList];
+        updatedMarks[editingIndex] = newSubjectMark;
+        setMarksList(updatedMarks);
+        onMarksUpdate(updatedMarks);
+        toast.success("Mark updated successfully!");
+        setIsEditing(false);
+        setEditingIndex(null);
+        resetForm();
+        return true;
+      } catch (error) {
+        toast.error("Failed to update mark. Please try again.");
+        console.error("Update error:", error);
+        return false;
+      }
+    }
+
+    const duplicate = marksList.some(
+      (mark) => mark.subject.toLowerCase() === selectedSubject.toLowerCase()
+    );
+    if (duplicate) {
+      toast.error("This subject already exists. Duplicate entries are not allowed.");
+      return false;
+    }
+
     try {
       await addEditStudentMarksByEnrollmentId(student.enrollmentId, [newSubjectMark]);
-      onMarksUpdate([...StudentMarks, newSubjectMark]);
+      const updated = [...marksList, newSubjectMark];
+      setMarksList(updated);
+      onMarksUpdate(updated);
       toast.success("Mark added successfully!");
       resetForm();
+      return true;
     } catch (error) {
       toast.error("Failed to add mark. Please try again.");
       console.error("Add error:", error);
+      return false;
     }
   };
 
-  // Edit function: pre-fill form with the mark's data and set edit mode
   const handleEditMarks = (mark: Mark, index: number) => {
     setSelectedSubject(mark.subject);
     setTheoryMaxMarks(mark.theoryMaxMarks);
@@ -162,13 +150,13 @@ const AddMarksFormPopUp: React.FC<StudentProps> = ({
     setEditingIndex(index);
   };
 
-  // Delete function: remove the mark from the database and update parent's state
   const handleDeleteMarks = async (mark: Mark) => {
     try {
       await deleteStudentMarkByEnrollmentId(student, mark.subject);
-      const updatedMarks = StudentMarks.filter(
+      const updatedMarks = marksList.filter(
         (item) => item.subject.toLowerCase() !== mark.subject.toLowerCase()
       );
+      setMarksList(updatedMarks);
       onMarksUpdate(updatedMarks);
       toast.success("Mark deleted successfully!");
     } catch (error) {
@@ -178,8 +166,7 @@ const AddMarksFormPopUp: React.FC<StudentProps> = ({
   };
 
   const handleOnSave = async () => {
-    // Since all changes are directly updated in the DB, just close the modal.
-    setIsMarksModalVisible(false);
+    await handleAddSubject(); // do not close modal, just update table
   };
 
   const handleOnCancel = () => {
@@ -190,7 +177,7 @@ const AddMarksFormPopUp: React.FC<StudentProps> = ({
     <>
       <div className={styles.marksFormContainer}>
         <h2 className={styles.heading}>Add/Edit Marks</h2>
-        <form onSubmit={handleAddSubject} className={styles.form}>
+        <form className={styles.form}>
           <div className={styles.formGroup}>
             <label>Course:</label>
             <select
@@ -249,14 +236,11 @@ const AddMarksFormPopUp: React.FC<StudentProps> = ({
               onChange={(e) => setPracticalObtainedMarks(Number(e.target.value))}
             />
           </div>
-          <button type="submit" className={styles.submitButton}>
-            {isEditing ? "Update Mark" : "Add Mark"}
-          </button>
         </form>
 
         <div className={styles.marksTableContainer}>
           <h3>Marks in Database</h3>
-          {StudentMarks.length === 0 ? (
+          {marksList.length === 0 ? (
             <p>No marks added yet.</p>
           ) : (
             <table className={styles.marksTable}>
@@ -271,7 +255,7 @@ const AddMarksFormPopUp: React.FC<StudentProps> = ({
                 </tr>
               </thead>
               <tbody>
-                {StudentMarks.map((item, index) => (
+                {marksList.map((item, index) => (
                   <tr key={index}>
                     <td>{item.subject}</td>
                     <td>{item.theoryMaxMarks}</td>
@@ -293,6 +277,7 @@ const AddMarksFormPopUp: React.FC<StudentProps> = ({
           )}
         </div>
       </div>
+
       <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
         <button 
           onClick={handleOnSave} 
@@ -302,20 +287,22 @@ const AddMarksFormPopUp: React.FC<StudentProps> = ({
             border: "none",
             padding: "8px 16px",
             borderRadius: "4px",
-            cursor: "pointer"
+            cursor: "pointer",
+            marginTop:"0.8rem"
           }}
         >
-          Save
+          {isEditing ? "Update & Save" : "Add & Save"}
         </button>
         <button 
           onClick={handleOnCancel} 
           style={{
-            backgroundColor: "#f8f9fa",
-            color: "#333",
+            backgroundColor: "crimson",
+            color: "#fff",
             border: "1px solid #ccc",
             padding: "8px 16px",
             borderRadius: "4px",
-            cursor: "pointer"
+            cursor: "pointer",
+            marginTop:"0.8rem"
           }}
         >
           Cancel

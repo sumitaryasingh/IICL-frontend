@@ -189,12 +189,6 @@ const ViewFranchiseEnquiry: React.FC = () => {
                   <td>
                     <button 
                       className={styles.actionBtn} 
-                      onClick={() => handleEdit(enquiry.id)}
-                    >
-                      Edit
-                    </button>
-                    <button 
-                      className={styles.actionBtn} 
                       onClick={() => handleDelete(enquiry.id)}
                     >
                       Delete

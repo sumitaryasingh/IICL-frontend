@@ -42,7 +42,7 @@ export const submitContactForm = async (formData: ContactFormData): Promise<Cont
 
 
 export interface ContactEnquiry {
-    id: number;
+    _id: string;
     name: string;
     email: string;
     phone: string;
@@ -52,14 +52,14 @@ export interface ContactEnquiry {
   export const fetchContactEnquiries = async (): Promise<ContactEnquiry[]> => {
     try {
       // Replace with your actual API endpoint for contact enquiries
-      const response = await axioInstance.get<ContactEnquiry[]>("/api/contact");
+      const response = await axioInstance.get<ContactEnquiry[]>("/api/contact/get-contact");
       return response.data;
     } catch (error) {
       console.error("Error fetching contact enquiries:", error);
       // Fallback sample data if API call fails
       const sampleData: ContactEnquiry[] = [
         {
-          id: 1,
+          _id: "1",
           name: "Alice Johnson",
           email: "alice@example.com",
           phone: "9876543210",
@@ -67,5 +67,19 @@ export interface ContactEnquiry {
         }
       ];
       return sampleData;
+    }
+  };
+
+
+  export const deleteContactEnquiry = async (id: string): Promise<void> => {
+    try {
+      // Adjust the endpoint to match your backend (replace as needed)
+      const response = await axioInstance.delete(`/api/contact/delete-contact/${id}`);
+      if (response.status !== 200) {
+        throw new Error("Failed to delete student");
+      }
+    } catch (error: any) {
+      console.error("Error deleting contact enquiry:", error);
+      throw new Error("Failed to delete contact enquiry");
     }
   };

@@ -21,13 +21,16 @@ interface FranchiseFormData {
   aadharId: string;
   password: string;
   franchiseId: number;
+  centerId:string;
   role: string;
 }
 
 const AddFranchiseForm: React.FC = () => {
   const { id } = useParams<{ id: string }>();  
   const isEditMode = Boolean(id);
-  
+  const generateCenterId = () => {
+    return `IICL-TC-${Math.floor(10000 + Math.random() * 90000)}`;
+  }
   const [formData, setFormData] = useState<FranchiseFormData>({
     _id: "",
     firstName: "",
@@ -43,6 +46,7 @@ const AddFranchiseForm: React.FC = () => {
     aadharId: "",
     password: "",
     franchiseId: Math.floor(10000 + Math.random() * 90000),
+    centerId:generateCenterId(),
     role: "franchise",
   });
 
@@ -156,6 +160,7 @@ const AddFranchiseForm: React.FC = () => {
           aadharId: "",
           password: "",
           franchiseId: Math.floor(10000 + Math.random() * 90000),
+          centerId:generateCenterId(),
           role: "franchise",
         });
         setIsPasswordEditable(false);

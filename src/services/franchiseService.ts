@@ -16,6 +16,7 @@ export interface FranchiseData {
   aadharId: string;
   password:string;
   franchiseId?:number;
+  centerId?:string;
   role?:string;
 }
 

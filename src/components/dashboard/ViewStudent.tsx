@@ -289,12 +289,15 @@ const ViewStudent: React.FC = () => {
                         >
                           Edit
                         </button>
-                        <button className={styles.deleteBtn} onClick={() => handleDelete(student)}>
+                        <button
+                          className={styles.deleteBtn}
+                          onClick={() => handleDelete(student)}
+                          disabled={isFranchise}>
                           Delete
                         </button>
-                        <button className={styles.marksBtn} onClick={() => handleAddMarks(student)}>
+                        {/* <button className={styles.marksBtn} onClick={() => handleAddMarks(student)}>
                           Add Marks
-                        </button>
+                        </button> */}
                       </td>
                     </tr>
                   ))

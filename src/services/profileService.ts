@@ -13,6 +13,7 @@ export interface FranchiseData {
   email: string;
   aadharId: string;
   franchiseId: number;
+  centerId:string;
 }
 
 export interface AdminProfileData {
@@ -38,7 +39,8 @@ const franchiseSampleData: FranchiseData = {
   mobile: "9876789876",
   email: "john@gmail.com",
   aadharId: "878912345674",
-  franchiseId: 12345
+  franchiseId: 12345,
+  centerId:"IICL-TC-23382"
 };
 
 const adminSampleData: AdminProfileData = {

@@ -1,4 +1,3 @@
-/* ViewEnquiry.module.css */
 .container {
   padding: 2rem;
   max-width: 1200px;
@@ -53,12 +52,11 @@ h2 {
 .tableContainer {
   width: 100%;
   overflow-x: auto;
-  scrollbar-width:thin;
   margin-top: 1rem;
   border: 1px solid #e0e0e0;
-  /* border-radius: 8px; */
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  padding: 1rem 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  border-radius: 8px;
 }
 
 .table {
@@ -72,7 +70,7 @@ h2 {
   border: 1px solid #ddd;
   padding: 0.75rem;
   text-align: left;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 }
 
 .table th {
@@ -122,6 +120,11 @@ h2 {
   align-items: center;
   gap: 1rem;
   margin-top: 1rem;
+}
+
+.pagination span {
+  font-size: 1rem;
+  color: #333;
 }
 
 .pagination button {
@@ -193,4 +196,71 @@ h2 {
     padding: 0.4rem 0.8rem;
     font-size: 0.8rem;
   }
+}
+
+/* Pagination styling */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.pagination span {
+  font-size: 1rem;
+  color: #333;
+  margin: 0 0.5rem;
+}
+
+.pagination button {
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: #003366;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 1rem;
+  min-width: 80px;
+  text-align: center;
+}
+
+/* Hover and active state for pagination buttons */
+.pagination button:hover {
+  background-color: #00509e;
+}
+
+.pagination button.active {
+  background-color: #4caf50;
+  color: #fff;
+}
+
+/* Disabled state for pagination buttons */
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  color: #777;
+}
+
+.pagination .page-info {
+  font-size: 1rem;
+  color: #333;
+}
+
+/* Pagination container, style updates for gap and centering */
+.pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.pagination-container .page-count {
+  font-size: 1rem;
+  color: #333;
+}
+
+.pagination-container .page-count span {
+  font-weight: bold;
 }

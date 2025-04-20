@@ -127,7 +127,6 @@ const MarkEntryForm: React.FC = () => {
 
     const filtered = students.filter((student) => {
       return (
-        student.franchiseId?.toString().toLowerCase().includes(keyword) ||
         student.enrollmentId?.toString().toLowerCase().includes(keyword) ||
         student.name?.toLowerCase().includes(keyword)
       );
@@ -174,7 +173,7 @@ const MarkEntryForm: React.FC = () => {
           ))}
         </select>
         <Input
-          placeholder="Search by Franchise ID, Enrollment ID, or Name"
+          placeholder="Search Student By Enrollment ID or Name"
           value={searchFranchise}
           onChange={(e) => setSearchFranchise(e.target.value)}
           className={styles.input}
@@ -207,7 +206,7 @@ const MarkEntryForm: React.FC = () => {
               Showing {currentStudentsCount} students on this page.
             </div>
             <h2 className={styles.heading}>
-              {franchise.find((f) => String(f.franchiseId) === franchiseId)?.instituteName || "Unknown"} : {franchiseId} — Students: {groupedStudents[franchiseId].length}
+              Franchise Name: {franchise.find((f) => String(f.franchiseId) === franchiseId)?.instituteName || "Unknown"} — Students: {groupedStudents[franchiseId].length}
             </h2>
           </div>
           <div className={styles.franchiseSection}>

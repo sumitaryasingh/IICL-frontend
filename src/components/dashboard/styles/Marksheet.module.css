@@ -41,6 +41,7 @@
   }
   .certifications{
     /* border: 1px solid red; */
+    position: relative;
     text-align: center;
     color: rgb(0,0,139);
     width: 86%;
@@ -66,6 +67,26 @@
   
   .details p {
     margin: 4px 0;
+  }
+
+  .qrCode{
+    position: absolute;
+    text-align: right;
+    top:2rem;
+    right: 0;
+  }
+
+  .issuedDate{
+    text-align: left;
+    position: absolute;
+    font-size: 1rem;
+    /* border: 1px solid red; */
+    top:5.5rem;
+    right: 0;
+    left: 0;
+  }
+
+  .issuedDate b{
   }
 
   .detailsTable {
@@ -149,8 +170,44 @@
 
   .certifiedLogo{
     position: absolute;
-    top: 6.3rem;
-    right: 3.5rem;
+    top: 9.3rem;
+    right:11.5rem;
+  }
+  .authSignLine{
+    position:absolute;
+    top: 14.2rem;
+    right: 2.4rem;
+    width: 9rem;
+    border-bottom:4px solid rgb(206, 175, 0);
+  }
+  .authSign{
+    position:absolute;
+    top: 14.2rem;
+    right: 2.4rem;
+    width: 9rem;
+    color: rgb(206, 175, 0);
+  }
+  .authBox{
+    position: absolute;
+    top: 21.4rem;
+    right: 24rem;    
+  }
+
+  .authStamp img {
+    height: 8rem;
+    position: absolute;
+    left: 13rem;
+    bottom: 5rem;
+    z-index: 200;  
+    opacity: 0.3; 
+    transform: rotate(46deg); /* ✅ This is the correct CSS property */
+  }
+
+  .authSignature img{
+      height: 4rem;
+      position: absolute;
+      left: 11rem;
+      bottom: 7rem;
   }
   .isoLogo{
     /* position: absolute; */

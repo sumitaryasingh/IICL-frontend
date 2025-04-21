@@ -3,6 +3,8 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import styles from "./styles/Marksheet.module.css";
 import { useLocation } from "react-router-dom";
+import { textAlign } from "html2canvas/dist/types/css/property-descriptors/text-align";
+import { QRCodeCanvas } from "qrcode.react";
 
 interface IMark {
   subject: string;
@@ -63,6 +65,18 @@ const Marksheet: React.FC = () => {
 
   const computedMarks = calculateMarks(student.marks);
 
+  const todayDate = new Date().getDate();
+  const currentMonth = new Date().getMonth() + 1; // Month is now 1-based.
+  const currentYear = new Date().getFullYear();
+  const certificateIssueDate = `${todayDate}/${currentMonth}/${currentYear}`;
+
+  const qrCodeValue = JSON.stringify({
+    // certificateNumber,
+    name: student.name,
+    enrollmentId: student.enrollmentId,
+    course: student.course,
+  });
+
   const handleDownload = async () => {
     if (!marksheetRef.current) return;
     const canvas = await html2canvas(marksheetRef.current, { scale: 2 });
@@ -71,6 +85,8 @@ const Marksheet: React.FC = () => {
     pdf.addImage(imgData, "PNG", 0, 0, 8.5, 11);
     pdf.save(`${student.name}_Marksheet.pdf`);
   };
+
+
 
   return (
     <div className={styles.container}>
@@ -84,14 +100,19 @@ const Marksheet: React.FC = () => {
 
         <div className={styles.certifications}>
         <p className={styles.welfareLine}>A Unit of WMR Educational and Social Welfare Trust</p>
-              Registered under MSME Govt. of India
-              <br /> 
-              Registered under NITI Ayog Govt. of India 
-              <br />
-               ( An ISO 9001 : 2015 Certified )
+          Registered under MSME Govt. of India
+          <br />
+          Registered under NITI Ayog Govt. of India
+          <br />
+          ( An ISO 9001 : 2015 Certified )
+          <div className={styles.qrCode}>
+              <QRCodeCanvas value={qrCodeValue} size={70} />
+          </div>
+          <div className={styles.issuedDate}>
+            <b>Issued on: </b> <span>{certificateIssueDate}</span>
+          </div>
         </div>
         <p className={styles.title}>Marksheet</p>
-
         {/* Student Details */}
         <div className={styles.details}>
           <table className={styles.detailsTable}>
@@ -216,11 +237,17 @@ const Marksheet: React.FC = () => {
             </tbody>
           </table>
           <div className={styles.certifiedLogo}>
-            <img src="/images/dummy_qr.png" alt="QR" className={styles.isoLogo} />
             <img src="/images/isoLogo.jpg" alt="ISO Logo" className={styles.isoLogo} />
             <img src="/images/iafLogo.svg" alt="IAF Logo" className={styles.iafLogo} />
             <img src="/images/msmeLogo.jpg" alt="MSME Logo" className={styles.msmeLogo} />
           </div>
+          <div className={styles.authBox}>
+          <span className={styles.authStamp}> <img src="/images/authStamp.png" alt="" /> </span>
+          <span className={styles.authSignature}> <img src="/images/authSign.png" alt="" /> </span>
+          </div>
+          <div className={styles.authSignLine}>
+          </div>
+          <span className={styles.authSign}>Auth Sign.</span>
         </div>
       </div>
       {/* Download Button */}

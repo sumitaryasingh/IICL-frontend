@@ -87,10 +87,10 @@ const App: React.FC = () => {
               <Route path="batches/edit" element={<AddBatchForm />} />
               <Route path="batches/edit/:id" element={<AddBatchForm />} />
               <Route path="batches/view" element={<ViewBatch />} />
-              <Route path="student/add-student/:enrollmentId?" element={<AddStudentForm />} />
             </Route>
 
             <Route element={<RoleProtectedRoute allowedRoles={["franchise", "admin"]} />}>
+              <Route path="student/add-student/:enrollmentId?" element={<AddStudentForm />} />
               <Route path="students/view" element={<ViewStudent />} />
             </Route>
 

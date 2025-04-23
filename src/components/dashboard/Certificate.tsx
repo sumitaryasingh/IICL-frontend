@@ -30,6 +30,7 @@ export interface IStudent {
     data: any;
     contentType: string;
   };
+  issueDate:string;
 }
 
 interface LocationState {
@@ -120,10 +121,10 @@ const Certificate: React.FC = () => {
     }
   }, [student]);
 
-  const todayDate = new Date().getDate();
-  const currentMonth = new Date().getMonth() + 1; // Month is now 1-based.
-  const currentYear = new Date().getFullYear();
-  const certificateIssueDate = `${todayDate}/${currentMonth}/${currentYear}`;
+  // const todayDate = new Date().getDate();
+  // const currentMonth = new Date().getMonth() + 1; // Month is now 1-based.
+  // const currentYear = new Date().getFullYear();
+  // const certificateIssueDate = `${todayDate}/${currentMonth}/${currentYear}`;
 
   const computedMarks = calculateMarks(student.marks);
   const qrCodeValue = JSON.stringify({
@@ -195,7 +196,7 @@ const Certificate: React.FC = () => {
           <br />
           Achieved <span>{computedMarks.percentage.toFixed(2)}%</span> marks and secured <span>{computedMarks.grade}</span> Grade
           <br />
-          on <strong>{certificateIssueDate}</strong>
+          on <strong>{student.issueDate}</strong>
         </p>
         <span className={styles.qrCode}>
           <QRCodeCanvas value={qrCodeValue} size={80} />

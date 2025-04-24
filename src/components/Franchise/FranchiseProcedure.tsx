@@ -35,7 +35,7 @@ const FranchiseProcedure: React.FC = () => {
                     {activeIndex === 1 && (
                         <div className="accordion-content active">
                             <p><strong style={{ color: "#ff7c01" }}>Any Person/Institute/Society/Trust/Organization</strong> can open a Study Center without any franchise charges.</p>
-                            <p>Apply Franchisee Application Form online or offline with complete details of Applicant, premises, available hardware, plans for business development or Email Your BIO-DATA and Infrastructure of the proposed Learning center to <strong>info@IICLeducation.in</strong>.</p>
+                            <p>Apply Franchisee Application Form online or offline with complete details of Applicant, premises, available hardware, plans for business development or Email Your BIO-DATA and Infrastructure of the proposed Learning center to <strong>iicleducationindia@gmail.com</strong>.</p>
                         </div>
                     )}
                 </div>

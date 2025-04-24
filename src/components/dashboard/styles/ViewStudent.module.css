@@ -118,7 +118,14 @@
   border-radius: 4px;
   background-color: #ffcdd2;
 }
-
+.notStarted{
+  color: #001f62;
+  text-align: center;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background-color: #f4ff1e;
+}
 /* Action Buttons */
 .viewBtn,
 .editBtn,

@@ -34,15 +34,61 @@ interface StudentProps {
 const courses: Course[] = [
   {
     id: "1",
-    course: "ADCA",
+    course: "ADCA (Advanced Diploma in Computer Application)",
     subjects: [
-      "Computer Fundamentals", "Operating Systems (MS Windows 10/11, Mac Os)", "MS Office (Word, Excel, PowerPoint)","Typing", "Graphic Designing(Photoshop, Pagemaker)", "Tally", "Internet & AI", "Coding & Programming(Python)", "Project"
+      "Computer Fundamentals", "Operating Systems (MS Windows 10/11, Mac, Dos)", "MS Office (Word, Excel, PowerPoint)","Typing(Hindi/English)", "Graphic Designing(Photoshop, Pagemaker)", "Tally", "Internet & AI", "Coding & Programming(Python)", "Project"
     ]
   },
   {
     id: "2",
-    course: "DCA",
-    subjects: ["Computer Fundamentals", "Operating Systems (MS Windows 10/11, Mac Os)", "MS Office (Word, Excel, PowerPoint)", "Typing", "HTML", "Internet & AI","Project"],
+    course: "DCA (Diploma in Computer Application)",
+    subjects: ["Computer Fundamentals", "Operating Systems (MS Windows 10/11, Mac, Dos)", "MS Office (Word, Excel, PowerPoint)", "Typing", "HTML", "Internet & AI","Project"],
+  },
+  {
+    id: "3",
+    course: "DTP (Desktop Publishing)",
+    subjects: [
+      "Computer Fundamentals",
+      "Operating System (Microsoft Windows 10/11, Mac, DOS)",
+      "Typing (Hindi / English)",
+      "Adobe PageMaker",
+      "Adobe Photoshop with Advanced Tools",
+      "Picture Manager",
+      "AI-based Software",
+      "Project"
+    ]
+  },
+  {
+    id: "4",
+    course: "DFA (Diploma in Financial Accounting)",
+    subjects: [
+      "Computer Fundamentals",
+      "Operating System (Microsoft Windows 10/11, Mac, DOS)",
+      "Typing (Hindi / English)",
+      "Microsoft Office Suite (Word, Excel, PowerPoint, Access)",
+      "Advance Accounting",
+      "Accounting Law & Rules",
+      "Tally (ERP/Prime)",
+      "Internet & AI",
+      "Project"
+    ]
+  },
+  {
+    id: "5",
+    course: "ADIT (Advance Diploma in Information Technology)",
+    subjects: [
+      "Computer Fundamentals",
+      "Operating System (Microsoft Windows 10/11, Mac, Dos)",
+      "Typing (Hindi / English)",
+      "Microsoft Office Suite (Word, Excel, PowerPoint, Access)",
+      "Graphic Designing (PageMaker, Photoshop)",
+      "Web Designing (HTML/CSS)",
+      "Tally (ERP/Prime) with Accounting",
+      "Coding/Programming (Python, Basic C, C++)",
+      "Internet",
+      "Artificial Intelligence & Machine Learning",
+      "Project"
+    ]
   },
 ];
 

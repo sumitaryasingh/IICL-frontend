@@ -41,17 +41,17 @@ const ViewStudent: React.FC = () => {
       try {
         const adminId = localStorage.getItem("adminId");
         const franchiseId = localStorage.getItem("franchiseId") || "";
-  
+
         const data = await fetchStudents(adminId ? "" : franchiseId);
         setStudents(data);
       } catch (error) {
         console.error("Error fetching student data:", error);
       }
     };
-  
+
     getStudents();
   }, []);
-  
+
 
   // Fetch franchise data once.
   useEffect(() => {
@@ -138,7 +138,7 @@ const ViewStudent: React.FC = () => {
       }
     }
   }, []);
-  
+
 
   const handleViewMarksheet = useCallback((student: StudentData) => {
     if (!franchiseData || franchiseData.length === 0) {
@@ -177,7 +177,7 @@ const ViewStudent: React.FC = () => {
   }, [navigate, franchiseData]);
 
   const exportToExcel = useCallback(() => {
-    const dataToExport = filteredData.map(({ _id,__v, imageBase64,marks,certificate, marksheet,image, ...rest }) => rest);
+    const dataToExport = filteredData.map(({ _id, __v, imageBase64, marks, certificate, marksheet, image, ...rest }) => rest);
     const worksheet = XLSX.utils.json_to_sheet(dataToExport);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Students");
@@ -187,7 +187,7 @@ const ViewStudent: React.FC = () => {
     });
     saveAs(dataBlob, "iicl_students.xlsx");
   }, [filteredData]);
-  
+
   // Render student image inline.
   const renderStudentImage = (student: StudentData) => {
     if (student.image && student.image.data) {
@@ -265,40 +265,39 @@ const ViewStudent: React.FC = () => {
                       <td>{student.course}</td>
                       <td>{student.enrollmentId}</td>
                       <td>
-                      <span className={
-  new Date() < new Date(student.sessionFrom)
-    ? styles.notStarted
-    : new Date() > new Date(student.sessionTo)
-    ? styles.completed
-    : styles.active
-}>
-  {
-    new Date() < new Date(student.sessionFrom)
-      ? "Session Not Started"
-      : new Date() > new Date(student.sessionTo)
-      ? "Session Completed"
-      : "Active"
-  }
-</span>
-
+                        <span className={
+                          new Date() < new Date(student.sessionFrom)
+                            ? styles.notStarted
+                            : new Date() > new Date(student.sessionTo)
+                              ? styles.completed
+                              : styles.active
+                        }>
+                          {
+                            new Date() < new Date(student.sessionFrom)
+                              ? "inActive"
+                              : new Date() > new Date(student.sessionTo)
+                                ? "Completed"
+                                : "Active"
+                          }
+                        </span>
                       </td>
                       <td>
                         {student.certificationStatus === 'enable' && (
-                        <button className={styles.viewBtn} onClick={() => handleViewMarksheet(student)}>
-                          View Marksheet
-                        </button>
+                          <button className={styles.viewBtn} onClick={() => handleViewMarksheet(student)}>
+                            View Marksheet
+                          </button>
                         )}
                       </td>
                       <td>
-                      {student.certificationStatus === 'enable' && (
-                        <button className={styles.viewBtn} onClick={() => handleViewCertificate(student)}>
-                          View Certificate
-                        </button>
-                      )}
+                        {student.certificationStatus === 'enable' && (
+                          <button className={styles.viewBtn} onClick={() => handleViewCertificate(student)}>
+                            View Certificate
+                          </button>
+                        )}
                       </td>
                       <td className={styles.btns}>
-                        <button 
-                          className={styles.editBtn} 
+                        <button
+                          className={styles.editBtn}
                           onClick={() => handleEdit(student)}
                           disabled={isFranchise}
                         >

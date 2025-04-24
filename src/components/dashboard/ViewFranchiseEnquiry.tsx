@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import styles from "./styles/ViewEnquiry.module.css";
 import { toast } from "react-toastify";
-import { fetchFranchiseEnquiries, FranchiseEnquiry } from "../../services/franchiseEnquiry";
+import { deleteFranchiseEnquiry, fetchFranchiseEnquiries, FranchiseEnquiry } from "../../services/franchiseEnquiry";
 
 const ViewFranchiseEnquiry: React.FC = () => {
   const [enquiries, setEnquiries] = useState<FranchiseEnquiry[]>([]);
@@ -84,15 +84,20 @@ const ViewFranchiseEnquiry: React.FC = () => {
     setCurrentPage(1);
   }, []);
 
-  const handleEdit = useCallback((id: number) => {
-    console.log("Edit enquiry with id:", id);
-    // Implement your edit logic here.
-  }, []);
-
-  const handleDelete = useCallback((id: number) => {
-    console.log("Delete enquiry with id:", id);
-    // Implement your delete logic here.
-  }, []);
+  const handleDelete = useCallback(
+    async (id: number) => {
+      console.log("Delete enquiry with id:", id);
+      try {
+        await deleteFranchiseEnquiry(id);
+        // Remove from local state
+        setEnquiries((prev) => prev.filter((e) => e._id !== id));
+        toast.success(`Enquiry ${id} deleted.`);
+      } catch (err: any) {
+        toast.error(err.message || "Failed to delete enquiry.");
+      }
+    },
+    [] // no dependencies, function identity stable
+  );
 
   return (
     <div className={styles.container}>
@@ -126,9 +131,9 @@ const ViewFranchiseEnquiry: React.FC = () => {
           <table className={styles.table}>
             <thead>
               <tr>
-                <th onClick={() => handleSort("id")}>
+                {/* <th onClick={() => handleSort("id")}>
                   ID {sortField === "id" ? (sortOrder === "asc" ? "▲" : "▼") : ""}
-                </th>
+                </th> */}
                 <th onClick={() => handleSort("applyingFor")}>
                   Applying For {sortField === "applyingFor" ? (sortOrder === "asc" ? "▲" : "▼") : ""}
                 </th>
@@ -171,8 +176,8 @@ const ViewFranchiseEnquiry: React.FC = () => {
             </thead>
             <tbody>
               {paginatedData.map((enquiry) => (
-                <tr key={enquiry.id}>
-                  <td>{enquiry.id}</td>
+                <tr key={enquiry._id}>
+                  {/* <td>{enquiry.id}</td> */}
                   <td>{enquiry.applyingFor}</td>
                   <td>{enquiry.centerStatus}</td>
                   <td>{enquiry.branchName}</td>
@@ -189,7 +194,7 @@ const ViewFranchiseEnquiry: React.FC = () => {
                   <td>
                     <button 
                       className={styles.actionBtn} 
-                      onClick={() => handleDelete(enquiry.id)}
+                      onClick={() => handleDelete(enquiry._id)}
                     >
                       Delete
                     </button>

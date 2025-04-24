@@ -43,6 +43,9 @@ const navItems: NavItem[] = [
     label: "Student Zone", href: "/student-zone",
     subItems: [
       { label: "Enrollment & I-Card", href: "/student/enrollment" },
+      { label: "Course Prospectus", href: "https://drive.google.com/file/d/1vbBRuPbEAIhSWTQbRPs4MtF6x9rcSItZ/view?usp=sharing" },
+      { label: "Institution Prospectus", href: "https://drive.google.com/file/d/1xQH0sW2ngStlOohA1lszAm1BRSaBtJWA/view?usp=sharing" },
+
     ]
   },
   { label: "Contact Us", href: "/contact-us" },

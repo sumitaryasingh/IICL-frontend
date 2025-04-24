@@ -204,13 +204,11 @@ const ViewStudent: React.FC = () => {
     }
     return "No Image";
   };
-
   // Open Add Marks Modal.
   const handleAddMarks = useCallback((student: StudentData) => {
     setSelectedStudent(student);
     setIsMarksModalVisible(true);
   }, []);
-
   return (
     <div className={styles.dashboardContainer}>
       <div className={styles.mainContent}>
@@ -267,9 +265,22 @@ const ViewStudent: React.FC = () => {
                       <td>{student.course}</td>
                       <td>{student.enrollmentId}</td>
                       <td>
-                        <span className={student.status === "Active" ? styles.active : styles.completed}>
-                          {student.status}
-                        </span>
+                      <span className={
+  new Date() < new Date(student.sessionFrom)
+    ? styles.notStarted
+    : new Date() > new Date(student.sessionTo)
+    ? styles.completed
+    : styles.active
+}>
+  {
+    new Date() < new Date(student.sessionFrom)
+      ? "Session Not Started"
+      : new Date() > new Date(student.sessionTo)
+      ? "Session Completed"
+      : "Active"
+  }
+</span>
+
                       </td>
                       <td>
                         {student.certificationStatus === 'enable' && (

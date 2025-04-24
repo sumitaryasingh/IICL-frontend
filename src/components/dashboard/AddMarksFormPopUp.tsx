@@ -36,15 +36,13 @@ const courses: Course[] = [
     id: "1",
     course: "ADCA",
     subjects: [
-      "Fundamentals", "MS Excel", "MS Word", "MS PowerPoint",
-      "Tally", "Pagemaker", "MS Access", "MS Outlook & Internet"
-    ],
-    issueDate: "2024-03-01",
+      "Computer Fundamentals", "Operating Systems (MS Windows 10/11, Mac Os)", "MS Office (Word, Excel, PowerPoint)","Typing", "Graphic Designing(Photoshop, Pagemaker)", "Tally", "Internet & AI", "Coding & Programming(Python)", "Project"
+    ]
   },
   {
     id: "2",
     course: "DCA",
-    subjects: ["Fundamentals", "MS Excel", "MS Word", "MS PowerPoint", "Tally"],
+    subjects: ["Computer Fundamentals", "Operating Systems (MS Windows 10/11, Mac Os)", "MS Office (Word, Excel, PowerPoint)", "Typing", "HTML", "Internet & AI","Project"],
   },
 ];
 

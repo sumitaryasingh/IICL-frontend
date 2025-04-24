@@ -8,6 +8,7 @@
   }
   
   .marksheet {
+    position: relative;
     width: 816px;
     height: 1056px;
     padding: 20px;
@@ -142,7 +143,7 @@
     text-align: center;
   }
   .performanceCriteria{
-    position: relative;
+    /* position: relative; */
     /* border: 1px solid red; */
   }
   .criteriaTable{
@@ -170,34 +171,36 @@
 
   .certifiedLogo{
     position: absolute;
-    top: 9.3rem;
-    right:11.5rem;
+    top: 56.5rem;
+    right:12.5rem;
+    z-index: 1000;
   }
   .authSignLine{
     position:absolute;
-    top: 14.2rem;
-    right: 2.4rem;
+    top: 61.3rem;
+    right: 3.7rem;
     width: 9rem;
     border-bottom:4px solid rgb(206, 175, 0);
+    z-index: 1003;
   }
   .authSign{
     position:absolute;
-    top: 14.2rem;
-    right: 2.4rem;
+    top: 61.2rem;
+    right: 3.4rem;
     width: 9rem;
     color: rgb(206, 175, 0);
   }
   .authBox{
     position: absolute;
-    top: 21.4rem;
-    right: 24rem;    
+    top: 72.4rem;
+    right: 25rem;    
   }
 
   .authStamp img {
     height: 8rem;
     position: absolute;
     left: 13rem;
-    bottom: 5rem;
+    bottom: 8.5rem;
     z-index: 200;  
     opacity: 0.3; 
     transform: rotate(46deg); /* ✅ This is the correct CSS property */
@@ -207,7 +210,8 @@
       height: 4rem;
       position: absolute;
       left: 11rem;
-      bottom: 7rem;
+      bottom: 10rem;
+      z-index: 1000;
   }
   .isoLogo{
     /* position: absolute; */

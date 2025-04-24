@@ -20,10 +20,10 @@ const Hero: React.FC<HeroProps> = ({ scrollToStory }) => {
       <div className="hero-content">
         <h1 className="hero-heading">
           <span>"Unlock Your Potential with </span>
-          <span className="highlight">IICL Education</span>"
+          <span className="highlight">Indian Institute of Computer Literacy</span>"
         </h1>
         <p className="hero-description">
-          "At <span className="highligh">IICL Education</span>, we provide
+          "At <span className="highligh">Indian Institute of Computer Literacy</span>, we provide
           cutting-edge computer education to help you build a successful career
           in technology..."
         </p>

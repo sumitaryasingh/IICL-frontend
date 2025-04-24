@@ -268,3 +268,20 @@ export const deleteStudentData = async (studentId: string): Promise<void> => {
     throw error;
   }
 };
+
+// POST: Set issue date for a student
+export const setStudentIssueDate = async (
+  enrollmentId: string,
+  issueDate: string
+): Promise<{ status: boolean; message: string }> => {
+  try {
+    const response = await axioInstance.post<{ status: boolean; message: string }>(
+      `/api/student/set-issue-date/${enrollmentId}`,
+      { issueDate }
+    );
+    return response.data;
+  } catch (error: any) {
+    console.error("Error setting issue date:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || "Failed to set issue date.");
+  }
+};

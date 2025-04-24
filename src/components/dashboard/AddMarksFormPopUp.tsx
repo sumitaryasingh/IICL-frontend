@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import styles from './styles/MarkEntryForm.module.css';
-import { 
+import {
   addEditStudentMarksByEnrollmentId,
   updateStudentMarkByEnrollmentId,
-  deleteStudentMarkByEnrollmentId 
+  deleteStudentMarkByEnrollmentId,
+  setStudentIssueDate,
 } from '../../services/studentService';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -12,6 +13,7 @@ interface Course {
   id: string;
   course: string;
   subjects: string[];
+  issueDate?: string;
 }
 
 export interface Mark {
@@ -37,6 +39,7 @@ const courses: Course[] = [
       "Fundamentals", "MS Excel", "MS Word", "MS PowerPoint",
       "Tally", "Pagemaker", "MS Access", "MS Outlook & Internet"
     ],
+    issueDate: "2024-03-01",
   },
   {
     id: "2",
@@ -60,6 +63,8 @@ const AddMarksFormPopUp: React.FC<StudentProps> = ({
   const [practicalObtainedMarks, setPracticalObtainedMarks] = useState<number | ''>('');
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [activeTab, setActiveTab] = useState<'marks' | 'issue'>('marks');
+  const [issueDate, setIssueDate] = useState<string>('');
 
   useEffect(() => {
     setMarksList(StudentMarks);
@@ -74,6 +79,16 @@ const AddMarksFormPopUp: React.FC<StudentProps> = ({
     setPracticalMaxMarks(40);
     setPracticalObtainedMarks('');
   };
+
+ 
+const handleSaveIssueDate = async () => {
+  try {
+    const response = await setStudentIssueDate(student.enrollmentId, issueDate);
+    alert(response.message); // or show in toast
+  } catch (error: any) {
+    alert(error.message);
+  }
+};
   
 
   const handleAddSubject = async (): Promise<boolean> => {
@@ -85,7 +100,12 @@ const AddMarksFormPopUp: React.FC<StudentProps> = ({
       toast.error("Please select a subject.");
       return false;
     }
-    if (theoryMaxMarks === '' || theoryObtainedMarks === '' || practicalMaxMarks === '' || practicalObtainedMarks === '') {
+    if (
+      theoryMaxMarks === '' ||
+      theoryObtainedMarks === '' ||
+      practicalMaxMarks === '' ||
+      practicalObtainedMarks === ''
+    ) {
       toast.error("Please enter all marks.");
       return false;
     }
@@ -166,7 +186,7 @@ const AddMarksFormPopUp: React.FC<StudentProps> = ({
   };
 
   const handleOnSave = async () => {
-    await handleAddSubject(); // do not close modal, just update table
+    await handleAddSubject();
   };
 
   const handleOnCancel = () => {
@@ -175,112 +195,144 @@ const AddMarksFormPopUp: React.FC<StudentProps> = ({
 
   return (
     <>
-      <div className={styles.marksFormContainer}>
-        <h2 className={styles.heading}>Add/Edit Marks</h2>
-        <form className={styles.form}>
+      {/* Tab Navigation */}
+      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem' }}>
+        <button
+          onClick={() => setActiveTab('marks')}
+          style={{
+            padding: '0.5rem 1rem',
+            marginRight: '10px',
+            backgroundColor: activeTab === 'marks' ? '#007bff' : '#f0f0f0',
+            color: activeTab === 'marks' ? '#fff' : '#000',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}
+        >
+          Marks Entry
+        </button>
+        <button
+          onClick={() => setActiveTab('issue')}
+          style={{
+            padding: '0.5rem 1rem',
+            backgroundColor: activeTab === 'issue' ? '#007bff' : '#f0f0f0',
+            color: activeTab === 'issue' ? '#fff' : '#000',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}
+        >
+          Issue Date
+        </button>
+      </div>
+
+      {/* Tab Content */}
+     {activeTab === 'marks' && (
+  <>
+    <div className={styles.marksFormContainer}>
+      <h2 className={styles.heading}>Add/Edit Marks</h2>
+      <form className={styles.form}>
+        <div className={styles.formGroup}>
+          <label>Course:</label>
+          <select
+            value={selectedCourseId}
+            onChange={(e) => setSelectedCourseId(e.target.value)}
+          >
+            <option value="">Select a course</option>
+            {courses.map(course => (
+              <option key={course.id} value={course.id}>{course.course}</option>
+            ))}
+          </select>
+        </div>
+
+        {selectedCourse && (
           <div className={styles.formGroup}>
-            <label>Course:</label>
+            <label>Subject:</label>
             <select
-              value={selectedCourseId}
-              onChange={(e) => setSelectedCourseId(e.target.value)}
+              value={selectedSubject}
+              onChange={(e) => setSelectedSubject(e.target.value)}
             >
-              <option value="">Select a course</option>
-              {courses.map(course => (
-                <option key={course.id} value={course.id}>{course.course}</option>
+              <option value="">Select a subject</option>
+              {selectedCourse.subjects.map((sub, idx) => (
+                <option key={idx} value={sub}>{sub}</option>
               ))}
             </select>
           </div>
-          {selectedCourse && (
-            <div className={styles.formGroup}>
-              <label>Subject:</label>
-              <select
-                value={selectedSubject}
-                onChange={(e) => setSelectedSubject(e.target.value)}
-              >
-                <option value="">Select a subject</option>
-                {selectedCourse.subjects.map((sub, idx) => (
-                  <option key={idx} value={sub}>{sub}</option>
-                ))}
-              </select>
-            </div>
-          )}
-          <div className={styles.formGroup}>
-            <label>Theory Max Marks:</label>
-            <input
-              type="number"
-              value={theoryMaxMarks}
-              onChange={(e) => setTheoryMaxMarks(Number(e.target.value))}
-            />
-          </div>
-          <div className={styles.formGroup}>
-            <label>Theory Obtained Marks:</label>
-            <input
-              type="number"
-              value={theoryObtainedMarks}
-              onChange={(e) => setTheoryObtainedMarks(Number(e.target.value))}
-            />
-          </div>
-          <div className={styles.formGroup}>
-            <label>Practical Max Marks:</label>
-            <input
-              type="number"
-              value={practicalMaxMarks}
-              onChange={(e) => setPracticalMaxMarks(Number(e.target.value))}
-            />
-          </div>
-          <div className={styles.formGroup}>
-            <label>Practical Obtained Marks:</label>
-            <input
-              type="number"
-              value={practicalObtainedMarks}
-              onChange={(e) => setPracticalObtainedMarks(Number(e.target.value))}
-            />
-          </div>
-        </form>
+        )}
 
-        <div className={styles.marksTableContainer}>
-          <h3>Marks in Database</h3>
-          {marksList.length === 0 ? (
-            <p>No marks added yet.</p>
-          ) : (
-            <table className={styles.marksTable}>
-              <thead>
-                <tr>
-                  <th>Subject</th>
-                  <th>Theory Max Marks</th>
-                  <th>Theory Obtained Marks</th>
-                  <th>Practical Max Marks</th>
-                  <th>Practical Obtained Marks</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {marksList.map((item, index) => (
-                  <tr key={index}>
-                    <td>{item.subject}</td>
-                    <td>{item.theoryMaxMarks}</td>
-                    <td>{item.theoryObtainedMarks}</td>
-                    <td>{item.practicalMaxMarks}</td>
-                    <td>{item.practicalObtainedMarks}</td>
-                    <td>
-                      <button className={styles.editBtn} onClick={() => handleEditMarks(item, index)}>
-                        Edit
-                      </button>
-                      <button className={styles.dltBtn} onClick={() => handleDeleteMarks(item)}>
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
+        <div className={styles.formGroup}>
+          <label>Theory Max Marks:</label>
+          <input
+            type="number"
+            value={theoryMaxMarks}
+            onChange={(e) => setTheoryMaxMarks(Number(e.target.value))}
+          />
         </div>
+        <div className={styles.formGroup}>
+          <label>Theory Obtained Marks:</label>
+          <input
+            type="number"
+            value={theoryObtainedMarks}
+            onChange={(e) => setTheoryObtainedMarks(Number(e.target.value))}
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label>Practical Max Marks:</label>
+          <input
+            type="number"
+            value={practicalMaxMarks}
+            onChange={(e) => setPracticalMaxMarks(Number(e.target.value))}
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label>Practical Obtained Marks:</label>
+          <input
+            type="number"
+            value={practicalObtainedMarks}
+            onChange={(e) => setPracticalObtainedMarks(Number(e.target.value))}
+          />
+        </div>
+      </form>
+
+      <div className={styles.marksTableContainer}>
+        <h3>Marks in Database</h3>
+        {marksList.length === 0 ? (
+          <p>No marks added yet.</p>
+        ) : (
+          <table className={styles.marksTable}>
+            <thead>
+              <tr>
+                <th>Subject</th>
+                <th>Theory Max Marks</th>
+                <th>Theory Obtained Marks</th>
+                <th>Practical Max Marks</th>
+                <th>Practical Obtained Marks</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {marksList.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.subject}</td>
+                  <td>{item.theoryMaxMarks}</td>
+                  <td>{item.theoryObtainedMarks}</td>
+                  <td>{item.practicalMaxMarks}</td>
+                  <td>{item.practicalObtainedMarks}</td>
+                  <td>
+                    <button className={styles.editBtn} onClick={() => handleEditMarks(item, index)}>Edit</button>
+                    <button className={styles.dltBtn} onClick={() => handleDeleteMarks(item)}>Delete</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
 
+      {/* Buttons for marks tab */}
       <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
-        <button 
-          onClick={handleOnSave} 
+        <button
+          onClick={handleOnSave}
           style={{
             backgroundColor: "#007bff",
             color: "#fff",
@@ -288,13 +340,13 @@ const AddMarksFormPopUp: React.FC<StudentProps> = ({
             padding: "8px 16px",
             borderRadius: "4px",
             cursor: "pointer",
-            marginTop:"0.8rem"
+            marginTop: "0.8rem",
           }}
         >
           {isEditing ? "Update & Save" : "Add & Save"}
         </button>
-        <button 
-          onClick={handleOnCancel} 
+        <button
+          onClick={handleOnCancel}
           style={{
             backgroundColor: "crimson",
             color: "#fff",
@@ -302,12 +354,58 @@ const AddMarksFormPopUp: React.FC<StudentProps> = ({
             padding: "8px 16px",
             borderRadius: "4px",
             cursor: "pointer",
-            marginTop:"0.8rem"
+            marginTop: "0.8rem",
           }}
         >
           Cancel
         </button>
       </div>
+    </div>
+  </>
+)}
+
+{activeTab === 'issue' && (
+  <div className={styles.marksFormContainer}>
+    <h2 className={styles.heading}>Set Issue Date</h2>
+    <div className={styles.formGroup}>
+      <label>Issue Date:</label>
+      <input type="date" value={issueDate} onChange={(e) => setIssueDate(e.target.value)} />
+    </div>
+
+    {/* Buttons for issue tab */}
+    <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
+      <button
+        onClick={handleSaveIssueDate} 
+        style={{
+          backgroundColor: "#28a745",
+          color: "#fff",
+          border: "none",
+          padding: "8px 16px",
+          borderRadius: "4px",
+          cursor: "pointer",
+          marginTop: "0.8rem",
+        }}
+      >
+        Save Issue Date
+      </button>
+      <button
+        onClick={handleOnCancel}
+        style={{
+          backgroundColor: "crimson",
+          color: "#fff",
+          border: "1px solid #ccc",
+          padding: "8px 16px",
+          borderRadius: "4px",
+          cursor: "pointer",
+          marginTop: "0.8rem",
+        }}
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+)}
+
     </>
   );
 };

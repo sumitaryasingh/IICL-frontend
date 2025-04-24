@@ -61,8 +61,8 @@ const ContactUs: React.FC = () => {
                 <div className="contact-content">
                     <div className="contact-info">
                         <h2>Get in Touch</h2>
-                        <p><strong>Phone:</strong> +123 456 7890</p>
-                        <p><strong>Email:</strong> contact@institute.com</p>
+                        <p><strong>Phone:</strong> +91 9876543210</p>
+                        <p><strong>Email:</strong> info@IICLeducation.in</p>
                         <p><strong>Address:</strong> Ram Rajya More, Siwan - 841226</p>
                         <div className="map-container">
                             <iframe

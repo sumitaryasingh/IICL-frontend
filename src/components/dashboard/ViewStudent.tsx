@@ -272,14 +272,18 @@ const ViewStudent: React.FC = () => {
                         </span>
                       </td>
                       <td>
+                        {student.certificationStatus === 'enable' && (
                         <button className={styles.viewBtn} onClick={() => handleViewMarksheet(student)}>
                           View Marksheet
                         </button>
+                        )}
                       </td>
                       <td>
+                      {student.certificationStatus === 'enable' && (
                         <button className={styles.viewBtn} onClick={() => handleViewCertificate(student)}>
                           View Certificate
                         </button>
+                      )}
                       </td>
                       <td className={styles.btns}>
                         <button 

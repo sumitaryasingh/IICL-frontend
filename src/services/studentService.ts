@@ -26,7 +26,7 @@ export interface StudentData {
   enrollmentId: string;
   registrationId:string;
   franchiseId?: number | string;
-  status: "Active" | "Completed";
+  status: any;
   marksheet: string;
   certificate: string;
   institute: string;
@@ -39,6 +39,7 @@ export interface StudentData {
   certificateNumber: string;
   organization: string;
   image: any;
+  certificationStatus?: string;
 }
 
 export interface NewStudentData {
@@ -285,3 +286,22 @@ export const setStudentIssueDate = async (
     throw new Error(error.response?.data?.message || "Failed to set issue date.");
   }
 };
+
+//updateStudentStatus
+export const updateStudentStatus = async (
+  enrollmentId: string,
+  status: "enable" | "disable"
+): Promise<{ status: boolean; message: string }> => {
+  try {
+    const response = await axioInstance.post<{ status: boolean; message: string }>(
+      `/api/student/updateCertificationStatus/${enrollmentId}`,
+      { status }
+    );
+    return response.data;
+  } catch (error: any) {
+    console.error("Error updating student status:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || "Failed to update student status.");
+  }
+};
+
+

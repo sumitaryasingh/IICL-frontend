@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Table, Modal, Button, Input } from "antd";
 import styles from "./styles/MarkEntryForm.module.css";
-import { getAllStudents, StudentData } from "../../services/studentService";
+import { getAllStudents, StudentData, updateStudentStatus } from "../../services/studentService";
 import AddMarksFormPopUp from "./AddMarksFormPopUp";
 import { fetchFranchiseData } from "../../services/viewFranchise";
 import { FranchiseData } from "../../services/franchiseService";
+import { toast } from "react-toastify";
 
 interface Mark {
   subject: string;
@@ -38,6 +39,7 @@ interface Student {
   marksheet: string;
   image: any;
   marks: Mark[];
+  certificationStatus?: string;
 }
 
 const MarkEntryForm: React.FC = () => {
@@ -61,6 +63,7 @@ const MarkEntryForm: React.FC = () => {
           id: student.id || `fallback-id-${index}`,
           franchiseId: student.franchiseId ? String(student.franchiseId) : "unknown",
           marks: Array.isArray(student.marks) ? student.marks : [],
+          certificationStatus: student?.certificationStatus ?? '',
         }));
         setStudents(validData);
       } catch (error) {
@@ -118,9 +121,32 @@ const MarkEntryForm: React.FC = () => {
     setIsMarksModalVisible(true);
   };
 
-  const handleEnableCertificate = (student: Student) => {
-    console.log("Enable certificate for:", student.enrollmentId);
+  const handleEnableCertificate = async (student: Student, action: 'enable' | 'disable') => {
+    try {
+      const updatedStatus = action; 
+      const response = await updateStudentStatus(student.enrollmentId, updatedStatus);
+
+      if (response?.status) {
+        setStudents((prev) =>
+          prev.map((s) =>
+            s.enrollmentId === student.enrollmentId ? { ...s, certificationStatus: updatedStatus } : s
+          )
+        );
+        setFilteredStudents((prev) =>
+          prev.map((s) =>
+            s.enrollmentId === student.enrollmentId ? { ...s, certificationStatus: updatedStatus } : s
+          )
+        );
+
+        toast.success(response.message)
+      } else {
+        console.error("Failed to update student status:", response.message);
+      }
+    } catch (error) {
+      console.error("Error enabling/disabling certificate:", error);
+    }
   };
+
 
   const handleSearch = () => {
     const keyword = searchFranchise.trim().toLowerCase();
@@ -249,9 +275,15 @@ const MarkEntryForm: React.FC = () => {
                       <Button type="primary" onClick={() => handleAddMarksClick(record)}>
                         Add Marks
                       </Button>
-                      <Button type="primary" onClick={() => handleEnableCertificate(record)}>
-                        Enable Certificate & Marksheet
+                      <Button
+                        type="primary"
+                        onClick={() =>
+                          handleEnableCertificate(record, record.certificationStatus === 'disable' ? 'enable' : 'disable')
+                        }
+                      >
+                        {record.certificationStatus === 'enable' ? 'Disable' : 'Enable' } Certificate & Marksheet
                       </Button>
+
                     </div>
                   ),
                 },

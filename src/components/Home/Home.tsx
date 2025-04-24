@@ -7,6 +7,7 @@ import StatsSection from "./StatsSection";
 import Attract from "./Attract";
 import EducationalPartners from "./EducationalPartners";
 import MarqueeSection from "./MarqueeSection";
+import DocumentGallery from "./DocumentGallery";
 
 const Home: React.FC = () => {
   const storyRef = useRef<HTMLDivElement>(null);
@@ -19,6 +20,7 @@ const Home: React.FC = () => {
         <StorySection />
       </div>
       <StatsSection />
+      <DocumentGallery />
       <Attract />
       <EducationalPartners />
       <MarqueeSection />

@@ -35,8 +35,8 @@ const Footer: React.FC = () => {
           <hr />
           <div className="contact">
           <p>📍 Ram Rajya More, Siwan - 841226</p>
-          <p>📧 info@IICLeducation.in</p>
-          <p>📞 9876543210</p>
+          <p>📧 iicleducationindia@gmail.com</p>
+          <p>📞 9199893742, 9229730501</p>
           </div>
         </div>
 

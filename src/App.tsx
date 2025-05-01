@@ -40,6 +40,7 @@ import ViewFranchiseEnquiry from "./components/dashboard/ViewFranchiseEnquiry";
 import ViewContactEnquiry from "./components/dashboard/ViewContactEnquiry";
 import DashboardHome from "./components/dashboard/DashboardHome";
 import RoleProtectedRoute from "./components/dashboard/roleProtectedRoutes";
+import { EnrollmentVerifications } from "./components/Home/EnrollmentVerification";
 const App: React.FC = () => {
   return (
     <div className="App">
@@ -52,6 +53,7 @@ const App: React.FC = () => {
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/programs" element={<ProgrammeList />} />
         <Route path="/programs/:type" element={<Programme />} />
+
         {/* Franchise Parent Route */}
         <Route path="/franchise" element={<Franchise />}>
           <Route path="form" element={<FranchiseForm />} />
@@ -96,13 +98,10 @@ const App: React.FC = () => {
 
           </Route>
         </Route>
-
-
-
-
         {/* Student Zone Parent Route */}
         <Route path="/student" element={<Student />}>
           <Route path="enrollment" element={<StudentEnrollment />} />
+        <Route path="certificate-verification" element={<EnrollmentVerifications/>} />
           <Route path="details/:enrollmentId" element={<StudentDetails />} />
           <Route path="icard" element={<FranchiseTestimonials />} />
         </Route>

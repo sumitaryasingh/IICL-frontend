@@ -53,6 +53,27 @@ const AboutUs: React.FC = () => {
             </div>
           </div>
         </div>
+        <div className="certifications-section">
+          <h2 className="section-title">Our Certifications</h2>
+          <div className="certification-cards">
+            <div className="cert-card">
+              <img src="/images/isoLogo.jpg" className='isoLogo' alt="ISO Certified" />
+              <h3>ISO 9001:2015 Certified</h3>
+              <p>Recognized for maintaining international quality standards in education delivery.</p>
+            </div>
+            <div className="cert-card">
+              <img src="/images/msmeLogo.jpg" alt="MSME Registered" />
+              <h3>MSME Registered</h3>
+              <p>Registered with the Ministry of Micro, Small & Medium Enterprises, Government of India.</p>
+            </div>
+            <div className="cert-card">
+              <img src="/images/cert3.png" alt="NGO Darpan" />
+              <h3>NGO Darpan</h3>
+              <p>WMR EDUCATIONAL AND SOCIAL WELFARE TRUST</p>
+            </div>
+            
+          </div>
+        </div>
       </div>
       <Footer />
     </>

@@ -176,3 +176,37 @@
     margin-left: 0;
   }
 }
+
+.topbar {
+  background-color: rgb(0, 0, 71);
+  color: white;
+  padding: 6px 20px;
+  font-size: 14px;
+  width: 100%;
+}
+
+.topbar-content {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* flex-wrap: wrap; */
+}
+.haveAnyQuestion{
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.topbar a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.contact-information {
+  font-weight: 500;
+  padding: 1.5rem;
+  color: rgb(255, 255, 255) ;
+}
+
+
+

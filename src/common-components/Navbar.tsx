@@ -12,16 +12,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   { label: "Home", href: "/" },
   {label:"Gallery",href:"/gallery"},
-  { label: "About Us", href: "/about-us", 
-    subItems: [
-      {label: "About Institution" , href: "/about-us"},
-      {label: "Authorization Certificate", href: "https://drive.google.com/file/d/1ubvg01vha_D_jh2mRpdYnDwNmI7POCDn/view?usp=sharing", external: true },
-      {label: "ISO Certificate", href: "https://drive.google.com/file/d/1P0IGU5LEnNAAqxfrkC3z8ODHz6be3Otv/view?usp=sharing", external: true },
-      {label: "MSME Certificate", href: "https://drive.google.com/file/d/1Z1MWXi0rwGUU3cz0RoEdOUdmYLIISIT0/view?usp=sharing", external: true },
-      {label: "NGO Darpan Certificate", href: "https://drive.google.com/file/d/1182tgrhBzvopiLg593s3fflb1tuhtArS/view?usp=sharing", external: true },
-      {label: "Institution Pan Details", href: "https://drive.google.com/file/d/1EqL9PCta8-6CXLsofypxfDMF_PNJGACV/view?usp=sharing", external: true },
-      {label: "Trust Deed", href: "https://drive.google.com/file/d/1bemDujnbcpTY288o_BmlzY5gQBer8FvS/view?usp=sharing", external: true },
-    ]
+  { label: "About Us", href: "/about-us"
    },
   {
     label: "Programs", href: "#",  subItems: programData.map((category: any) => ({
@@ -43,6 +34,7 @@ const navItems: NavItem[] = [
     label: "Student Zone", href: "/student-zone",
     subItems: [
       { label: "Enrollment & I-Card", href: "/student/enrollment" },
+      { label: "Verify Certificate", href: "/student/certificate-verification" },
       { label: "Course Prospectus", href: "https://drive.google.com/file/d/1vbBRuPbEAIhSWTQbRPs4MtF6x9rcSItZ/view?usp=sharing", external: true },
       { label: "Institution Prospectus", href: "https://drive.google.com/file/d/1xQH0sW2ngStlOohA1lszAm1BRSaBtJWA/view?usp=sharing", external: true },
 
@@ -66,6 +58,17 @@ const Navbar: React.FC = () => {
   const handleMouseLeave = () => setActiveDropdown(null);
 
   return (
+    <>
+
+        <div className="topbar">
+          <div className="topbar-content">
+            <span><b className="haveAnyQuestion">Have any question?</b></span>
+            <span className="contact-information">
+              📞 (+91) 9199893742, 9229730501 &nbsp;&nbsp;
+              📧 <a href="mailto:info@facteducation.in">iicleducationindia@gmail.com</a>
+            </span>
+          </div>
+        </div>
     <nav className="navbar">
       <div className="navbar-container">
         {/* Logo */}
@@ -114,6 +117,7 @@ const Navbar: React.FC = () => {
 
       </div>
     </nav>
+    </>
   );
 };
 

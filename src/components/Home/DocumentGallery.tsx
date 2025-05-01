@@ -3,18 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { Eye } from "lucide-react";
 
 const documents = [
+  
   {
-    label: "Authorization Certificate",
-    href: "https://drive.google.com/file/d/1ubvg01vha_D_jh2mRpdYnDwNmI7POCDn/view",
-    external: true,
-  },
-  {
-    label: "ISO Certificate",
+    label: "ISO Certified",
     href: "https://drive.google.com/file/d/1P0IGU5LEnNAAqxfrkC3z8ODHz6be3Otv/view",
     external: true,
   },
   {
-    label: "MSME Certificate",
+    label: "MSME Certified",
     href: "https://drive.google.com/file/d/1Z1MWXi0rwGUU3cz0RoEdOUdmYLIISIT0/view",
     external: true,
   },

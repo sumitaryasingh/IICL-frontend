@@ -8,6 +8,7 @@ import Attract from "./Attract";
 import EducationalPartners from "./EducationalPartners";
 import MarqueeSection from "./MarqueeSection";
 import DocumentGallery from "./DocumentGallery";
+import Verifications from "./Verifications";
 
 const Home: React.FC = () => {
   const storyRef = useRef<HTMLDivElement>(null);
@@ -20,7 +21,8 @@ const Home: React.FC = () => {
         <StorySection />
       </div>
       <StatsSection />
-      <DocumentGallery />
+      {/* <DocumentGallery /> */}
+      <Verifications/>
       <Attract />
       <EducationalPartners />
       <MarqueeSection />

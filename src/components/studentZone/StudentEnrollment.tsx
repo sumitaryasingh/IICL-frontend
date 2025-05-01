@@ -32,7 +32,7 @@ const StudentEnrollment = () => {
 
   return (
     <div className="enrollment-container">
-      <h2>🔍 Student Enrollment Lookup</h2>
+      <h2>🔍Verify Student Enrollment</h2>
       <form onSubmit={handleSubmit} className="enrollment-form">
         <input
           type="text"

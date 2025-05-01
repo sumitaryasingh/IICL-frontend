@@ -1,0 +1,226 @@
+/* CARD LAYOUT */
+.card {
+    background: #fff;
+    border-radius: 0.75rem;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    width: 100%;
+    max-width: 700px;
+    margin: 1rem auto;
+  }
+  
+  .cardHeader,
+  .cardContent,
+  .cardFooter {
+    padding: 1.5rem;
+  }
+  
+  .cardHeader {
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .cardFooter {
+    border-top: 1px solid #e5e7eb;
+    text-align: center;
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+  
+  /* TYPOGRAPHY */
+  .cardTitle {
+    font-size: 1.375rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  .cardDescription {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #6b7280;
+  }
+  
+  /* FORM STYLING */
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .inputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .input {
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #d1d5db;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  
+  .input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+  }
+  
+  .input:disabled {
+    background: #f9fafb;
+    cursor: not-allowed;
+  }
+  
+  .errorText {
+    color: #dc2626;
+    font-size: 0.875rem;
+  }
+  
+  /* BUTTONS */
+  .button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.75rem 1.25rem;
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  .button:hover {
+    background: #1d4ed8;
+  }
+  
+  .button:disabled {
+    background: #93c5fd;
+    cursor: not-allowed;
+  }
+  
+  /* LOADING STATE */
+  .loadingText {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .loadingSpinner {
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* ALERTS */
+  .alert {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    display: flex;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+  }
+  
+  .alertSuccess {
+    background: #ecfdf5;
+    border: 1px solid #10b981;
+    color: #065f46;
+    margin: 1rem 0rem;
+    border-radius: 0.5rem;
+  }
+  
+  .alertError {
+    background: #fef2f2;
+    border: 1px solid #ef4444;
+    color: #991b1b;
+    margin: 1rem 0rem;
+    border-radius: 0.5rem;
+  }
+  
+  .alertIcon {
+    flex-shrink: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: white;
+  }
+  
+  .alertSuccess .alertIcon {
+    background: #10b981;
+  }
+  
+  .alertError .alertIcon {
+    background: #ef4444;
+  }
+  
+  .alertContent {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .alertTitle {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+  
+  .alertDescription {
+    color: #4b5563;
+  }
+  
+  /* CERTIFICATE DETAILS */
+  .certificateDetails {
+    padding: 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    background: #f9fafb;
+  }
+  
+  .detailRow {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+  }
+  
+  .detailLabel {
+    font-weight: 500;
+    color: #374151;
+  }
+  
+  .detailValue {
+    color: #6b7280;
+  }
+  
+  /* RESPONSIVENESS */
+  @media (max-width: 640px) {
+    .card {
+      margin: 1rem;
+    }
+  
+    .input,
+    .button {
+      font-size: 0.95rem;
+    }
+  
+    .detailRow {
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+  }
+  

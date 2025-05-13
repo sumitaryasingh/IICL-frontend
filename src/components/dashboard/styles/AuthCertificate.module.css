@@ -1,0 +1,69 @@
+
+.CertificateContainer {
+    width: 70.2rem;   /* 297mm */
+    height: 49.6rem;  /* 210mm */
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    /* overflow: hidden; */
+  }
+  
+  .Certificate {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* ensures full stretch without whitespace */
+  }
+  
+.DirectorName{
+    position: absolute;
+    top:24rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    font-size: 4rem;
+    font-weight: 900;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: rgb(0, 0, 0);
+}
+.instituteName{
+    position: absolute;
+    top:36.4rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    font-size: 2rem;
+    font-weight: 500;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: rgb(0, 0, 0);
+}
+.centerId{
+    position:absolute;
+    z-index: 100;
+    top: 10.5rem;
+    right: 6rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+.certificateNo{
+    font-size: 1.1rem;
+    position:absolute;
+    z-index: 100;
+    top: 10.5rem;
+    right: 26.5rem;
+    font-weight: 700;
+}
+
+.validUpTo{
+    font-weight: 600;
+    font-size: 1.7rem;
+    position: absolute;
+    bottom:4.4rem;
+    z-index: 100;
+    left: 18.5rem;
+}
+
+.certDown{
+    margin-top: 1rem;
+    background-color:rgb(0, 52, 135);
+    color: white;
+}

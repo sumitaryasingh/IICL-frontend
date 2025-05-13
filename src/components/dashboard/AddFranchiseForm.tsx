@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import styles from "./styles/AddFranchiseForm.module.css";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -18,12 +18,15 @@ interface FranchiseFormData {
   address: string;
   mobile: string;
   email: string;
+  image: File | null;
   aadharId: string;
   password: string;
   franchiseId: number;
-  centerId:string;
+  centerId: string;
   role: string;
 }
+
+const IMAGE_SIZE_LIMIT = 50 * 1024; // 50 KB
 
 const AddFranchiseForm: React.FC = () => {
   const { id } = useParams<{ id: string }>();  
@@ -43,6 +46,7 @@ const AddFranchiseForm: React.FC = () => {
     address: "",
     mobile: "",
     email: "",
+    image:null,
     aadharId: "",
     password: "",
     franchiseId: Math.floor(10000 + Math.random() * 90000),
@@ -95,6 +99,19 @@ const AddFranchiseForm: React.FC = () => {
     }));
   };
 
+   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files && e.target.files[0]) {
+        const file = e.target.files[0];
+        if (file.size > IMAGE_SIZE_LIMIT) {
+          toast.error("Image size should be less than 50KB");
+          e.target.value = "";
+          setFormData(prev => ({ ...prev, image: null }));
+        } else {
+          setFormData(prev => ({ ...prev, image: file }));
+        }
+      }
+    };
+
   const handlePasswordEdit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsPasswordEditable(true);
@@ -102,13 +119,12 @@ const AddFranchiseForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+  
     // Regex patterns for validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const mobileRegex = /^[0-9]{10}$/;
     const aadharRegex = /^[0-9]{12}$/;
-
-    // Array of validations with conditions and messages
+  
     const validations = [
       { condition: !formData.firstName.trim(), message: "First name is required" },
       { condition: !formData.lastName.trim(), message: "Last name is required" },
@@ -125,25 +141,69 @@ const AddFranchiseForm: React.FC = () => {
       { condition: !formData.aadharId.trim(), message: "Aadhar ID is required" },
       { condition: !aadharRegex.test(formData.aadharId), message: "Invalid Aadhar ID. It should be 12 digits." },
     ];
-
-    // Run validations and display error if any fail
+  
     for (let validation of validations) {
       if (validation.condition) {
         toast.error(validation.message);
         return;
       }
     }
-
+  
     try {
+      const data = new FormData();
+      for (const key in formData) {
+        if (key === "image" && formData.image) {
+          data.append("image", formData.image);
+        } else if (key !== "_id") {
+          // @ts-ignore
+          data.append(key, formData[key]);
+        }
+      }
+  
       if (isEditMode) {
-        await editFranchiseData(formData._id, formData);
+        await editFranchiseData(formData._id, {
+          _id: formData._id,
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          dob: formData.dob,
+          directorName: formData.directorName,
+          instituteName: formData.instituteName,
+          city: formData.city,
+          state: formData.state,
+          address: formData.address,
+          mobile: formData.mobile,
+          email: formData.email,
+          aadharId: formData.aadharId,
+          password: formData.password,
+          franchiseId: formData.franchiseId,
+          // centerId: formData.centerId,
+          // role: formData.role,
+        });
         toast.success("Franchise updated successfully!");
       } else {
-        await submitFranchiseData(formData);
+        const franchiseData: FranchiseFormData = {
+          _id: "",
+          firstName: data.get("firstName") as string,
+          lastName: data.get("lastName") as string,
+          dob: data.get("dob") as string,
+          directorName: data.get("directorName") as string,
+          instituteName: data.get("instituteName") as string,
+          city: data.get("city") as string,
+          state: data.get("state") as string,
+          address: data.get("address") as string,
+          mobile: data.get("mobile") as string,
+          email: data.get("email") as string,
+          image: formData.image,
+          aadharId: data.get("aadharId") as string,
+          password: data.get("password") as string,
+          franchiseId: formData.franchiseId,
+          centerId: formData.centerId,
+          role: formData.role,
+        };
+        await submitFranchiseData(franchiseData);
         toast.success("Franchise added successfully!");
-      }     
-
-      // Reset the form after successful submission (if needed)
+      }
+  
       if (!isEditMode) {
         setFormData({
           _id: "",
@@ -157,10 +217,11 @@ const AddFranchiseForm: React.FC = () => {
           address: "",
           mobile: "",
           email: "",
+          image: null,
           aadharId: "",
           password: "",
           franchiseId: Math.floor(10000 + Math.random() * 90000),
-          centerId:generateCenterId(),
+          centerId: generateCenterId(),
           role: "franchise",
         });
         setIsPasswordEditable(false);
@@ -170,6 +231,7 @@ const AddFranchiseForm: React.FC = () => {
       toast.error("Submission failed. Please try again.");
     }
   };
+  
 
   return (
     <div className={styles.formContainer}>
@@ -223,6 +285,15 @@ const AddFranchiseForm: React.FC = () => {
               value={formData.directorName}
               onChange={handleChange}
               required
+            />
+          </div>
+          <div className={styles.formGroup}>
+            <label htmlFor="image">Upload Image</label>
+            <input type="file"
+              id="image"
+              name="image"
+              accept="image/*"
+              onChange={handleFileChange}
             />
           </div>
         </div>

@@ -11,6 +11,10 @@ export interface FranchiseData {
   address: string;
   mobile: string;
   email: string;
+  image?: {
+    data: ArrayBuffer | Uint8Array | string;
+    contentType: string;
+  };
   aadharId: string;
   franchiseId: number;
   centerId:string;

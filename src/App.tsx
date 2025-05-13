@@ -41,6 +41,8 @@ import ViewContactEnquiry from "./components/dashboard/ViewContactEnquiry";
 import DashboardHome from "./components/dashboard/DashboardHome";
 import RoleProtectedRoute from "./components/dashboard/roleProtectedRoutes";
 import { EnrollmentVerifications } from "./components/Home/EnrollmentVerification";
+import IdentityCard from "./components/dashboard/IdentityCard";
+import AuthCertificate from "./components/dashboard/AuthCertificate";
 const App: React.FC = () => {
   return (
     <div className="App">
@@ -71,6 +73,8 @@ const App: React.FC = () => {
 
             {/* Common: Both admin and franchise can access */}
             <Route path="profile" element={<AdminFranchiseProfile />} />
+            <Route path="profile/identity-card" element={<IdentityCard />} />
+            <Route path="profile/auth-certificate" element={<AuthCertificate/>} />
             <Route path="students/view/certificate/:studentId" element={<Certificate />} />
             <Route path="students/view/marksheet/:studentId" element={<Marksheet />} />
 

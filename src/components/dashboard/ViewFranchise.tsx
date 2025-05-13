@@ -1,4 +1,3 @@
-// components/ViewFranchise.tsx
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import styles from "./styles/ViewFranchise.module.css";
 import { fetchFranchiseData, FranchiseData, deleteFranchiseData } from "../../services/viewFranchise";
@@ -6,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const ViewFranchise: React.FC = () => {
-  // Franchise data state
   const [franchises, setFranchises] = useState<FranchiseData[]>([]);
   const [filterText, setFilterText] = useState("");
   const [sortField, setSortField] = useState<keyof FranchiseData | "">("");
@@ -14,7 +12,6 @@ const ViewFranchise: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
 
-  // Fetch franchise data on mount
   useEffect(() => {
     const getData = async () => {
       const data = await fetchFranchiseData();
@@ -23,7 +20,42 @@ const ViewFranchise: React.FC = () => {
     getData();
   }, []);
 
-  // Compute filtered and sorted data
+  const convertBufferToBase64 = (buffer: Uint8Array) => {
+    if (!buffer || buffer.length === 0) return "";
+    return btoa(String.fromCharCode(...buffer));
+  };
+
+  const renderDirectorImage = (image: FranchiseData["image"], alt: string) => {
+    if (!image?.data) return "No Image";
+
+    let base64Image = "";
+
+    if (typeof image.data === "string") {
+      base64Image = image.data;
+    } else if (image.data instanceof ArrayBuffer) {
+      base64Image = convertBufferToBase64(new Uint8Array(image.data));
+    } else if (image.data instanceof Uint8Array) {
+      base64Image = convertBufferToBase64(image.data);
+    } else if (
+      typeof image.data === "object" &&
+      (image.data as any).type === "Buffer" &&
+      Array.isArray((image.data as any).data)
+    ) {
+      const bufferData = new Uint8Array((image.data as any).data);
+      base64Image = convertBufferToBase64(bufferData);
+    } else {
+      return "Invalid image";
+    }
+
+    return (
+      <img
+        src={`data:${image.contentType};base64,${base64Image}`}
+        alt={alt}
+        style={{ width: "60px", height: "60px", objectFit: "cover", borderRadius: "6px" }}
+      />
+    );
+  };
+
   const filteredData = useMemo(() => {
     let data = [...franchises];
     if (filterText) {
@@ -47,13 +79,10 @@ const ViewFranchise: React.FC = () => {
     return data;
   }, [franchises, filterText, sortField, sortOrder]);
 
-
-  // Reset current page when filter or sort changes
   useEffect(() => {
     setCurrentPage(1);
   }, [filterText, sortField, sortOrder]);
 
-  // Pagination calculations
   const totalPages = useMemo(
     () => Math.ceil(filteredData.length / pageSize),
     [filteredData, pageSize]
@@ -65,7 +94,6 @@ const ViewFranchise: React.FC = () => {
     [filteredData, indexOfFirst, indexOfLast]
   );
 
-  // Handlers
   const handleSort = useCallback(
     (field: keyof FranchiseData) => {
       if (sortField === field) {
@@ -90,18 +118,14 @@ const ViewFranchise: React.FC = () => {
     []
   );
 
-  
   const navigate = useNavigate();
 
   const handleEdit = useCallback((data: FranchiseData) => {
     console.log("Edit clicked for:", data);
     navigate(`/dashboard/franchise/add/${data._id}`);
   }, [navigate]);
-  
 
   const handleDelete = useCallback(async (data: FranchiseData) => {
-    console.log("Delete clicked for:", data);
-    // Ask for confirmation
     const confirmDelete = window.confirm(`Are you sure you want to delete franchise for ${data.firstName} ${data.lastName}?`);
     if (confirmDelete) {
       try {
@@ -115,8 +139,6 @@ const ViewFranchise: React.FC = () => {
       }
     }
   }, []);
-  
-  
 
   return (
     <div>
@@ -132,7 +154,6 @@ const ViewFranchise: React.FC = () => {
             />
           </div>
 
-          {/* Entries Selector */}
           <div className={styles.entries}>
             <label htmlFor="entriesSelect">Show </label>
             <select
@@ -151,13 +172,12 @@ const ViewFranchise: React.FC = () => {
             <table className={styles.table}>
               <thead>
                 <tr>
+                  {/* <th>Image</th> */}
                   <th onClick={() => handleSort("firstName")}>First Name</th>
                   <th onClick={() => handleSort("lastName")}>Last Name</th>
                   <th onClick={() => handleSort("dob")}>DOB</th>
                   <th onClick={() => handleSort("directorName")}>Director Name</th>
-                  <th onClick={() => handleSort("instituteName")}>
-                    Institute Name
-                  </th>
+                  <th onClick={() => handleSort("instituteName")}>Institute Name</th>
                   <th>Address</th>
                   <th onClick={() => handleSort("mobile")}>Mobile</th>
                   <th onClick={() => handleSort("email")}>Email</th>
@@ -169,6 +189,7 @@ const ViewFranchise: React.FC = () => {
                 {currentItems.length > 0 ? (
                   currentItems.map((franchise, index) => (
                     <tr key={index}>
+                      {/* <td>{renderDirectorImage(franchise.image, franchise.directorName)}</td> */}
                       <td>{franchise.firstName}</td>
                       <td>{franchise.lastName}</td>
                       <td>{franchise.dob}</td>
@@ -196,12 +217,13 @@ const ViewFranchise: React.FC = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={10}>No records found</td>
+                    <td colSpan={11}>No records found</td>
                   </tr>
                 )}
               </tbody>
             </table>
           </div>
+
           <div className={styles.pagination}>
             <button
               disabled={currentPage === 1}

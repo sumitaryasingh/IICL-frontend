@@ -1,0 +1,94 @@
+.cardContainer {
+    position: relative;
+    width: 364px;
+    height: 523px;
+    margin: 20px auto;
+}
+
+.background {
+    width: 30rem;
+    /* height: ; */
+    object-fit: cover;
+    /* border: 2px solid black; */
+}
+
+
+.IdCover {
+    height: 61%;
+    width: 100%;
+    /* border: 1px solid red; */
+    background-color: rgb(255, 255, 255);
+    position: absolute;
+    top: 15.6rem;
+}
+
+.directorImage {
+    /* background-color: red; */
+    position: absolute;
+    border-radius: 50%;
+    object-fit: contain;
+    top: 11rem;
+    width: 15rem;
+    height: 10rem;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.field {
+    position: absolute;
+    /* left: 2rem; */
+    letter-spacing: 0.05rem;
+    font-size: 1.2rem;
+    /* border: 1px solid red; */
+    width: 100%;
+    display: flex;
+}
+
+.field p {
+    font-family:Arial, Helvetica, sans-serif;
+    font-weight: 500;
+    justify-self: right;
+    /* border: 1px solid rgb(47, 71, 0); */
+    width: 100%;
+}
+
+.field p span {
+    font-family:Arial, Helvetica, sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    /* border: 1px solid rgb(71, 0, 0); */
+    justify-self: left;
+}
+
+/* Specific vertical positioning */
+.SonOf {
+    top: 22rem;
+}
+
+.BloodGrp {
+    top: 24.5rem;
+}
+
+.ContactNo {
+    top: 27rem;
+}
+
+.Session {
+    top: 29.5rem;
+}
+
+.ValidUpTo {
+    top: 32rem;
+}
+
+.TrainingCenter {
+    top: 34.5rem;
+}
+
+.CenterCode {
+    top: 37rem;
+}
+
+.AuthSign {
+    top: 39.5rem;
+}

@@ -11,6 +11,10 @@ export interface FranchiseData {
   address: string;
   mobile: string;
   email: string;
+  image?: {
+    data: string | ArrayBuffer | Uint8Array | { type: string; data: number[] };
+    contentType: string;
+  };
   aadharId: string;
   franchiseId: number;
   city?:string;
@@ -54,11 +58,10 @@ export const editFranchiseData = async (_id: string, data:FranchiseData): Promis
   try {
     const formData = new FormData();
     Object.entries(data).forEach(([key, value]) => {
-      formData.append(key, value as string);
+      formData.append(key, value as string | Blob);
     });
-
     const response = await axioInstance.put(`/api/franchise/edit-franchise/${_id}`, formData, {
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "multipart/form-data" },
     });
     return response.data;
   } catch (error) {

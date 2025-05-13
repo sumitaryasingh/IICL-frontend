@@ -58,7 +58,7 @@ const StudentDetails: React.FC = () => {
   if (!studentData) return <p>Loading...</p>;
 
   return (
-    <div className="student-details-page" style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" ,margin:"5.5rem"}}>
+    <div className="student-details-page" style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", margin: "5.5rem" }}>
       <div>
         <div className="student-card" ref={cardRef}>
           {/* Header Section */}
@@ -95,8 +95,11 @@ const StudentDetails: React.FC = () => {
           <div className="student-info student-course-section">
             <h3>📚 Course Information</h3>
             <p><strong>📖 Course:</strong> {studentData.course}</p>
-            <p><strong>🗓️ Registered On:</strong> {studentData.registrationDate}</p>
-            <p><strong>📅 Session:</strong> {studentData.sessionFrom} - {studentData.sessionTo}</p>
+            {/* <p><strong>🗓️ Registered On:</strong> {studentData.registrationDate}</p> */}
+            <p>
+              <strong>📅 Session:</strong> {new Date(studentData.sessionFrom).getFullYear()} - {new Date(studentData.sessionTo).getFullYear()}
+            </p>
+
           </div>
         </div>
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>

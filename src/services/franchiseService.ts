@@ -26,7 +26,13 @@ export interface FranchiseData {
 // Function to submit franchise data
 export const submitFranchiseData = async (data: FranchiseData): Promise<any> => {
   try {
-    const response = await axioInstance.post(`/api/franchise/add-franchise`, data);
+    const formData = new FormData();
+    Object.entries(data).forEach(([key, value]) => {
+      formData.append(key, value as string | Blob);
+    });
+    const response = await axioInstance.post(`/api/franchise/add-franchise`, data, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
     return response.data;
   } catch (error) {
     // You can further process or log the error here before rethrowing

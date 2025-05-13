@@ -3,6 +3,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { getProfileData, FranchiseData, AdminProfileData, ProfileData } from '../../services/profileService';
 import styles from './styles/Profile.module.css';
 import { changePassword } from '../../services/authService';
+import { Link } from 'react-router-dom';
 
 const ProfileComponent: React.FC = () => {
   const [profile, setProfile] = useState<ProfileData | null>(null);
@@ -11,7 +12,6 @@ const ProfileComponent: React.FC = () => {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [isChanging, setIsChanging] = useState(false);
-  const [showCurrent, setShowCurrent] = useState(false);
   const [showNew, setShowNew] = useState(false);
 
   const handleChangePassword = async () => {
@@ -19,11 +19,6 @@ const ProfileComponent: React.FC = () => {
       alert("Email not found in profile.");
       return;
     }
-
-    // if (!newPassword || !currentPassword) {
-    //   alert("Please enter both current and new passwords.");
-    //   return;
-    // }
 
     try {
       setIsChanging(true);
@@ -67,7 +62,44 @@ const ProfileComponent: React.FC = () => {
     }
   }, []);
 
-  if (loading || !profile) return <div className={styles.loading}>Loading...</div>;
+  const convertBufferToBase64 = (buffer: ArrayBuffer | Uint8Array) => {
+    const binary = Array.from(new Uint8Array(buffer))
+      .map((b) => String.fromCharCode(b))
+      .join('');
+    return btoa(binary);
+  };
+
+  const renderDirectorImage = (franchise: FranchiseData) => {
+    const image = franchise.image;
+    if (!image?.data) return "No Image";
+
+    let base64Image = "";
+
+    if (typeof image.data === "string") {
+      base64Image = image.data;
+    } else if (image.data instanceof ArrayBuffer) {
+      base64Image = convertBufferToBase64(new Uint8Array(image.data));
+    } else if (image.data instanceof Uint8Array) {
+      base64Image = convertBufferToBase64(image.data);
+    } else if (
+      typeof image.data === "object" &&
+      (image.data as any).type === "Buffer" &&
+      Array.isArray((image.data as any).data)
+    ) {
+      const bufferData = new Uint8Array((image.data as any).data);
+      base64Image = convertBufferToBase64(bufferData);
+    } else {
+      return "Invalid image format";
+    }
+
+    return (
+      <img
+        src={`data:${image.contentType};base64,${base64Image}`}
+        alt={franchise.directorName}
+        style={{ width: '120px', height: '120px', objectFit: 'cover', borderRadius: '8px' }}
+      />
+    );
+  };
 
   const renderPasswordSection = () => (
     <div className={styles.inlinePasswordSection}>
@@ -81,8 +113,6 @@ const ProfileComponent: React.FC = () => {
       )}
       {showPasswordFields && (
         <div className={styles.passwordInputs}>
-          <div className={styles.passwordField}>
-          </div>
           <div className={styles.passwordField}>
             <input
               type={showNew ? 'text' : 'password'}
@@ -107,14 +137,34 @@ const ProfileComponent: React.FC = () => {
   );
 
   const renderTableRows = () => {
+    const isAdmin = localStorage.getItem("role") === "admin";
+
     const commonRows = [
-      <tr key="email"><td>Email:</td><td>{profile.email}</td></tr>,
+      <tr key="email"><td>Email:</td><td>{profile?.email}</td></tr>,
       <tr key="password"><td>Password</td><td>{renderPasswordSection()}</td></tr>,
-      <tr key="card"><td>Card</td><td><button className={styles.buttonPrimary}>View Card</button></td></tr>,
-      <tr key="cert"><td>Authorization Certificate</td><td><button className={styles.buttonPrimary}>View Certificate</button></td></tr>,
+      !isAdmin && (
+        <tr key="card">
+          <td>Identity Card</td>
+          <td>
+            <Link to="/dashboard/profile/identity-card" rel="noopener noreferrer">
+              <button className={styles.buttonPrimary}>View Card</button>
+            </Link>
+          </td>
+        </tr>
+      ),
+      !isAdmin && (
+        <tr key="cert">
+          <td>Authorization Certificate</td>
+          <td>
+            <a href="/dashboard/profile/auth-certificate" rel="noopener noreferrer">
+              <button className={styles.buttonPrimary}>View Certificate</button>
+            </a>
+          </td>
+        </tr>
+      )
     ];
 
-    if (localStorage.getItem("role") === "admin") {
+    if (isAdmin) {
       const p = profile as AdminProfileData;
       return [
         <tr key="name"><td>Name:</td><td>{p.name}</td></tr>,
@@ -128,6 +178,7 @@ const ProfileComponent: React.FC = () => {
     } else {
       const p = profile as FranchiseData;
       return [
+        <tr key="directorImage"><td>Director's Image</td><td>{renderDirectorImage(p)}</td></tr>,
         <tr key="franchiseId"><td>Centre Code</td><td>{p.centerId}</td></tr>,
         <tr key="instituteName"><td>Centre Name</td><td>{p.instituteName}</td></tr>,
         <tr key="address"><td>Centre Address</td><td>{p.address}</td></tr>,
@@ -138,6 +189,8 @@ const ProfileComponent: React.FC = () => {
       ];
     }
   };
+
+  if (loading || !profile) return <div className={styles.loading}>Loading...</div>;
 
   return (
     <div className={styles.dashboardContainer}>

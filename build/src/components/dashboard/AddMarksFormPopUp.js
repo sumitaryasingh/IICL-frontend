@@ -1,116 +1,145 @@
 import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './styles/MarkEntryForm.module.css';
-import { addEditStudentMarksByEnrollmentId, updateStudentMarkByEnrollmentId, deleteStudentMarkByEnrollmentId } from '../../services/studentService';
+import { addEditStudentMarksByEnrollmentId, updateStudentMarkByEnrollmentId, deleteStudentMarkByEnrollmentId, setStudentIssueDate, } from '../../services/studentService';
+import { getCourses } from '../../services/dashboardHome';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-const courses = [
-    {
-        id: "1",
-        course: "ADCA",
-        subjects: [
-            "Fundamentals",
-            "MS Excel",
-            "MS Word",
-            "MS PowerPoint",
-            "Tally",
-            "Pagemaker",
-            "MS Access",
-            "MS Outlook & Internet"
-        ],
-    },
-    {
-        id: "2",
-        course: "DCA",
-        subjects: ["Fundamentals", "MS Excel", "MS Word", "MS PowerPoint", "Tally"],
-    },
-];
 const AddMarksFormPopUp = ({ student, setIsMarksModalVisible, StudentMarks, onMarksUpdate, }) => {
-    // Form fields state
+    const [courses, setCourses] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [marksList, setMarksList] = useState([]);
     const [selectedCourseId, setSelectedCourseId] = useState('');
     const [selectedSubject, setSelectedSubject] = useState('');
+    const [manualSubject, setManualSubject] = useState(''); // For manual subject entry
     const [theoryMaxMarks, setTheoryMaxMarks] = useState(60);
     const [theoryObtainedMarks, setTheoryObtainedMarks] = useState('');
     const [practicalMaxMarks, setPracticalMaxMarks] = useState(40);
     const [practicalObtainedMarks, setPracticalObtainedMarks] = useState('');
-    // Editing state variables
     const [isEditing, setIsEditing] = useState(false);
     const [editingIndex, setEditingIndex] = useState(null);
-    const selectedCourse = courses.find(course => course.id === selectedCourseId);
-    // Reset form fields
-    const resetForm = () => {
-        setSelectedSubject('');
-        setTheoryMaxMarks('');
-        setTheoryObtainedMarks('');
-        setPracticalMaxMarks('');
-        setPracticalObtainedMarks('');
-    };
-    // Handle form submission for adding or updating a mark
-    const handleAddSubject = async (e) => {
-        e.preventDefault();
-        // Validation
-        if (!selectedCourseId) {
-            toast.error("Please select a course.");
-            return;
-        }
-        if (!selectedSubject) {
-            toast.error("Please select a subject.");
-            return;
-        }
-        if (theoryMaxMarks === '' || theoryObtainedMarks === '' || practicalMaxMarks === '' || practicalObtainedMarks === '') {
-            toast.error("Please enter all marks.");
-            return;
-        }
-        // If in editing mode, update the mark in the database
-        if (isEditing && editingIndex !== null) {
-            const updatedMark = {
-                subject: selectedSubject,
-                theoryMaxMarks: Number(theoryMaxMarks),
-                theoryObtainedMarks: Number(theoryObtainedMarks),
-                practicalMaxMarks: Number(practicalMaxMarks),
-                practicalObtainedMarks: Number(practicalObtainedMarks),
-            };
+    const [activeTab, setActiveTab] = useState('marks');
+    const [issueDate, setIssueDate] = useState('');
+    // Fetch courses from API
+    useEffect(() => {
+        const fetchCourses = async () => {
+            setLoading(true);
             try {
-                await updateStudentMarkByEnrollmentId(student, updatedMark);
-                const updatedMarks = [...StudentMarks];
-                updatedMarks[editingIndex] = updatedMark;
-                onMarksUpdate(updatedMarks);
-                toast.success("Mark updated successfully!");
+                const data = await getCourses();
+                // Transform API response to match component's expected format
+                const transformedCourses = data.map((course) => ({
+                    id: course._id || course.id,
+                    course: course.course || course.name,
+                    subjects: course.subjects || [],
+                }));
+                setCourses(transformedCourses);
             }
             catch (error) {
-                toast.error("Failed to update mark. Please try again.");
-                console.error("Update error:", error);
+                console.error("Error fetching courses:", error);
+                toast.error("Failed to fetch courses. Please try again.");
             }
-            setIsEditing(false);
-            setEditingIndex(null);
-            resetForm();
-            return;
+            finally {
+                setLoading(false);
+            }
+        };
+        fetchCourses();
+    }, []);
+    useEffect(() => {
+        setMarksList(StudentMarks);
+    }, [StudentMarks]);
+    const selectedCourse = courses.find(course => {
+        const courseId = course._id || course.id;
+        return courseId === selectedCourseId;
+    });
+    // Check if course has subjects or needs manual entry
+    const hasSubjects = selectedCourse && selectedCourse.subjects && selectedCourse.subjects.length > 0;
+    const resetForm = () => {
+        setSelectedSubject('');
+        setManualSubject('');
+        setTheoryMaxMarks(60);
+        setTheoryObtainedMarks('');
+        setPracticalMaxMarks(40);
+        setPracticalObtainedMarks('');
+    };
+    // Get the subject value (from dropdown or manual entry)
+    const getSubjectValue = () => {
+        if (hasSubjects) {
+            return selectedSubject;
         }
-        // For adding new mark, check if subject already exists (case-insensitive)
-        const duplicate = StudentMarks.some((mark) => mark.subject.toLowerCase() === selectedSubject.toLowerCase());
-        if (duplicate) {
-            toast.error("This subject already exists in the database. Duplicate entries are not allowed.");
-            return;
+        return manualSubject;
+    };
+    const handleSaveIssueDate = async () => {
+        try {
+            const response = await setStudentIssueDate(student.enrollmentId, issueDate);
+            alert(response.message); // or show in toast
+        }
+        catch (error) {
+            alert(error.message);
+        }
+    };
+    const handleAddSubject = async () => {
+        if (!selectedCourseId) {
+            toast.error("Please select a course.");
+            return false;
+        }
+        const subjectValue = getSubjectValue();
+        if (!subjectValue || subjectValue.trim() === '') {
+            toast.error("Please select or enter a subject.");
+            return false;
+        }
+        if (theoryMaxMarks === '' ||
+            theoryObtainedMarks === '' ||
+            practicalMaxMarks === '' ||
+            practicalObtainedMarks === '') {
+            toast.error("Please enter all marks.");
+            return false;
         }
         const newSubjectMark = {
-            subject: selectedSubject,
+            subject: subjectValue.trim(),
             theoryMaxMarks: Number(theoryMaxMarks),
             theoryObtainedMarks: Number(theoryObtainedMarks),
             practicalMaxMarks: Number(practicalMaxMarks),
             practicalObtainedMarks: Number(practicalObtainedMarks),
         };
+        if (isEditing && editingIndex !== null) {
+            try {
+                await updateStudentMarkByEnrollmentId(student, newSubjectMark);
+                const updatedMarks = [...marksList];
+                updatedMarks[editingIndex] = newSubjectMark;
+                setMarksList(updatedMarks);
+                onMarksUpdate(updatedMarks);
+                toast.success("Mark updated successfully!");
+                setIsEditing(false);
+                setEditingIndex(null);
+                resetForm();
+                return true;
+            }
+            catch (error) {
+                toast.error("Failed to update mark. Please try again.");
+                console.error("Update error:", error);
+                return false;
+            }
+        }
+        const duplicate = marksList.some((mark) => mark.subject.toLowerCase() === subjectValue.trim().toLowerCase());
+        if (duplicate) {
+            toast.error("This subject already exists. Duplicate entries are not allowed.");
+            return false;
+        }
         try {
             await addEditStudentMarksByEnrollmentId(student.enrollmentId, [newSubjectMark]);
-            onMarksUpdate([...StudentMarks, newSubjectMark]);
+            const updated = [...marksList, newSubjectMark];
+            setMarksList(updated);
+            onMarksUpdate(updated);
             toast.success("Mark added successfully!");
             resetForm();
+            return true;
         }
         catch (error) {
             toast.error("Failed to add mark. Please try again.");
             console.error("Add error:", error);
+            return false;
         }
     };
-    // Edit function: pre-fill form with the mark's data and set edit mode
     const handleEditMarks = (mark, index) => {
         setSelectedSubject(mark.subject);
         setTheoryMaxMarks(mark.theoryMaxMarks);
@@ -120,11 +149,11 @@ const AddMarksFormPopUp = ({ student, setIsMarksModalVisible, StudentMarks, onMa
         setIsEditing(true);
         setEditingIndex(index);
     };
-    // Delete function: remove the mark from the database and update parent's state
     const handleDeleteMarks = async (mark) => {
         try {
             await deleteStudentMarkByEnrollmentId(student, mark.subject);
-            const updatedMarks = StudentMarks.filter((item) => item.subject.toLowerCase() !== mark.subject.toLowerCase());
+            const updatedMarks = marksList.filter((item) => item.subject.toLowerCase() !== mark.subject.toLowerCase());
+            setMarksList(updatedMarks);
             onMarksUpdate(updatedMarks);
             toast.success("Mark deleted successfully!");
         }
@@ -134,26 +163,72 @@ const AddMarksFormPopUp = ({ student, setIsMarksModalVisible, StudentMarks, onMa
         }
     };
     const handleOnSave = async () => {
-        // Since all changes are directly updated in the DB, just close the modal.
-        setIsMarksModalVisible(false);
+        await handleAddSubject();
     };
     const handleOnCancel = () => {
         setIsMarksModalVisible(false);
     };
-    return (_jsxs(_Fragment, { children: [_jsxs("div", { className: styles.marksFormContainer, children: [_jsx("h2", { className: styles.heading, children: "Add/Edit Marks" }), _jsxs("form", { onSubmit: handleAddSubject, className: styles.form, children: [_jsxs("div", { className: styles.formGroup, children: [_jsx("label", { children: "Course:" }), _jsxs("select", { value: selectedCourseId, onChange: (e) => setSelectedCourseId(e.target.value), children: [_jsx("option", { value: "", children: "Select a course" }), courses.map(course => (_jsx("option", { value: course.id, children: course.course }, course.id)))] })] }), selectedCourse && (_jsxs("div", { className: styles.formGroup, children: [_jsx("label", { children: "Subject:" }), _jsxs("select", { value: selectedSubject, onChange: (e) => setSelectedSubject(e.target.value), children: [_jsx("option", { value: "", children: "Select a subject" }), selectedCourse.subjects.map((sub, idx) => (_jsx("option", { value: sub, children: sub }, idx)))] })] })), _jsxs("div", { className: styles.formGroup, children: [_jsx("label", { children: "Theory Max Marks:" }), _jsx("input", { type: "number", value: theoryMaxMarks, onChange: (e) => setTheoryMaxMarks(Number(e.target.value)) })] }), _jsxs("div", { className: styles.formGroup, children: [_jsx("label", { children: "Theory Obtained Marks:" }), _jsx("input", { type: "number", value: theoryObtainedMarks, onChange: (e) => setTheoryObtainedMarks(Number(e.target.value)) })] }), _jsxs("div", { className: styles.formGroup, children: [_jsx("label", { children: "Practical Max Marks:" }), _jsx("input", { type: "number", value: practicalMaxMarks, onChange: (e) => setPracticalMaxMarks(Number(e.target.value)) })] }), _jsxs("div", { className: styles.formGroup, children: [_jsx("label", { children: "Practical Obtained Marks:" }), _jsx("input", { type: "number", value: practicalObtainedMarks, onChange: (e) => setPracticalObtainedMarks(Number(e.target.value)) })] }), _jsx("button", { type: "submit", className: styles.submitButton, children: isEditing ? "Update Mark" : "Add Mark" })] }), _jsxs("div", { className: styles.marksTableContainer, children: [_jsx("h3", { children: "Marks in Database" }), StudentMarks.length === 0 ? (_jsx("p", { children: "No marks added yet." })) : (_jsxs("table", { className: styles.marksTable, children: [_jsx("thead", { children: _jsxs("tr", { children: [_jsx("th", { children: "Subject" }), _jsx("th", { children: "Theory Max Marks" }), _jsx("th", { children: "Theory Obtained Marks" }), _jsx("th", { children: "Practical Max Marks" }), _jsx("th", { children: "Practical Obtained Marks" }), _jsx("th", { children: "Actions" })] }) }), _jsx("tbody", { children: StudentMarks.map((item, index) => (_jsxs("tr", { children: [_jsx("td", { children: item.subject }), _jsx("td", { children: item.theoryMaxMarks }), _jsx("td", { children: item.theoryObtainedMarks }), _jsx("td", { children: item.practicalMaxMarks }), _jsx("td", { children: item.practicalObtainedMarks }), _jsxs("td", { children: [_jsx("button", { className: styles.editBtn, onClick: () => handleEditMarks(item, index), children: "Edit" }), _jsx("button", { className: styles.dltBtn, onClick: () => handleDeleteMarks(item), children: "Delete" })] })] }, index))) })] }))] })] }), _jsxs("div", { style: { display: "flex", gap: "10px", justifyContent: "center" }, children: [_jsx("button", { onClick: handleOnSave, style: {
-                            backgroundColor: "#007bff",
-                            color: "#fff",
-                            border: "none",
-                            padding: "8px 16px",
-                            borderRadius: "4px",
-                            cursor: "pointer"
-                        }, children: "Save" }), _jsx("button", { onClick: handleOnCancel, style: {
-                            backgroundColor: "#f8f9fa",
-                            color: "#333",
-                            border: "1px solid #ccc",
-                            padding: "8px 16px",
-                            borderRadius: "4px",
-                            cursor: "pointer"
-                        }, children: "Cancel" })] })] }));
+    return (_jsxs(_Fragment, { children: [_jsxs("div", { style: { display: 'flex', justifyContent: 'center', marginBottom: '1rem' }, children: [_jsx("button", { onClick: () => setActiveTab('marks'), style: {
+                            padding: '0.5rem 1rem',
+                            marginRight: '10px',
+                            backgroundColor: activeTab === 'marks' ? '#007bff' : '#f0f0f0',
+                            color: activeTab === 'marks' ? '#fff' : '#000',
+                            border: 'none',
+                            borderRadius: '4px',
+                            cursor: 'pointer'
+                        }, children: "Marks Entry" }), _jsx("button", { onClick: () => setActiveTab('issue'), style: {
+                            padding: '0.5rem 1rem',
+                            backgroundColor: activeTab === 'issue' ? '#007bff' : '#f0f0f0',
+                            color: activeTab === 'issue' ? '#fff' : '#000',
+                            border: 'none',
+                            borderRadius: '4px',
+                            cursor: 'pointer'
+                        }, children: "Issue Date" })] }), activeTab === 'marks' && (_jsx(_Fragment, { children: _jsxs("div", { className: styles.marksFormContainer, children: [_jsx("h2", { className: styles.heading, children: "Add/Edit Marks" }), _jsxs("form", { className: styles.form, children: [_jsxs("div", { className: styles.formGroup, children: [_jsx("label", { children: "Course:" }), _jsxs("select", { value: selectedCourseId, onChange: (e) => {
+                                                setSelectedCourseId(e.target.value);
+                                                setSelectedSubject(''); // Reset subject when course changes
+                                                setManualSubject(''); // Reset manual subject
+                                            }, disabled: loading, children: [_jsx("option", { value: "", children: loading ? "Loading courses..." : "Select a course" }), courses.map(course => {
+                                                    const courseId = course._id || course.id;
+                                                    const courseName = course.course || course.name || 'Unknown Course';
+                                                    return (_jsx("option", { value: courseId, children: courseName }, courseId));
+                                                })] })] }), selectedCourse && (_jsxs("div", { className: styles.formGroup, children: [_jsx("label", { children: "Subject:" }), hasSubjects ? (_jsxs("select", { value: selectedSubject, onChange: (e) => {
+                                                setSelectedSubject(e.target.value);
+                                                setManualSubject(''); // Clear manual entry when selecting from dropdown
+                                            }, children: [_jsx("option", { value: "", children: "Select a subject" }), selectedCourse.subjects?.map((sub, idx) => (_jsx("option", { value: sub, children: sub }, idx))) || []] })) : (_jsx("input", { type: "text", value: manualSubject, onChange: (e) => {
+                                                setManualSubject(e.target.value);
+                                                setSelectedSubject(''); // Clear dropdown selection when typing
+                                            }, placeholder: "Enter subject name" }))] })), _jsxs("div", { className: styles.formGroup, children: [_jsx("label", { children: "Theory Max Marks:" }), _jsx("input", { type: "number", value: theoryMaxMarks, onChange: (e) => setTheoryMaxMarks(Number(e.target.value)) })] }), _jsxs("div", { className: styles.formGroup, children: [_jsx("label", { children: "Theory Obtained Marks:" }), _jsx("input", { type: "number", value: theoryObtainedMarks, onChange: (e) => setTheoryObtainedMarks(Number(e.target.value)) })] }), _jsxs("div", { className: styles.formGroup, children: [_jsx("label", { children: "Practical Max Marks:" }), _jsx("input", { type: "number", value: practicalMaxMarks, onChange: (e) => setPracticalMaxMarks(Number(e.target.value)) })] }), _jsxs("div", { className: styles.formGroup, children: [_jsx("label", { children: "Practical Obtained Marks:" }), _jsx("input", { type: "number", value: practicalObtainedMarks, onChange: (e) => setPracticalObtainedMarks(Number(e.target.value)) })] })] }), _jsxs("div", { className: styles.marksTableContainer, children: [_jsx("h3", { children: "Marks in Database" }), marksList.length === 0 ? (_jsx("p", { children: "No marks added yet." })) : (_jsxs("table", { className: styles.marksTable, children: [_jsx("thead", { children: _jsxs("tr", { children: [_jsx("th", { children: "Subject" }), _jsx("th", { children: "Theory Max Marks" }), _jsx("th", { children: "Theory Obtained Marks" }), _jsx("th", { children: "Practical Max Marks" }), _jsx("th", { children: "Practical Obtained Marks" }), _jsx("th", { children: "Actions" })] }) }), _jsx("tbody", { children: marksList.map((item, index) => (_jsxs("tr", { children: [_jsx("td", { children: item.subject }), _jsx("td", { children: item.theoryMaxMarks }), _jsx("td", { children: item.theoryObtainedMarks }), _jsx("td", { children: item.practicalMaxMarks }), _jsx("td", { children: item.practicalObtainedMarks }), _jsxs("td", { children: [_jsx("button", { className: styles.editBtn, onClick: () => handleEditMarks(item, index), children: "Edit" }), _jsx("button", { className: styles.dltBtn, onClick: () => handleDeleteMarks(item), children: "Delete" })] })] }, index))) })] }))] }), _jsxs("div", { style: { display: "flex", gap: "10px", justifyContent: "center" }, children: [_jsx("button", { onClick: handleOnSave, style: {
+                                        backgroundColor: "#007bff",
+                                        color: "#fff",
+                                        border: "none",
+                                        padding: "8px 16px",
+                                        borderRadius: "4px",
+                                        cursor: "pointer",
+                                        marginTop: "0.8rem",
+                                    }, children: isEditing ? "Update & Save" : "Add & Save" }), _jsx("button", { onClick: handleOnCancel, style: {
+                                        backgroundColor: "crimson",
+                                        color: "#fff",
+                                        border: "1px solid #ccc",
+                                        padding: "8px 16px",
+                                        borderRadius: "4px",
+                                        cursor: "pointer",
+                                        marginTop: "0.8rem",
+                                    }, children: "Cancel" })] })] }) })), activeTab === 'issue' && (_jsxs("div", { className: styles.marksFormContainer, children: [_jsx("h2", { className: styles.heading, children: "Set Issue Date" }), _jsxs("div", { className: styles.formGroup, children: [_jsx("label", { children: "Issue Date:" }), _jsx("input", { type: "date", value: issueDate, onChange: (e) => setIssueDate(e.target.value) })] }), _jsxs("div", { style: { display: "flex", gap: "10px", justifyContent: "center" }, children: [_jsx("button", { onClick: handleSaveIssueDate, style: {
+                                    backgroundColor: "#28a745",
+                                    color: "#fff",
+                                    border: "none",
+                                    padding: "8px 16px",
+                                    borderRadius: "4px",
+                                    cursor: "pointer",
+                                    marginTop: "0.8rem",
+                                }, children: "Save Issue Date" }), _jsx("button", { onClick: handleOnCancel, style: {
+                                    backgroundColor: "crimson",
+                                    color: "#fff",
+                                    border: "1px solid #ccc",
+                                    padding: "8px 16px",
+                                    borderRadius: "4px",
+                                    cursor: "pointer",
+                                    marginTop: "0.8rem",
+                                }, children: "Cancel" })] })] }))] }));
 };
 export default AddMarksFormPopUp;

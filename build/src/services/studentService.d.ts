@@ -22,7 +22,9 @@ export interface StudentData {
     enrollmentId: string;
     registrationId: string;
     franchiseId?: number | string;
-    status: "Active" | "Completed";
+    centerName?: string;
+    franchiseName?: string;
+    status: any;
     marksheet: string;
     certificate: string;
     institute: string;
@@ -35,6 +37,7 @@ export interface StudentData {
     certificateNumber: string;
     organization: string;
     image: any;
+    certificationStatus?: string;
 }
 export interface NewStudentData {
     name: string;
@@ -65,11 +68,22 @@ export interface Mark {
     practicalMaxMarks: number;
     practicalObtainedMarks: number;
 }
+export interface PaginationInfo {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+}
+export interface PaginatedStudentsResponse {
+    students: StudentData[];
+    pagination: PaginationInfo;
+}
 export declare const fetchStudents: (franchiseId: string) => Promise<StudentData[]>;
 export declare const submitStudentData: (data: NewStudentData) => Promise<any>;
 export declare const getStudentDataByEnrollmentId: (enrollmentId: string) => Promise<NewStudentData>;
 export declare const editStudentData: (enrollmentId: string, data: NewStudentData) => Promise<any>;
 export declare const getAllStudents: () => Promise<StudentData[]>;
+export declare const getAllStudentsPaginated: (page?: number, limit?: number, search?: string) => Promise<PaginatedStudentsResponse>;
 export declare const addEditStudentMarksByEnrollmentId: (enrollmentId: string, marksData: any) => Promise<{
     status: boolean;
     message: string;
@@ -77,3 +91,12 @@ export declare const addEditStudentMarksByEnrollmentId: (enrollmentId: string, m
 export declare const getStudentMarksByEnrollmentId: (enrollmentId: string) => Promise<Mark[]>;
 export declare const updateStudentMarkByEnrollmentId: (student: any, mark: Mark) => Promise<Mark>;
 export declare const deleteStudentMarkByEnrollmentId: (student: any, subject: string) => Promise<any>;
+export declare const deleteStudentData: (studentId: string) => Promise<void>;
+export declare const setStudentIssueDate: (enrollmentId: string, issueDate: string) => Promise<{
+    status: boolean;
+    message: string;
+}>;
+export declare const updateStudentStatus: (enrollmentId: string, status: "enable" | "disable") => Promise<{
+    status: boolean;
+    message: string;
+}>;

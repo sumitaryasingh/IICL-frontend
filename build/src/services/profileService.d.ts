@@ -9,6 +9,7 @@ export interface FranchiseData {
     email: string;
     aadharId: string;
     franchiseId: number;
+    centerId: string;
 }
 export interface AdminProfileData {
     name: string;

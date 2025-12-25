@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { toast } from 'react-toastify';
+import axioInstance from '../api/axiosInstance';
 // export const loginUser = async (data: { email: string; password: string, franchiseId:number }) => {
 //     try {
 //         const apiUrl = `/api/auth/login`; // FIXED: Ensured correct URL
@@ -20,7 +20,7 @@ import { toast } from 'react-toastify';
 export const registerUser = async (data) => {
     try {
         console.log("this is registerUser ::", data);
-        const response = await axios.post(`api/register`, data);
+        const response = await axioInstance.post(`api/register`, data);
         toast.success(response.data.message); // Display success message
     }
     catch (error) {

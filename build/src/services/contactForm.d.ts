@@ -10,11 +10,12 @@ interface ContactFormResponse {
 }
 export declare const submitContactForm: (formData: ContactFormData) => Promise<ContactFormResponse>;
 export interface ContactEnquiry {
-    id: number;
+    _id: string;
     name: string;
     email: string;
     phone: string;
     message: string;
 }
 export declare const fetchContactEnquiries: () => Promise<ContactEnquiry[]>;
+export declare const deleteContactEnquiry: (id: string) => Promise<void>;
 export {};

@@ -22,7 +22,6 @@ const DashboardHome = () => {
         }
     };
     useEffect(() => {
-        // Always fetch courses on mount so that the table will show in the modal.
         fetchCourseData();
     }, []);
     const handleAddCourseClick = () => {
@@ -30,12 +29,10 @@ const DashboardHome = () => {
         setIsAddModalVisible(true);
     };
     const handleViewCoursesClick = () => {
-        // Refresh the courses list when viewing courses.
         fetchCourseData();
         setIsViewCoursesVisible(true);
     };
     const onFinishCourseForm = async (values) => {
-        // Check for duplicate course names (case-insensitive)
         if (editingCourse) {
             if (courses.some(c => c.course.toLowerCase() === values.course.toLowerCase() && c.id !== editingCourse.id)) {
                 toast.error("Course already exists");
@@ -80,9 +77,9 @@ const DashboardHome = () => {
         {
             title: "Action",
             key: "action",
-            render: (_, record) => (_jsxs(_Fragment, { children: [_jsx(Button, { onClick: () => handleEditCourse(record), children: "Edit" }), _jsx(Button, { danger: true, onClick: () => handleDeleteCourse(record.id), children: "Delete" })] })),
+            render: (_, record) => (_jsx(_Fragment, { children: _jsx(Button, { className: styles.deleteBtn, danger: true, onClick: () => handleDeleteCourse(record?._id), children: "Delete" }) })),
         },
     ];
-    return (_jsxs("div", { className: styles.dashboardContainerHome, children: [_jsx("div", { className: styles.mainContentHome, children: _jsxs("div", { className: styles.pageContentHome, children: [_jsx("h1", { children: "Welcome to the Dashboard" }), role === "admin" && (_jsxs("div", { className: styles.card, children: [_jsx("h2", { children: "Add Course" }), _jsxs("div", { className: styles.cardBtns, children: [_jsx(Button, { type: "primary", className: styles.addCourseBtn, onClick: handleAddCourseClick, children: "Add New Course" }), _jsx(Button, { type: "default", className: styles.viewCoursesBtn, onClick: handleViewCoursesClick, children: "View Courses" })] })] }))] }) }), _jsx(Modal, { title: editingCourse ? "Edit Course" : "Add Course", visible: isAddModalVisible, onCancel: () => setIsAddModalVisible(false), footer: null, width: 600, children: _jsxs(Form, { layout: "vertical", initialValues: editingCourse || {}, onFinish: onFinishCourseForm, children: [_jsx(Form.Item, { label: "Course Name", name: "course", rules: [{ required: true, message: "Please enter course name" }], children: _jsx(Input, {}) }), _jsx(Form.Item, { children: _jsx(Button, { type: "primary", htmlType: "submit", children: editingCourse ? "Update Course" : "Add Course" }) })] }) }), _jsx(Modal, { title: "View Courses", visible: isViewCoursesVisible, onCancel: () => setIsViewCoursesVisible(false), footer: null, width: 800, children: _jsx(Table, { dataSource: courses, columns: columns, rowKey: "id" }) })] }));
+    return (_jsxs("div", { className: styles.dashboardContainer, children: [_jsxs("div", { className: styles.pageContent, children: [_jsx("h1", { className: styles.pageTitle, children: "Welcome to the Dashboard" }), role === "admin" && (_jsxs("div", { className: styles.card, children: [_jsx("h2", { children: "Add Course" }), _jsxs("div", { className: styles.cardBtns, children: [_jsx(Button, { type: "primary", className: styles.addCourseBtn, onClick: handleAddCourseClick, children: "Add New Course" }), _jsx(Button, { type: "default", className: styles.viewCoursesBtn, onClick: handleViewCoursesClick, children: "View Courses" })] })] }))] }), _jsx(Modal, { title: editingCourse ? "Edit Course" : "Add Course", visible: isAddModalVisible, onCancel: () => setIsAddModalVisible(false), footer: null, width: 600, className: styles.modal, children: _jsxs(Form, { layout: "vertical", initialValues: editingCourse || {}, onFinish: onFinishCourseForm, children: [_jsx(Form.Item, { label: "Course Name", name: "course", rules: [{ required: true, message: "Please enter course name" }], children: _jsx(Input, {}) }), _jsx(Form.Item, { children: _jsx(Button, { type: "primary", htmlType: "submit", children: editingCourse ? "Update Course" : "Add Course" }) })] }) }), _jsx(Modal, { title: "View Courses", visible: isViewCoursesVisible, onCancel: () => setIsViewCoursesVisible(false), footer: null, width: 800, className: styles.modal, children: _jsx(Table, { dataSource: courses, columns: columns, rowKey: "id" }) })] }));
 };
 export default DashboardHome;

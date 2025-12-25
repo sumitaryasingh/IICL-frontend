@@ -17,6 +17,7 @@ export interface IStudent {
     location: string;
     registrationId: string;
     marks: IMark[];
+    issueDate: string;
 }
 declare const Marksheet: React.FC;
 export default Marksheet;

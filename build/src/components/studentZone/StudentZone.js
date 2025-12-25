@@ -13,6 +13,9 @@ const Student = () => {
         case 'enrollment':
             headingText = 'Student Enrollment';
             break;
+        case 'certificate-verification':
+            headingText = 'Verify Certificate';
+            break;
         case 'network':
             headingText = 'Franchise Network';
             break;

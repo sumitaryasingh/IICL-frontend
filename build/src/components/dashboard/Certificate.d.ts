@@ -13,6 +13,7 @@ export interface IStudent {
     course: string;
     fatherName: string;
     motherName: string;
+    dob?: string;
     institute: string;
     location: string;
     registrationId: string;
@@ -21,6 +22,7 @@ export interface IStudent {
         data: any;
         contentType: string;
     };
+    issueDate: string;
 }
 declare const Certificate: React.FC;
 export default Certificate;

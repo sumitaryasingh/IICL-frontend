@@ -1,5 +1,5 @@
 // services/viewFranchise.ts
-import axios from "axios";
+import axioInstance from "../api/axiosInstance";
 // Sample data for fallback
 const sampleData = [
     {
@@ -19,7 +19,7 @@ const sampleData = [
 // Fetch all franchise data
 export const fetchFranchiseData = async () => {
     try {
-        const response = await axios.get("/api/franchise/get-franchises");
+        const response = await axioInstance.get("/api/franchise/get-franchises");
         return response.data;
     }
     catch (error) {
@@ -34,13 +34,23 @@ export const editFranchiseData = async (_id, data) => {
         Object.entries(data).forEach(([key, value]) => {
             formData.append(key, value);
         });
-        const response = await axios.put(`/api/franchise/edit-franchise/${_id}`, formData, {
+        const response = await axioInstance.put(`/api/franchise/edit-franchise/${_id}`, formData, {
             headers: { "Content-Type": "application/json" },
         });
         return response.data;
     }
     catch (error) {
         console.error("Error editing franchise data:", error);
+        throw error;
+    }
+};
+// Delete franchise data
+export const deleteFranchiseData = async (franchiseId) => {
+    try {
+        await axioInstance.delete(`/api/franchise/delete-franchise/${franchiseId}`);
+    }
+    catch (error) {
+        console.error("Error deleting franchise data:", error);
         throw error;
     }
 };

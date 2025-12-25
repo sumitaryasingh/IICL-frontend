@@ -1,4 +1,3 @@
-import React from "react";
 import "./styles/StudentEnrollment.css";
-declare const StudentEnrollment: React.FC;
+declare const StudentEnrollment: () => import("react/jsx-runtime").JSX.Element;
 export default StudentEnrollment;

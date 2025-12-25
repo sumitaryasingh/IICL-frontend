@@ -1,9 +1,8 @@
-// services/franchiseEnquiryService.ts
-import axios from "axios";
+import axioInstance from "../api/axiosInstance";
 export const fetchFranchiseEnquiries = async () => {
     try {
         // Replace with your actual API endpoint:
-        const response = await axios.get("/api/franchise-enquiries");
+        const response = await axioInstance.get("/api/franchise-enquiries");
         return response.data;
     }
     catch (error) {

@@ -1,5 +1,4 @@
-// services/profileService.ts
-import axios from 'axios';
+import axioInstance from '../api/axiosInstance';
 const franchiseSampleData = {
     firstName: "John",
     lastName: "Doe",
@@ -10,7 +9,8 @@ const franchiseSampleData = {
     mobile: "9876789876",
     email: "john@gmail.com",
     aadharId: "878912345674",
-    franchiseId: 12345
+    franchiseId: 12345,
+    centerId: "IICL-TC-23382"
 };
 const adminSampleData = {
     name: "Admin User",
@@ -32,7 +32,7 @@ const adminSampleData = {
 export const getProfileData = async (role, franchiseId) => {
     if (role === 'admin') {
         try {
-            const response = await axios.get('/api/admin/profile');
+            const response = await axioInstance.get('/api/admin/profile');
             // Assuming the API returns an array and we want the first admin profile.
             if (response.data && response.data.length > 0) {
                 return response.data[0];
@@ -53,7 +53,7 @@ export const getProfileData = async (role, franchiseId) => {
             return franchiseSampleData;
         }
         try {
-            const response = await axios.get(`/api/profile/franchise-profile/${franchiseId}`);
+            const response = await axioInstance.get(`/api/profile/franchise-profile/${franchiseId}`);
             // Assuming the API returns an array and we want the first item.
             if (response.data && response.data.length > 0) {
                 return response.data[0];

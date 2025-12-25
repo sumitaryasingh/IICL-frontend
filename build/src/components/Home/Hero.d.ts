@@ -1,4 +1,7 @@
 import React from "react";
 import "./Hero.css";
-declare const Hero: React.FC;
+type HeroProps = {
+    scrollToStory: () => void;
+};
+declare const Hero: React.FC<HeroProps>;
 export default Hero;

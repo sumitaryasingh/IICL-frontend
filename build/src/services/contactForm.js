@@ -1,9 +1,8 @@
-import axios from "axios";
+import axioInstance from "../api/axiosInstance";
 export const submitContactForm = async (formData) => {
     try {
-        console.log("This is formData:", formData);
         // Make sure to replace with the actual backend endpoint.
-        const response = await axios.post(`/api/contact/contactUs`, formData);
+        const response = await axioInstance.post(`/api/contact/contactUs`, formData);
         return response.data; // Assuming the backend responds with a data object that includes `success`
     }
     catch (error) {
@@ -29,7 +28,7 @@ export const submitContactForm = async (formData) => {
 export const fetchContactEnquiries = async () => {
     try {
         // Replace with your actual API endpoint for contact enquiries
-        const response = await axios.get("/api/contact");
+        const response = await axioInstance.get("/api/contact/get-contact");
         return response.data;
     }
     catch (error) {
@@ -37,7 +36,7 @@ export const fetchContactEnquiries = async () => {
         // Fallback sample data if API call fails
         const sampleData = [
             {
-                id: 1,
+                _id: "1",
                 name: "Alice Johnson",
                 email: "alice@example.com",
                 phone: "9876543210",
@@ -45,5 +44,18 @@ export const fetchContactEnquiries = async () => {
             }
         ];
         return sampleData;
+    }
+};
+export const deleteContactEnquiry = async (id) => {
+    try {
+        // Adjust the endpoint to match your backend (replace as needed)
+        const response = await axioInstance.delete(`/api/contact/delete-contact/${id}`);
+        if (response.status !== 200) {
+            throw new Error("Failed to delete student");
+        }
+    }
+    catch (error) {
+        console.error("Error deleting contact enquiry:", error);
+        throw new Error("Failed to delete contact enquiry");
     }
 };

@@ -25,4 +25,5 @@ export declare const loginUser: (data: LoginData) => Promise<ResponseData>;
 export declare const logoutService: () => Promise<{
     message: string;
 }>;
+export declare const changePassword: (email: string, newPassword: string, currentPassword: string) => Promise<any>;
 export {};

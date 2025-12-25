@@ -1,8 +1,8 @@
-import axios from "axios";
+import axioInstance from "../api/axiosInstance";
 // Add a new course
 export const addCourse = async (course) => {
     try {
-        const response = await axios.post("/api/course/add-course", course);
+        const response = await axioInstance.post("/api/course/add-course", course);
         return response.data;
     }
     catch (error) {
@@ -13,7 +13,7 @@ export const addCourse = async (course) => {
 // Get list of courses
 export const getCourses = async () => {
     try {
-        const response = await axios.get("/api/course/get-course");
+        const response = await axioInstance.get("/api/course/get-course");
         return response.data;
     }
     catch (error) {
@@ -24,7 +24,7 @@ export const getCourses = async () => {
 // Update an existing course
 export const updateCourse = async (courseId, course) => {
     try {
-        const response = await axios.put(`/api/course/${courseId}`, course);
+        const response = await axioInstance.put(`/api/course/${courseId}`, course);
         return response.data;
     }
     catch (error) {
@@ -35,7 +35,7 @@ export const updateCourse = async (courseId, course) => {
 // Delete a course
 export const deleteCourse = async (courseId) => {
     try {
-        const response = await axios.delete(`/api/course/delete-course/${courseId}`);
+        const response = await axioInstance.delete(`/api/course/delete-course/${courseId}`);
         return response.data;
     }
     catch (error) {

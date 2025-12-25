@@ -1,5 +1,4 @@
-// photoService.ts
-import axios from "axios";
+import axioInstance from "../api/axiosInstance";
 // Service function to upload a photo
 export const uploadPhoto = async (file) => {
     // Create a FormData object and append the file
@@ -9,7 +8,7 @@ export const uploadPhoto = async (file) => {
     const API_URL = import.meta.env.VITE_APP_API_BASE_URL;
     try {
         // POST the formData to the endpoint (adjust '/photos' to your endpoint)
-        const response = await axios.post(`/api/gallery/add-photo`, formData, {
+        const response = await axioInstance.post(`/api/gallery/add-photo`, formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },

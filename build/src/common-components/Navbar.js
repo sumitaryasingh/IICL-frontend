@@ -6,7 +6,17 @@ import "./Navbar.css";
 const navItems = [
     { label: "Home", href: "/" },
     { label: "Gallery", href: "/gallery" },
-    { label: "About Us", href: "/about-us" },
+    { label: "About Us", href: "/about-us",
+        subItems: [
+            { label: "About Institution", href: "/about-us" },
+            { label: "Authorization Certificate", href: "https://drive.google.com/file/d/1ubvg01vha_D_jh2mRpdYnDwNmI7POCDn/view?usp=sharing", external: true },
+            { label: "ISO Certificate", href: "https://drive.google.com/file/d/1P0IGU5LEnNAAqxfrkC3z8ODHz6be3Otv/view?usp=sharing", external: true },
+            { label: "MSME Certificate", href: "https://drive.google.com/file/d/1Z1MWXi0rwGUU3cz0RoEdOUdmYLIISIT0/view?usp=sharing", external: true },
+            { label: "NGO Darpan Certificate", href: "https://drive.google.com/file/d/1182tgrhBzvopiLg593s3fflb1tuhtArS/view?usp=sharing", external: true },
+            { label: "Institution Pan Details", href: "https://drive.google.com/file/d/1EqL9PCta8-6CXLsofypxfDMF_PNJGACV/view?usp=sharing", external: true },
+            { label: "Trust Deed", href: "https://drive.google.com/file/d/1bemDujnbcpTY288o_BmlzY5gQBer8FvS/view?usp=sharing", external: true },
+        ]
+    },
     {
         label: "Programs", href: "#", subItems: programData.map((category) => ({
             label: category.type,
@@ -25,9 +35,10 @@ const navItems = [
     {
         label: "Student Zone", href: "/student-zone",
         subItems: [
-            { label: "Enrollment", href: "/student/enrollment" },
-            { label: "I-Card", href: "/student/icard" },
-            { label: "Prospectus", href: "https://drive.google.com/file/d/1gkPSy3dM0I93YTn4dn2vvkZmzQ3b81yr/view?usp=sharing", external: true }
+            { label: "Enrollment & I-Card", href: "/student/enrollment" },
+            { label: "Verify Certificate", href: "/student/certificate-verification" },
+            { label: "Course Prospectus", href: "https://drive.google.com/file/d/1vbBRuPbEAIhSWTQbRPs4MtF6x9rcSItZ/view?usp=sharing", external: true },
+            { label: "Institution Prospectus", href: "https://drive.google.com/file/d/1xQH0sW2ngStlOohA1lszAm1BRSaBtJWA/view?usp=sharing", external: true },
         ]
     },
     { label: "Contact Us", href: "/contact-us" },

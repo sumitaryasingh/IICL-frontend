@@ -56,7 +56,9 @@ const MarkEntryForm: React.FC = () => {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
+        console.log("Fetching students for MarkEntryForm...");
         const data = await getAllStudents();
+        console.log("Students fetched successfully:", data?.length || 0, "students");
         const validData = (data || []).map((student: StudentData, index) => ({
           ...student,
           enrollmentId: student.enrollmentId || `temp-${index}`,
@@ -66,8 +68,10 @@ const MarkEntryForm: React.FC = () => {
           certificationStatus: student?.certificationStatus ?? '',
         }));
         setStudents(validData);
-      } catch (error) {
+      } catch (error: any) {
         console.error("Error fetching students:", error);
+        console.error("Error details:", error.response?.data || error.message);
+        toast.error("Failed to fetch students. Please try again.");
       }
     };
 

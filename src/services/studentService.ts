@@ -26,6 +26,8 @@ export interface StudentData {
   enrollmentId: string;
   registrationId:string;
   franchiseId?: number | string;
+  centerName?: string;
+  franchiseName?: string;
   status: any;
   marksheet: string;
   certificate: string;
@@ -71,6 +73,19 @@ export interface Mark {
   theoryObtainedMarks: number;
   practicalMaxMarks: number;
   practicalObtainedMarks: number;
+}
+
+// Pagination interfaces
+export interface PaginationInfo {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
+export interface PaginatedStudentsResponse {
+  students: StudentData[];
+  pagination: PaginationInfo;
 }
 
 // -------------------------------------------------
@@ -189,13 +204,106 @@ export const editStudentData = async (enrollmentId: string, data: NewStudentData
   }
 };
 
-// GET: Fetch all students
+// GET: Fetch all students (handles both paginated and non-paginated responses)
 export const getAllStudents = async (): Promise<StudentData[]> => {
   try {
-    const response = await axioInstance.get<StudentData[]>("/api/student/get-all-students");
+    // First, try to get all students with max limit (100) using pagination
+    let response;
+    try {
+      response = await axioInstance.get<StudentData[] | PaginatedStudentsResponse>(
+        "/api/student/get-all-students",
+        {
+          params: {
+            page: 1,
+            limit: 100, // Use max limit to get as many as possible
+          },
+          withCredentials: true,
+        }
+      );
+    } catch (paginationError) {
+      // If pagination fails, try without pagination parameters (legacy API)
+      console.warn("Pagination parameters not supported, trying legacy format");
+      response = await axioInstance.get<StudentData[]>(
+        "/api/student/get-all-students",
+        {
+          withCredentials: true,
+        }
+      );
+      return response.data;
+    }
+    
+    // Check if response is paginated format
+    if (response.data && typeof response.data === 'object' && 'students' in response.data) {
+      const paginatedResponse = response.data as PaginatedStudentsResponse;
+      const allStudents: StudentData[] = [...paginatedResponse.students];
+      
+      // If there are more pages, fetch them
+      if (paginatedResponse.pagination.totalPages > 1) {
+        const totalPages = paginatedResponse.pagination.totalPages;
+        const limit = paginatedResponse.pagination.limit;
+        
+        // Fetch remaining pages in parallel for better performance
+        const pagePromises: Promise<PaginatedStudentsResponse>[] = [];
+        for (let page = 2; page <= totalPages; page++) {
+          pagePromises.push(
+            axioInstance.get<PaginatedStudentsResponse>(
+              "/api/student/get-all-students",
+              {
+                params: {
+                  page,
+                  limit,
+                },
+                withCredentials: true,
+              }
+            ).then(res => res.data)
+          );
+        }
+        
+        const pageResponses = await Promise.all(pagePromises);
+        pageResponses.forEach(pageResponse => {
+          allStudents.push(...pageResponse.students);
+        });
+      }
+      
+      return allStudents;
+    }
+    
+    // Non-paginated response (legacy format)
+    return response.data as StudentData[];
+  } catch (error: any) {
+    console.error("Error fetching all students:", error);
+    console.error("Error details:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+// GET: Fetch all students with pagination and optional search
+export const getAllStudentsPaginated = async (
+  page: number = 1,
+  limit: number = 10,
+  search: string = ""
+): Promise<PaginatedStudentsResponse> => {
+  try {
+    const params: { page: number; limit: number; search?: string } = {
+      page,
+      limit: Math.min(limit, 100), // Enforce max limit of 100
+    };
+
+    // Only include search parameter if it's not empty
+    if (search && search.trim()) {
+      params.search = search.trim();
+    }
+
+    const response = await axioInstance.get<PaginatedStudentsResponse>(
+      "/api/student/get-all-students",
+      {
+        params,
+        withCredentials: true,
+      }
+    );
     return response.data;
   } catch (error) {
-    console.error("Error fetching all students:", error);
+    console.error("Error fetching paginated students:", error);
     throw error;
   }
 };

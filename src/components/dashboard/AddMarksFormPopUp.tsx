@@ -6,14 +6,17 @@ import {
   deleteStudentMarkByEnrollmentId,
   setStudentIssueDate,
 } from '../../services/studentService';
+import { getCourses } from '../../services/dashboardHome';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 interface Course {
-  id: string;
-  course: string;
-  subjects: string[];
-  issueDate?: string;
+  id?: string;
+  _id?: string;
+  course?: string;
+  name?: string;
+  subjects?: string[];
+  [key: string]: any; // Allow for additional properties from API
 }
 
 export interface Mark {
@@ -31,30 +34,18 @@ interface StudentProps {
   onMarksUpdate: (updatedMarks: Mark[]) => void;
 }
 
-const courses: Course[] = [
-  {
-    id: "1",
-    course: "ADCA",
-    subjects: [
-      "Computer Fundamentals", "Operating Systems (MS Windows 10/11, Mac Os)", "MS Office (Word, Excel, PowerPoint)","Typing", "Graphic Designing(Photoshop, Pagemaker)", "Tally", "Internet & AI", "Coding & Programming(Python)", "Project"
-    ]
-  },
-  {
-    id: "2",
-    course: "DCA",
-    subjects: ["Computer Fundamentals", "Operating Systems (MS Windows 10/11, Mac Os)", "MS Office (Word, Excel, PowerPoint)", "Typing", "HTML", "Internet & AI","Project"],
-  },
-];
-
 const AddMarksFormPopUp: React.FC<StudentProps> = ({
   student,
   setIsMarksModalVisible,
   StudentMarks,
   onMarksUpdate,
 }) => {
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const [marksList, setMarksList] = useState<Mark[]>([]);
   const [selectedCourseId, setSelectedCourseId] = useState<string>('');
   const [selectedSubject, setSelectedSubject] = useState<string>('');
+  const [manualSubject, setManualSubject] = useState<string>(''); // For manual subject entry
   const [theoryMaxMarks, setTheoryMaxMarks] = useState<number | ''>(60);
   const [theoryObtainedMarks, setTheoryObtainedMarks] = useState<number | ''>('');
   const [practicalMaxMarks, setPracticalMaxMarks] = useState<number | ''>(40);
@@ -64,18 +55,57 @@ const AddMarksFormPopUp: React.FC<StudentProps> = ({
   const [activeTab, setActiveTab] = useState<'marks' | 'issue'>('marks');
   const [issueDate, setIssueDate] = useState<string>('');
 
+  // Fetch courses from API
+  useEffect(() => {
+    const fetchCourses = async () => {
+      setLoading(true);
+      try {
+        const data = await getCourses();
+        // Transform API response to match component's expected format
+        const transformedCourses = data.map((course: any) => ({
+          id: course._id || course.id,
+          course: course.course || course.name,
+          subjects: course.subjects || [],
+        }));
+        setCourses(transformedCourses);
+      } catch (error) {
+        console.error("Error fetching courses:", error);
+        toast.error("Failed to fetch courses. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCourses();
+  }, []);
+
   useEffect(() => {
     setMarksList(StudentMarks);
   }, [StudentMarks]);
 
-  const selectedCourse = courses.find(course => course.id === selectedCourseId);
+  const selectedCourse = courses.find(course => {
+    const courseId = course._id || course.id;
+    return courseId === selectedCourseId;
+  });
+  
+  // Check if course has subjects or needs manual entry
+  const hasSubjects = selectedCourse && selectedCourse.subjects && selectedCourse.subjects.length > 0;
 
   const resetForm = () => {
     setSelectedSubject('');
+    setManualSubject('');
     setTheoryMaxMarks(60);
     setTheoryObtainedMarks('');
     setPracticalMaxMarks(40);
     setPracticalObtainedMarks('');
+  };
+  
+  // Get the subject value (from dropdown or manual entry)
+  const getSubjectValue = (): string => {
+    if (hasSubjects) {
+      return selectedSubject;
+    }
+    return manualSubject;
   };
 
  
@@ -94,8 +124,10 @@ const handleSaveIssueDate = async () => {
       toast.error("Please select a course.");
       return false;
     }
-    if (!selectedSubject) {
-      toast.error("Please select a subject.");
+    
+    const subjectValue = getSubjectValue();
+    if (!subjectValue || subjectValue.trim() === '') {
+      toast.error("Please select or enter a subject.");
       return false;
     }
     if (
@@ -109,7 +141,7 @@ const handleSaveIssueDate = async () => {
     }
 
     const newSubjectMark: Mark = {
-      subject: selectedSubject,
+      subject: subjectValue.trim(),
       theoryMaxMarks: Number(theoryMaxMarks),
       theoryObtainedMarks: Number(theoryObtainedMarks),
       practicalMaxMarks: Number(practicalMaxMarks),
@@ -136,7 +168,7 @@ const handleSaveIssueDate = async () => {
     }
 
     const duplicate = marksList.some(
-      (mark) => mark.subject.toLowerCase() === selectedSubject.toLowerCase()
+      (mark) => mark.subject.toLowerCase() === subjectValue.trim().toLowerCase()
     );
     if (duplicate) {
       toast.error("This subject already exists. Duplicate entries are not allowed.");
@@ -234,27 +266,51 @@ const handleSaveIssueDate = async () => {
           <label>Course:</label>
           <select
             value={selectedCourseId}
-            onChange={(e) => setSelectedCourseId(e.target.value)}
+            onChange={(e) => {
+              setSelectedCourseId(e.target.value);
+              setSelectedSubject(''); // Reset subject when course changes
+              setManualSubject(''); // Reset manual subject
+            }}
+            disabled={loading}
           >
-            <option value="">Select a course</option>
-            {courses.map(course => (
-              <option key={course.id} value={course.id}>{course.course}</option>
-            ))}
+            <option value="">{loading ? "Loading courses..." : "Select a course"}</option>
+            {courses.map(course => {
+              const courseId = course._id || course.id;
+              const courseName = course.course || course.name || 'Unknown Course';
+              return (
+                <option key={courseId} value={courseId}>{courseName}</option>
+              );
+            })}
           </select>
         </div>
 
         {selectedCourse && (
           <div className={styles.formGroup}>
             <label>Subject:</label>
-            <select
-              value={selectedSubject}
-              onChange={(e) => setSelectedSubject(e.target.value)}
-            >
-              <option value="">Select a subject</option>
-              {selectedCourse.subjects.map((sub, idx) => (
-                <option key={idx} value={sub}>{sub}</option>
-              ))}
-            </select>
+            {hasSubjects ? (
+              <select
+                value={selectedSubject}
+                onChange={(e) => {
+                  setSelectedSubject(e.target.value);
+                  setManualSubject(''); // Clear manual entry when selecting from dropdown
+                }}
+              >
+                <option value="">Select a subject</option>
+                {selectedCourse.subjects?.map((sub, idx) => (
+                  <option key={idx} value={sub}>{sub}</option>
+                )) || []}
+              </select>
+            ) : (
+              <input
+                type="text"
+                value={manualSubject}
+                onChange={(e) => {
+                  setManualSubject(e.target.value);
+                  setSelectedSubject(''); // Clear dropdown selection when typing
+                }}
+                placeholder="Enter subject name"
+              />
+            )}
           </div>
         )}
 

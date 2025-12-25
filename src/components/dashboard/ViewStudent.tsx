@@ -280,6 +280,34 @@ const ViewStudent: React.FC = () => {
     return "No Image";
   };
 
+  // Calculate status based on session end date
+  const getStudentStatus = (student: StudentData): { text: string; isActive: boolean } => {
+    if (!student.sessionTo) {
+      return { text: "N/A", isActive: false };
+    }
+    
+    try {
+      const sessionEndDate = new Date(student.sessionTo);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Reset time to compare dates only
+      sessionEndDate.setHours(0, 0, 0, 0);
+      
+      if (isNaN(sessionEndDate.getTime())) {
+        return { text: "N/A", isActive: false };
+      }
+      
+      // If today is before or equal to session end date, student is Active
+      if (today <= sessionEndDate) {
+        return { text: "Active", isActive: true };
+      } else {
+        return { text: "Completed", isActive: false };
+      }
+    } catch (error) {
+      console.error("Error parsing session date:", error);
+      return { text: "N/A", isActive: false };
+    }
+  };
+
   // Open Add Marks Modal.
   const handleAddMarks = useCallback((student: StudentData) => {
     setSelectedStudent(student);
@@ -362,7 +390,7 @@ const ViewStudent: React.FC = () => {
                   <th onClick={() => handleSort("course")}>Course</th>
                   <th onClick={() => handleSort("enrollmentId")}>Enrollment No.</th>
                   <th onClick={() => handleSort("centerName")}>Center Name</th>
-                  <th onClick={() => handleSort("status")}>Status</th>
+                  <th onClick={() => handleSort("sessionTo")}>Status</th>
                   <th>Marksheet</th>
                   <th>Certificate</th>
                   <th>Action</th>
@@ -388,9 +416,14 @@ const ViewStudent: React.FC = () => {
                       <td>{student.enrollmentId}</td>
                       <td>{(student as any).centerName || (student as any).franchiseName || "N/A"}</td>
                       <td>
-                        <span className={student.status === "Active" ? styles.active : styles.completed}>
-                          {student.status}
-                        </span>
+                        {(() => {
+                          const status = getStudentStatus(student);
+                          return (
+                            <span className={status.isActive ? styles.active : styles.completed}>
+                              {status.text}
+                            </span>
+                          );
+                        })()}
                       </td>
                       <td>
                         {student.certificationStatus === 'enable' && (

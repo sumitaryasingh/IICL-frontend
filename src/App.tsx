@@ -20,6 +20,7 @@ import FranchiseTestimonials from "./components/Franchise/FranchiseTestimonials"
 import Student from "./components/studentZone/StudentZone";
 import StudentEnrollment from "./components/studentZone/StudentEnrollment";
 import StudentDetails from "./components/studentZone/StudentDetails";
+import CertificateVerification from "./components/studentZone/CertificateVerification";
 import Gallery from "./components/Gallery";
 
 import ContactUs from "./components/ContactUs";
@@ -105,6 +106,7 @@ const App: React.FC = () => {
           <Route path="enrollment" element={<StudentEnrollment />} />
           <Route path="details/:enrollmentId" element={<StudentDetails />} />
           <Route path="icard" element={<FranchiseTestimonials />} />
+          <Route path="certificate-verification" element={<CertificateVerification />} />
         </Route>
 
         <Route path="/contact-us" element={<ContactUs/>} />

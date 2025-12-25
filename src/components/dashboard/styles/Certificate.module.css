@@ -110,6 +110,32 @@
     object-fit: contain;
   }
 
+  .courseNameFallback{
+    position: absolute;
+    bottom:4.8rem;
+    left:2.2rem;
+    height: 9rem;
+    width: 9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 2px solid rgb(170, 130, 0);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .courseNameText{
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: rgb(170, 130, 0);
+    text-align: center;
+    padding: 0.5rem;
+    word-wrap: break-word;
+    line-height: 1.2;
+    margin: 0;
+  }
+
   .certificate_no{
     /* border: 1px solid red; */
     left:1.6rem;

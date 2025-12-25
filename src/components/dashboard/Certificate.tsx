@@ -21,6 +21,7 @@ export interface IStudent {
   course: string;
   fatherName: string;
   motherName: string;
+  dob?: string;
   institute: string;
   location: string;
   registrationId: string;
@@ -66,6 +67,7 @@ const Certificate: React.FC = () => {
   };
 
   const certificateRef = useRef<HTMLDivElement>(null);
+  const [imageError, setImageError] = useState(false);
 
   // Mapping for course to QR image URLs
   const courseImages: { [key: string]: string } = {
@@ -78,8 +80,8 @@ const Certificate: React.FC = () => {
   };
 
   const courseAbbr = student.course.split("(")[0].trim().toLowerCase();
-  const CourseImageSrc =
-    student.course && courseAbbr ? courseImages[courseAbbr] : "/images/adca.png";
+  const hasCourseLogo = courseAbbr && courseImages[courseAbbr];
+  const CourseImageSrc = hasCourseLogo ? courseImages[courseAbbr] : "/images/adca.png";
 
   const convertBufferToBase64 = (buffer: ArrayBuffer): string => {
     let binary = "";
@@ -160,7 +162,18 @@ const Certificate: React.FC = () => {
             </div>
           </div>
           <div className={styles.qr_code_box}>
-            <img src={CourseImageSrc} alt="Course Logo" className={styles.certificate_qr} />
+            {hasCourseLogo && !imageError ? (
+              <img 
+                src={CourseImageSrc} 
+                alt="Course Logo" 
+                className={styles.certificate_qr}
+                onError={() => setImageError(true)}
+              />
+            ) : (
+              <div className={styles.courseNameFallback}>
+                <p className={styles.courseNameText}>{courseAbbr.toUpperCase()}</p>
+              </div>
+            )}
             <p className={styles.certificate_no}>
               Certificate No. :{" "}
               <strong>
@@ -190,7 +203,7 @@ const Certificate: React.FC = () => {
         </div>
         <p className={styles.institute}>
           Father's/ Husband's name<span>{student.fatherName}</span>
-          Mother's name<span>{student.motherName}</span>
+          {student.dob && <>Date of Birth<span>{student.dob}</span></>}
           <br />
           Learning at <strong>{instituteName}, {address}</strong>
           <br />
